@@ -1,0 +1,34 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!--<attr format="reference" name="cardStyle"/>-->
+    <attr name="accentColor" format="reference" />
+    <attr name="iconColor" format="reference" />
+    <!--<attr format="reference" name="windowBackground"/>-->
+    <!--<attr format="reference" name="progressBackgroundColor"/>-->
+    <!--<attr format="reference" name="progressDrawable"/>-->
+    <attr name="progressDrawableWithBackground" format="reference" />
+    <!--<attr format="reference" name="stateSelector" />-->
+
+    <style name="BaseAppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="BaseAppTheme">
+    </style>
+
+
+    <style name="AppTheme.TransparentActivity">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="AppTheme.Night" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+</resources>

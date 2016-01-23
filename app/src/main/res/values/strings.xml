@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Umaru</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_night">切换主题</string>
+
+
+    <string name="image_description">image</string>
+    <string name="start">开始</string>
+    <string name="welcome1">嗨，我是 Umaru!</string>
+    <string name="welcome2">要来点可乐和薯条吗~</string>
+    <string name="welcome3">今天的天气似乎不错</string>
+
+    <string-array name="welcome_texts">
+        <item>要来点可乐和薯条吗~</item>
+        <item>嗨，我是 Umaru!</item>
+        <item>和我聊聊吧</item>
+        <item>今天的天气似乎不错</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <!--<color name="colorPrimary">#e9794b</color>-->
+    <color name="colorPrimaryDark">#303F9F</color>
+    <!--<color name="colorPrimaryDark">#ed703c</color>-->
+    <color name="colorAccent">#FF4081</color>
+    <color name="black">#000000</color>
+    <color name="white">#f2eeee</color>
+    <color name="umaru">#f1926a</color>
+    <color name="transparent">#00000000</color>
+
+    <color name="navigationBarColor">@android:color/black</color>
+
+    <color name="btn_send_normal">#02c754</color>
+    <color name="btn_send_pressed">#006633</color>
+    <color name="fab_color_shadow">#44000000</color>
+
+</resources>

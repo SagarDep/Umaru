@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.ChatActivity">
+
+
+    <cc.haoduoyu.umaru.widgets.RevealBackgroundView
+        android:id="@+id/vRevealBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <LinearLayout
+        android:id="@+id/vChatRoot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/view_toolbar"></include>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/chatRecyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:divider="#ffff0000"
+            android:dividerHeight="10dp"
+            android:transcriptMode="alwaysScroll" />
+
+        <!--<View-->
+        <!--android:id="@+id/placeholder"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/toolbar_statusbar_height"></View>-->
+
+        <TextView
+            android:id="@+id/txtResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textSize="18dp"
+            android:visibility="gone" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#999"
+            android:visibility="gone" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/btn"
+            android:layout_weight="1"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/txtLog"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="12dp"
+                android:visibility="gone" />
+        </ScrollView>
+
+
+        <Button
+            android:id="@+id/btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:onClick="onClick"
+            android:text="语音识别"
+            android:visibility="gone" />
+
+
+        <LinearLayout
+            android:id="@+id/llSend"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/send_button_height"
+
+            android:background="@color/white"
+            android:elevation="@dimen/default_elevation"
+            android:gravity="center_vertical"
+            android:paddingBottom="4dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="8dp">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/etSend"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="#555555"
+                android:textSize="14sp" />
+
+            <cc.haoduoyu.umaru.widgets.sendbutton.SendButton
+                android:id="@+id/btnSend"
+                android:layout_width="72dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="2dp"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/btn_send"
+                android:elevation="4dp"
+                android:orientation="vertical" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</FrameLayout>
