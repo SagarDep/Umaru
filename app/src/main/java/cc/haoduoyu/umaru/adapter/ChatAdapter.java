@@ -47,6 +47,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         View v;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         if (viewType == Chat.SEND)
+
             v = inflater.inflate(R.layout.item_chat_send, parent, false);
         else
             v = inflater.inflate(R.layout.item_chat_receive, parent, false);
