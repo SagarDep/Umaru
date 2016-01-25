@@ -11,6 +11,7 @@ import com.android.volley.VolleyError;
 
 import cc.haoduoyu.umaru.utils.AppManager;
 import cc.haoduoyu.umaru.R;
+import cc.haoduoyu.umaru.utils.StatusBarCompat;
 import cc.haoduoyu.umaru.utils.ToastUtils;
 import cc.haoduoyu.umaru.utils.volleyUtils.RequestManager;
 import de.greenrobot.event.EventBus;
@@ -24,6 +25,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppManager.getAppManager().addActivity(this);
+
     }
 
     @Override
@@ -31,7 +33,6 @@ public class BaseActivity extends AppCompatActivity {
         super.onDestroy();
         AppManager.getAppManager().finishActivity(this);
         RequestManager.cancelAll(this);
-//        DBHelper.getHelper(getApplicationContext()).close();//cause fc
 
 // 在发出请求前调用Request的setTag()方法为每个请求加一个标签，这个方法的参数是Object，
 // 所以我们可以使用任何类型作为标签。这样就可以调用ReqiestQueue的cancelAll()函数取消一群标签了。
@@ -66,5 +67,8 @@ public class BaseActivity extends AppCompatActivity {
             }
         };
     }
+
+
+
 
 }

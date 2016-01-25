@@ -12,6 +12,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.apkfuns.logutils.LogUtils;
 
+import butterknife.ButterKnife;
 import cc.haoduoyu.umaru.utils.ToastUtils;
 import cc.haoduoyu.umaru.utils.volleyUtils.RequestManager;
 import de.greenrobot.event.EventBus;
@@ -20,8 +21,13 @@ import de.greenrobot.event.EventBus;
  * Fragment基类
  * Created by XP on 2016/1/9.
  */
-public class BaseFragment extends Fragment {
-    private static final String TAG = "BaseFragment";
+public abstract class BaseFragment extends Fragment {
+
+    protected abstract void initViews();
+
+    protected abstract int provideContentViewId();
+
+    protected View rootView;
 
     @Override
     public void onResume() {
@@ -41,8 +47,10 @@ public class BaseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        LogUtils.d("onCreateView");
-        return super.onCreateView(inflater, container, savedInstanceState);
+        rootView = inflater.inflate(provideContentViewId(), container, false);
+        ButterKnife.bind(this, rootView);
+        initViews();
+        return rootView;
 
     }
 

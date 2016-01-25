@@ -34,6 +34,23 @@
             android:theme="@style/AppTheme.TransparentActivity"
             android:windowSoftInputMode="adjustPan"/>
 
+        <!-- Player Service -->
+        <service android:name=".player.PlayerService"
+            android:process=":player"
+            android:exported="false"/>
+
+        <!-- Broadcast Receiver -->
+        <receiver android:name=".player.PlayerService$PlayReceiver"
+            android:process=":player"
+            android:exported="false"/>
+
+        <receiver android:name=".player.PlayerController$UpdateSongReceiver"
+            android:exported="false">
+            <intent-filter android:priority="9">
+                <action android:name="cc.haoduoyu.umaru.player.UPDATE_SONG_INFO"/>
+            </intent-filter>
+        </receiver>
+
 
         <!-- begin: baidu speech sdk-->
         <!-- 请填写应用实际的APP_ID -->

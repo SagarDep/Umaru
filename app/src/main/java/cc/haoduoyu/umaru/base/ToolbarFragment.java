@@ -3,8 +3,9 @@ package cc.haoduoyu.umaru.base;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 
 import butterknife.Bind;
@@ -14,29 +15,32 @@ import cc.haoduoyu.umaru.utils.StatusBarCompat;
 import cc.haoduoyu.umaru.utils.Utils;
 
 /**
- * 包含Toolbar的Activity基类
- * Created by XP on 2016/1/9.
+ * 包含Toolbar的Fragment基类
+ * Created by XP on 2016/1/25.
  */
-public abstract class ToolbarActivity extends BaseActivity {
-
-    abstract protected int provideContentViewId();
-
-    public void onToolbarClick() {
-    }
+public abstract class ToolbarFragment extends BaseFragment {
 
     @Bind(R.id.app_bar_layout)
     protected AppBarLayout mAppBar;
     @Bind(R.id.toolbar)
     protected Toolbar mToolbar;
 
+
+    public void onToolbarClick() {
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void initViews() {
+        initToolbar();
+    }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ButterKnife.bind(getActivity());
+    }
 
-
-        setContentView(provideContentViewId());
-        ButterKnife.bind(this);
+    private void initToolbar() {
         if (mToolbar == null || mAppBar == null) {
             throw new IllegalStateException("No Toolbar");
         }
@@ -47,24 +51,8 @@ public abstract class ToolbarActivity extends BaseActivity {
             }
         });
 
-        setSupportActionBar(mToolbar);
-        if (canBack()) {
-            if (getSupportActionBar() != null)
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);//给左上角图标的左边加上一个返回的图标
-        }
-
-        StatusBarCompat.compat(this);//状态栏变色
-        startToolbarAnimation();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {//返回键
-            onBackPressed();
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
+        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
     /**
@@ -91,10 +79,6 @@ public abstract class ToolbarActivity extends BaseActivity {
     protected void setAppBarColorful() {
         mAppBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         mToolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-    }
-
-    protected boolean canBack() {
-        return false;
     }
 
     protected Toolbar getToolbar() {

@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-
+    <!--for music-->
     <!--<attr format="reference" name="cardStyle"/>-->
     <attr name="accentColor" format="reference" />
     <attr name="iconColor" format="reference" />
@@ -13,11 +13,16 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <!--for music-->
+        <item name="progressDrawableWithBackground">@drawable/progress_drawable_withbackground
+        </item>
+        <item name="accentColor">@color/colorAccent</item>
+        <item name="iconColor">@android:color/black</item>
     </style>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="BaseAppTheme">
-    </style>
+    <style name="AppTheme" parent="BaseAppTheme"></style>
 
 
     <style name="AppTheme.TransparentActivity">

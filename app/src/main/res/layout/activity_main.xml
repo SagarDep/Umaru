@@ -7,11 +7,9 @@
     android:layout_height="match_parent"
     tools:openDrawer="start">
 
-
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
         <FrameLayout
             android:id="@+id/frame_content"
@@ -27,12 +25,8 @@
             android:layout_margin="@dimen/fab_margin"
             android:src="@android:drawable/stat_notify_chat" />
 
-        <include
-            layout="@layout/view_toolbar" />
-
-
+        <include layout="@layout/view_toolbar" />
     </android.support.design.widget.CoordinatorLayout>
-
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
@@ -42,6 +36,5 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer" />
-
 
 </android.support.v4.widget.DrawerLayout>

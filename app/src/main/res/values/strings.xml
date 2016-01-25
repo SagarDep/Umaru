@@ -13,6 +13,12 @@
     <string name="welcome1">嗨，我是 Umaru!</string>
     <string name="welcome2">要来点可乐和薯条吗~</string>
     <string name="welcome3">今天的天气似乎不错</string>
+    <string name="settings">设置</string>
+    <string name="about">关于</string>
+    <string name="help_and_feedback">帮助</string>
+    <string name="index">主页</string>
+    <string name="music">音乐</string>
+    <string name="umaru">Umaru</string>
 
     <string-array name="welcome_texts">
         <item>要来点可乐和薯条吗~</item>

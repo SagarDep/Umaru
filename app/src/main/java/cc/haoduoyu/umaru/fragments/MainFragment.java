@@ -1,13 +1,9 @@
 package cc.haoduoyu.umaru.fragments;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
@@ -17,36 +13,25 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
-import com.hanks.htextview.HTextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import cc.haoduoyu.umaru.Constants;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.base.BaseFragment;
+import cc.haoduoyu.umaru.db.dao.CityDao;
 import cc.haoduoyu.umaru.event.MessageEvent;
 import cc.haoduoyu.umaru.model.City;
-import cc.haoduoyu.umaru.db.dao.CityDao;
 import cc.haoduoyu.umaru.model.Weather;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
-import cc.haoduoyu.umaru.utils.SnackbarUtils;
 import cc.haoduoyu.umaru.utils.volleyUtils.GsonRequest;
 
 /**
  * Created by XP on 2016/1/9.
  */
 public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFactory {
-
-    private static final String TAG = "MainFragment";
-
-
-    public static MainFragment newInstance() {
-        MainFragment fragment = new MainFragment();
-        return fragment;
-    }
 
     @Bind(R.id.weather_background)
     ImageView wBackground;
@@ -58,36 +43,39 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
     TextView wNowTxtTv;//天气描述
     @Bind(R.id.weather_now_tmp)
     TextView wNowTmpTv;//天气温度
-    @Bind(R.id.welcome_htv2)
-    HTextView hTextView;
+//    @Bind(R.id.welcome_htv2)
+//    HTextView hTextView;
     List<City> cities = new ArrayList<>();
     CityDao cityDao;
     City currentCity;
 
     String ipAddress;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
+    public static MainFragment newInstance() {
+        MainFragment fragment = new MainFragment();
+        return fragment;
+    }
 
-        ButterKnife.bind(this, view);
+    @Override
+    protected void initViews() {
 //        new Handler().postDelayed(new Runnable() {
 //            @Override
 //            public void run() {
 //                hTextView.animateText(getString(R.string.welcome2));
 //            }
 //        }, 1258);
-        return view;
     }
+
+    @Override
+    protected int provideContentViewId() {
+        return R.layout.fragment_main;
+    }
+
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-//        if (mGankList.size() == 0) loadData();
-
-        //        getIp();
         cityDao = new CityDao(getContext());
         City city = new City("CN101190302", "danyang");
         cities.add(city);
