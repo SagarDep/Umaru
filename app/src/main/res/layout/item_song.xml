@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/song_root"
     android:layout_width="match_parent"
-    android:layout_height="60dp">
+    android:layout_height="60dp"
+    android:layout_margin="@dimen/song_margin">
 
     <cc.haoduoyu.umaru.widgets.circleimageview.CircleImageView
         android:id="@+id/song_image"
@@ -20,9 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/song_image"
-        android:layout_marginLeft="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_toEndOf="@+id/song_image"
+        android:layout_marginLeft="@dimen/song_margin"
         android:layout_toRightOf="@+id/song_image"
         android:singleLine="true"
         android:textColor="@android:color/black"
@@ -34,10 +33,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/song_title"
-        android:layout_alignStart="@+id/song_title"
-        android:layout_below="@+id/song_title"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/song_margin"
         android:singleLine="true"
-        android:textSize="@dimen/textSizeX3"
+        android:textSize="@dimen/textSizeX2"
         tools:text="ALI" />
 
     <TextView
@@ -45,9 +44,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:textSize="@dimen/textSizeX3"
+        android:textSize="@dimen/textSizeX2"
         tools:text="04:52" />
 
 

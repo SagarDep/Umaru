@@ -1,27 +1,34 @@
-package cc.haoduoyu.umaru.activities;
+package cc.haoduoyu.umaru.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.OvershootInterpolator;
 
+
+import com.apkfuns.logutils.LogUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 import cc.haoduoyu.umaru.Constants;
+import cc.haoduoyu.umaru.base.BaseFragment;
 import cc.haoduoyu.umaru.base.ToolbarActivity;
 import cc.haoduoyu.umaru.db.DBHelper;
 import cc.haoduoyu.umaru.event.MessageEvent;
 import cc.haoduoyu.umaru.model.City;
-import cc.haoduoyu.umaru.fragments.MainFragment;
-import cc.haoduoyu.umaru.fragments.MusicFragment;
+import cc.haoduoyu.umaru.ui.fragments.MainFragment;
+import cc.haoduoyu.umaru.ui.fragments.MusicFragment;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.SnackbarUtils;
@@ -37,6 +44,9 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     @Bind(R.id.fab)
     FloatingActionButton fab;
 
+    private BaseFragment mCurrentFragment;
+    private Map<String, BaseFragment> mBaseFragmentByName = new HashMap<>();
+
     @Override
     protected int provideContentViewId() {
         return R.layout.activity_main;
@@ -46,6 +56,9 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initViews();
+
+        mCurrentFragment = getFragment(MainFragment.class.getName());
+        replaceFragment(R.id.frame_content, mCurrentFragment);
     }
 
     /**
@@ -69,7 +82,7 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
                 SnackbarUtils.showSnackBackWithAction(fab, "点击上面的圆形按钮与我聊聊吧~", "OK");
             }
         }, 1558);
-        replaceFragment(R.id.frame_content, MainFragment.newInstance());
+        replaceFragment(R.id.frame_content, new MainFragment());
     }
 
     protected void startFabAnimation() {
@@ -96,10 +109,6 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
         switch (id) {
             case R.id.action_settings:
                 break;
@@ -113,24 +122,23 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
         return super.onOptionsItemSelected(item);
     }
 
-
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+
+        drawer.closeDrawer(GravityCompat.START);
         switch (item.getItemId()) {
             case R.id.nav_index:
-//                fab.setVisibility(View.VISIBLE);
                 mToolbar.setTitle(getResources().getString(R.string.umaru));
-                setAppBarTransparent();
+//                setAppBarTransparent();
+                mCurrentFragment = getFragment(MainFragment.class.getName());
+                replaceFragment(R.id.frame_content, mCurrentFragment);
 
-                replaceFragment(R.id.frame_content, MainFragment.newInstance());
                 break;
             case R.id.nav_music:
-//                fab.setVisibility(View.GONE);
                 mToolbar.setTitle(getResources().getString(R.string.music));
-                setAppBarColorful();
-
-                replaceFragment(R.id.frame_content, MusicFragment.newInstance());
+//                setAppBarColorful();
+                mCurrentFragment = getFragment(MusicFragment.class.getName());
+                replaceFragment(R.id.frame_content, mCurrentFragment);
 
                 break;
             case R.id.nav_settings:
@@ -143,15 +151,26 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
         }
 
 
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
 
+    private BaseFragment getFragment(String fragmentName) {
+        BaseFragment baseFragment = mBaseFragmentByName.get(fragmentName);
+        if (baseFragment == null) {
+            try {
+                baseFragment = (BaseFragment) Class.forName(fragmentName).newInstance();
+                //为null时new指定name的fragment
+            } catch (Exception e) {
+                baseFragment = MainFragment.newInstance();
+            }
+            mBaseFragmentByName.put(fragmentName, baseFragment);
+        }
+        return baseFragment;
+    }
+
     @OnClick(R.id.fab)
     public void onStartChatClick() {
-        //just for test
-//        new CityDao(getApplicationContext()).deleteAll();
         DBHelper.getHelper(getApplicationContext()).clearTable(City.class);
 
         int[] startingLocation = new int[2];

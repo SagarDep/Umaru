@@ -1,11 +1,12 @@
-package cc.haoduoyu.umaru.fragments.music;
+package cc.haoduoyu.umaru.ui.fragments.music;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import butterknife.Bind;
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.adapter.SongAdapter;
+import cc.haoduoyu.umaru.player.PlayerLib;
+import cc.haoduoyu.umaru.ui.adapter.SongAdapter;
 import cc.haoduoyu.umaru.base.BaseFragment;
 import cc.haoduoyu.umaru.event.MessageEvent;
 
@@ -30,13 +31,14 @@ public class LocalMusicFragment extends BaseFragment {
 
         mAdapter = new SongAdapter(getActivity());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-
         songList.setLayoutManager(layoutManager);
         songList.setAdapter(mAdapter);
+        mAdapter.setList(PlayerLib.getSongs());
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
-    protected int provideContentViewId() {
+    protected int provideLayoutId() {
         return R.layout.fragment_local_music;
     }
 

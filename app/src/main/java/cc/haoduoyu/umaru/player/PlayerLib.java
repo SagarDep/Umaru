@@ -14,7 +14,6 @@ import cc.haoduoyu.umaru.model.Song;
  * Created by XP on 16/1/23.
  */
 public class PlayerLib {
-    public static final String TAG = "PlayerLib";
 
     public static final List<Song> mSongLib = new ArrayList<>();
 
@@ -23,7 +22,6 @@ public class PlayerLib {
      */
     public static void scanAll(Context context) {
         setSongLib(scanSongs(context));
-
     }
 
     /**
@@ -43,6 +41,7 @@ public class PlayerLib {
                     cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)),//音乐标题
                     cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)),//艺术家
                     cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM)),//专辑
+                    cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)),//专辑ID
                     cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)),//时长
                     cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA)));//文件路径
             songs.add(song);

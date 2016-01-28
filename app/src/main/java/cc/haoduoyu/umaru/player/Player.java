@@ -30,7 +30,7 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
 
     //播放切换时发送播放歌曲的状态
     public static final String UPDATE_SONG_INFO = "cc.haoduoyu.umaru.player.UPDATE_SONG_INFO";
-    public static final String EXTRA_NAME = "extra_name";
+    public static final String EXTRA_INFO = "extra_info";
     public static final String PREFERENCES_STATE = "state";
 
     //播放列表
@@ -42,10 +42,10 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
     private Bitmap art;
 
     private int state;
-    public static final int REPEAT_NONE = 0;
-    public static final int REPEAT_ALL = 1;
-    public static final int REPEAT_ONE = 2;
-    public static final int SHUFFLE = 3;
+    public static final int REPEAT_NONE = 0;//列表播放
+    public static final int REPEAT_ALL = 1;//列表循环
+    public static final int REPEAT_ONE = 2;//单曲循环
+    public static final int SHUFFLE = 3;//随机播放
 
     //播放器
     private MediaPlayer mediaPlayer;
@@ -206,7 +206,7 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
      */
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-        if (state == REPEAT_ONE) {
+        if (state == REPEAT_ONE) { //如果是单曲循环
             mediaPlayer.seekTo(0);
             play();
             updateNowPlaying();
@@ -279,7 +279,7 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
         Intent intent = new Intent();
         intent.setAction(UPDATE_SONG_INFO);
         Bundle bundle = new Bundle();
-        bundle.putParcelable(EXTRA_NAME, new PlayerInfo(this));
+        bundle.putParcelable(EXTRA_INFO, new PlayerInfo(this));
         intent.putExtras(bundle);
         context.sendOrderedBroadcast(intent, null);
         //发送更新音乐广播，第二个参数为设置权限，接收器具备相应权限才能正常接受广播，此处设null
@@ -380,20 +380,14 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
 
     }
 
-    /**
-     * 获得目前正在播放的时间
-     *
-     * @return
-     */
+
+    //获得目前正在播放的时间
     public int getCurrentPosition() {
         return mediaPlayer.getCurrentPosition();
     }
 
-    /**
-     * 获得当前播放队列位置
-     *
-     * @return
-     */
+
+    //获得当前播放队列位置
     public int getQueuePosition() {
         if (state == SHUFFLE) {
             return shuffleQueuePosition;
@@ -401,11 +395,8 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
         return queuePosition;
     }
 
-    /**
-     * 获取当前播放队列
-     *
-     * @return
-     */
+
+    //获取当前播放队列
     public ArrayList<Song> getQueue() {
         if (state == SHUFFLE) {
             return new ArrayList<>(shuffleQueue);
@@ -413,11 +404,8 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
         return new ArrayList<>(queue);
     }
 
-    /**
-     * 获取当前播放歌曲总时间
-     *
-     * @return
-     */
+
+    //获取当前播放歌曲的总时间
     public long getDuration() {
         return getNowPlaying().getDuration();
     }

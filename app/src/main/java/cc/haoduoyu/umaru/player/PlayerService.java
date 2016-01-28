@@ -17,7 +17,7 @@ import cc.haoduoyu.umaru.model.Song;
 
 
 /**
- * Service播放器
+ * Service播放器，接受命令并控制MediaPlayer
  * Created by XP on 16/1/23.
  */
 public class PlayerService extends Service {
@@ -58,17 +58,16 @@ public class PlayerService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        LogUtils.i("service onCreate() call");
+        LogUtils.d("service onCreate() call");
         context = Umaru.getContext();
         if (instance == null) {
             instance = this;
         } else {
-            LogUtils.i("Attempt again create service");
+            LogUtils.d("Attempt again create service");
             stopSelf();
             return;
         }
-
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (player == null) {
             player = new Player(this);
         }
@@ -127,7 +126,7 @@ public class PlayerService extends Service {
 
     @Override
     public void onDestroy() {
-        LogUtils.i("onDestroy is called");
+        LogUtils.i("onDestroy");
         super.onDestroy();
     }
 

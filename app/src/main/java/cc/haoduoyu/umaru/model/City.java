@@ -11,6 +11,8 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "city")
 public class City {
+    public static final String Q = "city_or_county_en";
+
     @DatabaseField(columnName = "city_id", id = true)//唯一
     private String cityId;
     @DatabaseField(columnName = "city_or_county_en")

@@ -101,29 +101,25 @@
             android:layout_height="36dp"
             android:src="@drawable/xiaomai" />
 
-        <com.hanks.htextview.HTextView
+        <com.hrules.trendtextview.TrendTextView
             android:id="@+id/welcome_htv1"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/welcome_avatar"
-            android:layout_toEndOf="@+id/welcome_avatar"
-            android:layout_toRightOf="@+id/welcome_avatar"
+            android:layout_below="@id/welcome_avatar"
             android:padding="@dimen/normalPadding"
-            android:text="@string/welcome3"
             android:textColor="#999999"
-            android:textSize="@dimen/textSizeX3"
-            app:animateType="typer" />
+            android:textSize="@dimen/textSizeX3" />
 
         <!--<com.hanks.htextview.HTextView-->
-            <!--android:id="@+id/welcome_htv2"-->
-            <!--android:layout_width="285dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_below="@+id/welcome_htv1"-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:padding="@dimen/normalPadding"-->
-            <!--android:textColor="#999999"-->
-            <!--android:textSize="@dimen/textSizeX3"-->
-            <!--app:animateType="typer" />-->
+        <!--android:id="@+id/welcome_htv2"-->
+        <!--android:layout_width="285dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/welcome_htv1"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:padding="@dimen/normalPadding"-->
+        <!--android:textColor="#999999"-->
+        <!--android:textSize="@dimen/textSizeX3"-->
+        <!--app:animateType="typer" />-->
 
 
     </RelativeLayout>

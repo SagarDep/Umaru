@@ -1,4 +1,4 @@
-package cc.haoduoyu.umaru.activities;
+package cc.haoduoyu.umaru.ui.activities;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -23,12 +23,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.android.volley.Response;
 import com.baidu.speech.VoiceRecognitionService;
 
 import org.json.JSONArray;
@@ -40,12 +38,8 @@ import java.util.Arrays;
 import butterknife.Bind;
 import cc.haoduoyu.umaru.BDConstants;
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.adapter.ChatAdapter;
+import cc.haoduoyu.umaru.ui.adapter.ChatAdapter;
 import cc.haoduoyu.umaru.base.ToolbarActivity;
-import cc.haoduoyu.umaru.event.MessageEvent;
-import cc.haoduoyu.umaru.model.Chat;
-import cc.haoduoyu.umaru.model.Weather;
-import cc.haoduoyu.umaru.utils.volleyUtils.GsonRequest;
 import cc.haoduoyu.umaru.widgets.RevealBackgroundView;
 import cc.haoduoyu.umaru.widgets.sendbutton.SendButton;
 

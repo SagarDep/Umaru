@@ -15,7 +15,7 @@ import cc.haoduoyu.umaru.utils.PreferencesUtils;
 
 
 /**
- * 播放控制器，控制Service中的Player
+ * 播放控制器，发送广播控制Service中的Player
  * Created by XP on 16/1/23.
  */
 public class PlayerController {
@@ -41,7 +41,6 @@ public class PlayerController {
     public static Intent getBroadCastIntent(String action) {
         Intent intent = new Intent(mContext, PlayerService.PlayReceiver.class);
         if (action != null) intent.setAction(action);
-
         return intent;
     }
 
@@ -137,10 +136,9 @@ public class PlayerController {
         mContext.sendBroadcast(intent);
     }
 
-    public static void togglePlayState(int state) {
+    public static void setPlayState(int state) {
 
         PreferencesUtils.setInteger(mContext, Player.PREFERENCES_STATE, state);
-
         Intent intent = getBroadCastIntent(PlayerService.ACTION_SET_PRES);
         intent.putExtra(PlayerService.EXTRA_STATE, state);
         mContext.sendBroadcast(intent);
@@ -177,16 +175,16 @@ public class PlayerController {
     }
 
     //不写static导致
-//java.lang.RuntimeException: Unable to instantiate receiver
-// cc.haoduoyu.umaru.player.PlayerController$UpdateSongReceiver:
-// java.lang.InstantiationException:can't instantiate class cc.haoduoyu.umaru.player.PlayerController$UpdateSongReceiver;
-// no empty constructor
+    //java.lang.RuntimeException: Unable to instantiate receiver
+    // cc.haoduoyu.umaru.player.PlayerController$UpdateSongReceiver:
+    // java.lang.InstantiationException:can't instantiate class cc.haoduoyu.umaru.player.PlayerController$UpdateSongReceiver;
+    // no empty constructor
     //广播接收器，更新歌曲信息 ,静态注册 ，Player.updateNowPlaying发送，另见NowPlayingActivity
     public static class UpdateSongReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Player.UPDATE_SONG_INFO)) {
-                info = intent.getExtras().getParcelable(Player.EXTRA_NAME);
+                info = intent.getExtras().getParcelable(Player.EXTRA_INFO);
                 art = null;
             }
         }

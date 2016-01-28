@@ -3,7 +3,6 @@ package cc.haoduoyu.umaru.base;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.view.View;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.utils.StatusBarCompat;
 import cc.haoduoyu.umaru.utils.Utils;
 
 /**

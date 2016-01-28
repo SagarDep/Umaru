@@ -44,31 +44,32 @@ public class BaseActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = this
                 .getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frame_content, fragment);
-        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.addToBackStack(null);//带返回栈
         fragmentTransaction.commit();
 
     }
 
     public void replaceFragment(int id_content, Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(id_content, fragment);
+        transaction.replace(id_content, fragment, "tag");
         transaction.commit();
+    }
+
+    Fragment mContent;
+
+    public void switchFragment(Fragment from, Fragment to) {
+        if (mContent != to) {
+            mContent = to;
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            if (!to.isAdded()) {    // 先判断是否被add过
+                transaction.hide(from).add(R.id.frame_content, to).commit(); // 隐藏当前的fragment，add下一个到Activity中
+            } else {
+                transaction.hide(from).show(to).commit(); // 隐藏当前的fragment，显示下一个
+            }
+        }
     }
 
     protected void executeRequest(Request<?> request) {
         RequestManager.addRequest(request, this);
     }
-
-    protected Response.ErrorListener errorListener() {
-        return new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                ToastUtils.showToast(error.getMessage());
-            }
-        };
-    }
-
-
-
-
 }

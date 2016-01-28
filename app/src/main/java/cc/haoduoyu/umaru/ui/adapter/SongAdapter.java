@@ -1,8 +1,7 @@
-package cc.haoduoyu.umaru.adapter;
+package cc.haoduoyu.umaru.ui.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.activities.NowPlayingActivity;
+import cc.haoduoyu.umaru.ui.activities.NowPlayingActivity;
 import cc.haoduoyu.umaru.model.Song;
 import cc.haoduoyu.umaru.player.PlayerController;
 import cc.haoduoyu.umaru.player.PlayerLib;
@@ -31,9 +30,12 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
     public SongAdapter(Context context) {
         mContext = context;
-        mSongList = PlayerLib.scanSongs(context);
+        mSongList = new ArrayList<>();
     }
 
+    public void setList(List<Song> list) {
+        mSongList = list;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

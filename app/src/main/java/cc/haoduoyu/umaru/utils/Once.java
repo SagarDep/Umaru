@@ -37,7 +37,7 @@ public class Once {
     }
 
 
-    public void show(String tagKey, OnceCallback callback) {
+    public void execute(String tagKey, OnceCallback callback) {
         boolean isSecondTime = mSharedPreferences.getBoolean(tagKey, false);
         if (!isSecondTime) {
             callback.onOnce();
@@ -48,8 +48,8 @@ public class Once {
     }
 
 
-    public void show(int tagKeyResId, OnceCallback callback) {
-        show(mContext.getString(tagKeyResId), callback);
+    public void execute(int tagKeyResId, OnceCallback callback) {
+        execute(mContext.getString(tagKeyResId), callback);
     }
 
 

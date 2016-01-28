@@ -1,9 +1,12 @@
-package cc.haoduoyu.umaru.fragments;
+package cc.haoduoyu.umaru.ui.fragments;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
@@ -13,7 +16,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
+import com.hrules.trendtextview.TrendTextView;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +30,7 @@ import cc.haoduoyu.umaru.db.dao.CityDao;
 import cc.haoduoyu.umaru.event.MessageEvent;
 import cc.haoduoyu.umaru.model.City;
 import cc.haoduoyu.umaru.model.Weather;
+import cc.haoduoyu.umaru.utils.Once;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.volleyUtils.GsonRequest;
 
@@ -43,13 +49,11 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
     TextView wNowTxtTv;//天气描述
     @Bind(R.id.weather_now_tmp)
     TextView wNowTmpTv;//天气温度
-//    @Bind(R.id.welcome_htv2)
-//    HTextView hTextView;
-    List<City> cities = new ArrayList<>();
-    CityDao cityDao;
-    City currentCity;
+    @Bind(R.id.welcome_htv1)
+    TrendTextView hTextView;
 
-    String ipAddress;
+    CityDao cityDao;
+    String currentCityId;
 
     public static MainFragment newInstance() {
         MainFragment fragment = new MainFragment();
@@ -58,39 +62,66 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
 
     @Override
     protected void initViews() {
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                hTextView.animateText(getString(R.string.welcome2));
-//            }
-//        }, 1258);
+
     }
 
     @Override
-    protected int provideContentViewId() {
+    protected int provideLayoutId() {
         return R.layout.fragment_main;
     }
-
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         cityDao = new CityDao(getContext());
-        City city = new City("CN101190302", "danyang");
+
+        new Once(getActivity()).execute("insertToDB", new Once.OnceCallback() {
+            @Override
+            public void onOnce() {
+                insertToDB();
+            }
+        });
+        List<City> cityList = cityDao.queryForEq(City.Q, "danyang");
+        LogUtils.d(cityList);
+        if (cityList.size() == 0) {
+            insertToDB();
+        } else {
+            currentCityId = cityList.get(0).getCityId();
+        }
+
+        loadWeather(currentCityId);
+        loadWeatherPic();
+    }
+
+    private void insertToDB() {
+        List<City> cities = new ArrayList<>();
+
+        City city = new City();
+        city.setCityId("CN101190302");
+        city.setCityEn("danyang");
         cities.add(city);
-        city = new City("CN101190401", "suzhou");
+        city = new City();
+        city.setCityId("CN101190401");
+        city.setCityEn("suzhou");
         cities.add(city);
 
         for (City c : cities) {
             cityDao.addCity(c);
         }
-
-        currentCity = cityDao.queryForEq("city_or_county_en", "danyang").get(0);
-        loadWeather(currentCity.getCityId());
-
-        loadWeatherPic();
-
+        currentCityId = cityDao.queryForEq(City.Q, "danyang").get(0).getCityId();
+    }
+    public void onDetach() {
+        super.onDetach();
+        try {
+            Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
+            childFragmentManager.setAccessible(true);
+            childFragmentManager.set(this, null);
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void onEvent(MessageEvent event) {
@@ -127,35 +158,19 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
             @Override
             public void onResponse(Weather response) {
                 Weather.HeWeather heWeather = response.getHeWeather().get(0);
-                wCityTv.setText(heWeather.getBasic().getCity());
-                wUpdateTimeTv.setText("更新于" + heWeather.getBasic().getUpdate().getLoc().substring(11));
-                wNowTxtTv.setText(heWeather.getNow().getCond().getTxt());
-                wNowTmpTv.setText(heWeather.getNow().getTmp());
+                if ("ok".equals(heWeather.getStatus())) {
+                    wCityTv.setText(heWeather.getBasic().getCity());
+                    wUpdateTimeTv.setText("更新于" + heWeather.getBasic().getUpdate().getLoc().substring(11));
+                    wNowTxtTv.setText(heWeather.getNow().getCond().getTxt());
+                    wNowTmpTv.setText(heWeather.getNow().getTmp());
+                    hTextView.animateText(heWeather.getSuggestion().getComf().getTxt());
 
 //                Log.d("weather", response.getHeWeather().get(0).getBasic().getCity());
+                }
             }
         }));
     }
 
-    /**
-     * 得到IP地址
-     */
-    private void getIp() {
-        executeRequest(new StringRequest("http://1.bigggge.sinaapp.com/get_ip.php", new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                ipAddress = response.split("<script")[0].replaceAll("\n", "");//用"<script"分割字符串并返回第一个数组元素
-//                loadWeather(ipAddress);
-                LogUtils.d(ipAddress);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                LogUtils.e(error.getMessage(), error);
-            }
-        }));
-
-    }
 
 
 }

@@ -1,11 +1,13 @@
-package cc.haoduoyu.umaru.fragments;
+package cc.haoduoyu.umaru.ui.fragments;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.ViewGroup;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +15,8 @@ import butterknife.Bind;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.base.BaseFragment;
 import cc.haoduoyu.umaru.event.MessageEvent;
-import cc.haoduoyu.umaru.fragments.music.LocalMusicFragment;
-import cc.haoduoyu.umaru.fragments.music.OnlineFragment;
+import cc.haoduoyu.umaru.ui.fragments.music.LocalMusicFragment;
+import cc.haoduoyu.umaru.ui.fragments.music.OnlineFragment;
 
 /**
  * Created by XP on 2016/1/9.
@@ -43,18 +45,31 @@ public class MusicFragment extends BaseFragment {
             viewPager.setOffscreenPageLimit(2);
         }
         tabLayout.setupWithViewPager(viewPager);
+
     }
 
     @Override
-    protected int provideContentViewId() {
+    protected int provideLayoutId() {
         return R.layout.fragment_music;
+    }
+
+    public void onDetach() {
+        super.onDetach();
+        try {
+            Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
+            childFragmentManager.setAccessible(true);
+            childFragmentManager.set(this, null);
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getChildFragmentManager());
-        adapter.addFragment(OnlineFragment.newInstance(), "在线");
         adapter.addFragment(LocalMusicFragment.newInstance(), "本地音乐");
-
+        adapter.addFragment(OnlineFragment.newInstance(), "在线");
         viewPager.setAdapter(adapter);
     }
 

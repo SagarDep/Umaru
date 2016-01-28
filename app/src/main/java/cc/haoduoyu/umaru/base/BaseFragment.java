@@ -25,14 +25,14 @@ public abstract class BaseFragment extends Fragment {
 
     protected abstract void initViews();
 
-    protected abstract int provideContentViewId();
+    protected abstract int provideLayoutId();
 
     protected View rootView;
 
     @Override
     public void onResume() {
         super.onResume();
-        LogUtils.d("onResume");
+        LogUtils.d(getClass().getSimpleName() + "onResume");
 
     }
 
@@ -40,14 +40,14 @@ public abstract class BaseFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        LogUtils.d("onCreate");
+        LogUtils.d(getClass().getSimpleName() + "onCreate");
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        rootView = inflater.inflate(provideContentViewId(), container, false);
+        rootView = inflater.inflate(provideLayoutId(), container, false);
+        LogUtils.d(getClass().getSimpleName() + "onCreateView");
         ButterKnife.bind(this, rootView);
         initViews();
         return rootView;
@@ -55,15 +55,22 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        LogUtils.d(getClass().getSimpleName() + "onViewCreated");
+
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
-        LogUtils.d("onPause");
+        LogUtils.d(getClass().getSimpleName() + "onPause");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        LogUtils.d("onDestroy");
+        LogUtils.d(getClass().getSimpleName() + "onDestroy");
         EventBus.getDefault().unregister(this);
         RequestManager.cancelAll(this);
 
@@ -72,15 +79,4 @@ public abstract class BaseFragment extends Fragment {
     protected void executeRequest(Request<?> request) {
         RequestManager.addRequest(request, this);
     }
-
-    protected Response.ErrorListener errorListener() {
-        return new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                ToastUtils.showToast(error.getMessage());
-            }
-        };
-    }
-
-
 }

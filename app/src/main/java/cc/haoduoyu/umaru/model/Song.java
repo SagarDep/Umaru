@@ -19,11 +19,12 @@ public class Song implements Parcelable {
     private String songData;//路径
     private int isMusic;
 
-    public Song(int songId, String songTitle, String artistName, String albumName, long duration, String songData) {
+    public Song(int songId, String songTitle, String artistName, String albumName, int albumId, long duration, String songData) {
         this.songId = songId;
         this.songTitle = songTitle;
         this.artistName = artistName;
         this.albumName = albumName;
+        this.albumId = albumId;
         this.duration = duration;
         this.songData = songData;
     }

@@ -1,15 +1,7 @@
-package cc.haoduoyu.umaru.fragments.music;
+package cc.haoduoyu.umaru.ui.fragments.music;
 
-import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import butterknife.ButterKnife;
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.adapter.SongAdapter;
+import cc.haoduoyu.umaru.ui.adapter.SongAdapter;
 import cc.haoduoyu.umaru.base.BaseFragment;
 import cc.haoduoyu.umaru.event.MessageEvent;
 
@@ -35,7 +27,7 @@ public class OnlineFragment extends BaseFragment {
     }
 
     @Override
-    protected int provideContentViewId() {
+    protected int provideLayoutId() {
         return R.layout.fragment_online;
     }
 
