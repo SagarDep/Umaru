@@ -1,6 +1,42 @@
 # Umaru
-可爱的Umaru机器人，天气、听歌、问路，无论什么问题也难不倒她
 
-毕设项目结构 , 使用了一些不那么新的框架 ，原本打算采用RxJava和MVP但还不够了解 ...下学期可能会尝试下~
+Thanks
+感谢以下开源项目的帮助
 
-![Umaru](http://7xq3d5.com1.z0.glb.clouddn.com/umaru.png)
+[JakeWharton/butterknife](https://github.com/JakeWharton/butterknife)
+
+[Templarian/materialiconlib](https://materialdesignicons.com)
+
+[google/volley](https://android.googlesource.com/platform/frameworks/volley/)
+
+[google/gson](https://github.com/google/gson)
+
+[bumptech/glide](https://github.com/bumptech/glide)
+
+[greenrobot/EventBus](https://github.com/greenrobot/EventBus)
+
+[TheFinestArtist/FinestWebView-Android](https://github.com/TheFinestArtist/FinestWebView-Android)
+
+[pengwei1024/logutils](https://github.com/pengwei1024/LogUtils)
+
+[square/OkHttp](http://square.github.io/okhttp/)
+
+[square/Retrofit](http://square.github.io/retrofit/)
+
+[hrules6872/trendtextview](https://github.com/hrules6872/TrendTextView)
+
+[j256/ormlite-android](http://ormlite.com/)
+
+[frogermcs/InstaMaterial](https://github.com/frogermcs/InstaMaterial)
+
+[naman14/Timber](https://github.com/naman14/Timber)
+
+[ZhaoKaiQiang/JianDan](https://github.com/ZhaoKaiQiang/JianDan)
+
+[GeeKaven/WavePlayer](https://github.com/GeeKaven/WavePlayer)
+
+[drakeet/Meizhi](https://github.com/drakeet/Meizhi)
+
+[umano/AndroidSlidingUpPanel](https://github.com/umano/AndroidSlidingUpPanel)
+
+[afollestad/material-dialogs](https://github.com/afollestad/material-dialogs)
