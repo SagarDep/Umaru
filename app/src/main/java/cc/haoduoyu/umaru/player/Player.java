@@ -31,6 +31,8 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
     //播放切换时发送播放歌曲的状态
     public static final String UPDATE_SONG_INFO = "cc.haoduoyu.umaru.player.UPDATE_SONG_INFO";
     public static final String EXTRA_INFO = "extra_info";
+    public static final String EXTRA_ACTION = "extra_action";
+
     public static final String PREFERENCES_STATE = "state";
 
     //播放列表
@@ -68,7 +70,8 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
         queue = new ArrayList<>();
         queuePosition = 0;
 
-        state = PreferencesUtils.getInteger(context, PREFERENCES_STATE, REPEAT_NONE);
+        state = PreferencesUtils.getInteger(context, PREFERENCES_STATE, REPEAT_NONE);//默认state
+        LogUtils.d("Player Construct, state:" + state);
     }
 
     /**
@@ -81,7 +84,7 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
         try {
             mediaPlayer.setDataSource(getNowPlaying().getSongData());
             mediaPlayer.prepareAsync(); //Prepares the player for playback, asynchronously.异步
-            updateNowPlaying();
+            updateNowPlaying("begin");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -112,7 +115,7 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
         } else {
             play();
         }
-        updateNowPlaying();
+        updateNowPlaying("togglePlay");
     }
 
 
@@ -152,7 +155,7 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
                 } else {//正常最后一首
                     mediaPlayer.pause();
                     mediaPlayer.seekTo(mediaPlayer.getDuration());
-                    updateNowPlaying();
+                    updateNowPlaying("next");
                 }
             }
         }
@@ -196,7 +199,7 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
     @Override
     public void onPrepared(MediaPlayer mp) {
         mediaPlayer.start();
-        updateNowPlaying();
+        updateNowPlaying("onPrepared");
     }
 
     /**
@@ -209,7 +212,7 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
         if (state == REPEAT_ONE) { //如果是单曲循环
             mediaPlayer.seekTo(0);
             play();
-            updateNowPlaying();
+            updateNowPlaying("onCompletion");
         } else {
             next();
         }
@@ -274,12 +277,13 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
     /**
      * 更新正在播放的音乐
      */
-    public void updateNowPlaying() {
+    private void updateNowPlaying(String action) {
 
         Intent intent = new Intent();
         intent.setAction(UPDATE_SONG_INFO);
         Bundle bundle = new Bundle();
         bundle.putParcelable(EXTRA_INFO, new PlayerInfo(this));
+        bundle.putString(EXTRA_ACTION,action);
         intent.putExtras(bundle);
         context.sendOrderedBroadcast(intent, null);
         //发送更新音乐广播，第二个参数为设置权限，接收器具备相应权限才能正常接受广播，此处设null

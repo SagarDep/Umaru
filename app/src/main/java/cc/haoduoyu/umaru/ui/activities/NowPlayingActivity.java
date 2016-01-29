@@ -5,21 +5,31 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.text.Html;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.TextUtils;
+import android.text.style.ClickableSpan;
+import android.text.style.URLSpan;
+import android.util.TypedValue;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
 import net.steamcrafted.materialiconlib.MaterialIconView;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.net.URLEncoder;
 
 import butterknife.Bind;
@@ -27,14 +37,16 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cc.haoduoyu.umaru.Constants;
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.api.ArtistInfo;
+import cc.haoduoyu.umaru.model.ArtistInfo;
 import cc.haoduoyu.umaru.api.MusicFactory;
 import cc.haoduoyu.umaru.api.MusicService;
 import cc.haoduoyu.umaru.base.BaseActivity;
 import cc.haoduoyu.umaru.model.Song;
 import cc.haoduoyu.umaru.player.Player;
 import cc.haoduoyu.umaru.player.PlayerController;
-import cc.haoduoyu.umaru.utils.PreferencesUtils;
+import cc.haoduoyu.umaru.utils.ShareUtils;
+import cc.haoduoyu.umaru.utils.ToastUtils;
+import cc.haoduoyu.umaru.utils.Utils;
 import cc.haoduoyu.umaru.utils.volleyUtils.GsonRequest;
 import cc.haoduoyu.umaru.widgets.PlayPauseDrawable;
 import retrofit2.Callback;
@@ -44,30 +56,33 @@ import retrofit2.Callback;
  */
 public class NowPlayingActivity extends BaseActivity {
 
+    @Bind(R.id.sliding_layout)
+    SlidingUpPanelLayout slidingUpPanelLayout;
     @Bind(R.id.album_art)
     ImageView albumArt;
     @Bind(R.id.shuffle)
     ImageView shuffle;
-    @Bind(R.id.repeat)
-    ImageView repeat;
-    @Bind(R.id.previous)
-    MaterialIconView previous;
-    @Bind(R.id.next)
-    MaterialIconView next;
+    @Bind(R.id.menu)
+    ImageView menu;
     @Bind(R.id.playpausefloating)
     FloatingActionButton fab;
     @Bind(R.id.song_progress)
     SeekBar seekBar;
     @Bind(R.id.song_title)
     TextView songTitle;
-    @Bind(R.id.song_artist)
-    TextView songArtist;
+    @Bind(R.id.song_artist_album)
+    TextView songArtistAlbum;
+    @Bind(R.id.song_duration)
+    TextView songDuration;
+    @Bind(R.id.song_elapsed_time)
+    TextView songElapsedTime;
 
     PlayPauseDrawable playPauseDrawable = new PlayPauseDrawable();
     public static final String EXTRA_NOW_PLAYING = "extra_now_playing";
     private Song song;
     private SeekObserver observer = null;
-    private int iconIndex;
+    //    private int iconIndex;
+    private String summary;
 
     private UpdateNowPlayingReceiver updateNowPlayingReceiver;
 
@@ -85,52 +100,57 @@ public class NowPlayingActivity extends BaseActivity {
         setContentView(R.layout.activity_nowplaying);
         ButterKnife.bind(this);
 
-        Intent intent = getIntent();
-        updateNowPlayingReceiver = new UpdateNowPlayingReceiver();
-        song = intent.getExtras().getParcelable(EXTRA_NOW_PLAYING);
+        song = getIntent().getExtras().getParcelable(EXTRA_NOW_PLAYING);//来自adapter
+
         LogUtils.d(song);
 
-
         initViews();
-        observer = new SeekObserver();
 
-        iconIndex = PreferencesUtils.getInteger(this, Player.PREFERENCES_STATE, Player.REPEAT_NONE);
-        loadArtistImgWithVolley(song);
-        initFab();
+        updateNowPlayingReceiver = new UpdateNowPlayingReceiver();
+
+//        iconIndex = PreferencesUtils.getInteger(this, Player.PREFERENCES_STATE, Player.REPEAT_NONE);
+        loadArtistInfoWithVolley(song);
+
 
     }
 
+    //初始化播放暂停按钮
     private void initFab() {
         fab.setImageDrawable(playPauseDrawable);
-        if (PlayerController.isPlaying()||!PlayerController.isPlaying()) {
+        if (PlayerController.isPlaying() || !PlayerController.isPlaying()) {
             playPauseDrawable.transformToPause(false);
         } else {
             playPauseDrawable.transformToPlay(false);
         }
-        LogUtils.d(PlayerController.isPlaying());
+        LogUtils.d("isPlaying:" + PlayerController.isPlaying());
 
     }
+
 
     /**
      * 初始化View
      */
     public void initViews() {
+        initFab();
+        updateShuffle();
+        MaterialDrawableBuilder mBuilder = MaterialDrawableBuilder.with(this)
+                .setIcon(MaterialDrawableBuilder.IconValue.MENU)
+                .setSizeDp(30);
+        menu.setImageDrawable(mBuilder.build());
+
+        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+        slidingUpPanelLayout.setPanelHeight(0);
 
 
+        observer = new SeekObserver();
         seekBar.setOnSeekBarChangeListener(new SeekBarChangeListener());
 
-        if (song != null) {
+        if (song != null) {//第一次初始化Song
             songTitle.setText(song.getSongTitle());
-            songArtist.setText(song.getArtistName() + "|" + song.getAlbumName());
-            Bitmap reflectedImage;
-//            if (FetchUtils.fetchAlbumArtLocal(song.getmAlbumId()) == null) {
-
-
-//            } else {
-//                albumArt.setImageURI(FetchUtils.fetchArtByAlbumId(song.getmAlbumId()));
-//            }
-
-            seekBar.setMax((int) PlayerController.getDuration());
+            songArtistAlbum.setText(song.getArtistName() + " | " + song.getAlbumName());
+            songDuration.setText(Utils.durationToString(song.getDuration()));
+            songElapsedTime.setText("00:01");
+            seekBar.setMax((int) song.getDuration());
         }
     }
 
@@ -153,6 +173,7 @@ public class NowPlayingActivity extends BaseActivity {
     class SeekBarChangeListener implements SeekBar.OnSeekBarChangeListener {
         boolean touchingProgressBar = false;
 
+        //当进度发生改变时执行
         @Override
         public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
             if (b && !touchingProgressBar) {
@@ -161,12 +182,14 @@ public class NowPlayingActivity extends BaseActivity {
             }
         }
 
+        //在进度开始改变时执行
         @Override
         public void onStartTrackingTouch(SeekBar seekBar) {
             observer.stop();
             touchingProgressBar = true;
         }
 
+        //停止拖动时执行
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
             PlayerController.seek(seekBar.getProgress());
@@ -180,12 +203,14 @@ public class NowPlayingActivity extends BaseActivity {
 
         @Override
         public void run() {
+            LogUtils.d("SeekObserver run...");
             stop = false;
             while (!stop) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         seekBar.setProgress((int) PlayerController.getCurrentPosition());
+                        songElapsedTime.setText(Utils.durationToString(PlayerController.getCurrentPosition()));
                     }
                 });
                 try {
@@ -197,7 +222,7 @@ public class NowPlayingActivity extends BaseActivity {
         }
 
         public void stop() {
-            LogUtils.v("runnable stop ");
+            LogUtils.v("SeekObserver stop...");
             stop = true;
         }
 
@@ -217,6 +242,29 @@ public class NowPlayingActivity extends BaseActivity {
         }
     }
 
+    //更新随机图标状态
+    private void updateShuffle() {
+        MaterialDrawableBuilder sBuilder = MaterialDrawableBuilder.with(this)
+                .setIcon(MaterialDrawableBuilder.IconValue.SHUFFLE)
+                .setSizeDp(30).setColor(R.color.colorAccent);
+        TypedValue typeValue = new TypedValue();
+        getTheme().resolveAttribute(R.attr.iconColor, typeValue, true);
+        int color = typeValue.data;
+        getTheme().resolveAttribute(R.attr.accentColor, typeValue, true);
+        int color2 = typeValue.data;
+        if (Player.SHUFFLE == PlayerController.getPlayState()) {
+            sBuilder.setColor(color2);
+        } else {
+            sBuilder.setColor(color);
+        }
+        shuffle.setImageDrawable(sBuilder.build());
+        LogUtils.d(PlayerController.getPlayState());
+    }
+
+    private void closePanel() {
+        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+    }
+
     @OnClick(R.id.previous)
     void previous() {
         PlayerController.previous();
@@ -226,7 +274,7 @@ public class NowPlayingActivity extends BaseActivity {
     @OnClick(R.id.next)
     void next() {
         PlayerController.next();
-        observer.stop();
+//        observer.stop();
     }
 
     @OnClick(R.id.playpausefloating)
@@ -235,80 +283,137 @@ public class NowPlayingActivity extends BaseActivity {
         updatePlayPauseFloatingButton();
     }
 
+    @OnClick(R.id.shuffle)
+    void shuffle() {
+        PlayerController.cyclePlayState();
+        updateShuffle();
+    }
+
+    @OnClick(R.id.menu)
+    void menu() {
+        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+    }
+
+
+    @OnClick(R.id.panel_close)
+    void closePanelLayout() {
+        closePanel();
+    }
+
+    @OnClick(R.id.panel_song)
+    void panelSong() {
+        closePanel();
+        new MaterialDialog.Builder(this)
+                .title(R.string.panel_song)
+                .content(Utils.getSongContent(song))
+                .positiveText(R.string.agree)
+                .show();
+    }
+
+    @OnClick(R.id.panel_artist)
+    void panelArtist() {
+        closePanel();
+        SpannableStringBuilder content = null;
+        if (!TextUtils.isEmpty(summary)) {
+            content = new SpannableStringBuilder("  " + summary.split(getString(R.string.href))[0]);
+            String link = summary.substring(content.length() - 2, summary.length());
+            content.append("\n").append(Html.fromHtml(link));
+        }
+        LogUtils.d("content: " + content);
+        new MaterialDialog.Builder(this)
+                .title(getResources().getString(R.string.artist))
+                .content(!TextUtils.isEmpty(summary) ? content : getString(R.string.net_error))
+                .positiveText(R.string.agree)
+                .show();
+    }
+
+    @OnClick(R.id.panel_share)
+    void panelShare() {
+        closePanel();
+        ShareUtils.share(this, song.getDisplayName());
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
+            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+        } else {
+            super.onBackPressed();
+
+        }
+    }
+
     /**
      * 广播接收器，更新歌曲信息 ,动态注册 ，Player.updateNowPlaying发送，另见PlayController
      */
     public class UpdateNowPlayingReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Player.PlayerInfo info = intent.getExtras().getParcelable(Player.EXTRA_INFO);
+            Player.PlayerInfo info = PlayerController.getInfo();
             if (info != null) {
                 Song song = PlayerController.getNowPlaying();
-                LogUtils.d("received:" + song);
+                LogUtils.d("action: " + intent.getExtras().getString(Player.EXTRA_ACTION)
+                        + "received: " + song.getDisplayName());
                 if (song != null) {
-                    //当begin()的时候，此时的isPlaying为false
-                    //歌曲处于正在播放时，并且seekbar没有启动，那么就启动它
-                    //因为这里时第一次启动seekbar
-                    if (!info.isPlaying && !observer.isRunning()) {
-                        new Thread(observer).start();
-                    }
+//                    if (!info.isPlaying && !observer.isRunning()) {
+//                        new Thread(observer).start();
+//                    }
                     songTitle.setText(song.getSongTitle());
-                    songArtist.setText(song.getArtistName() + " | " + song.getAlbumName());
-                    loadArtistImgWithVolley(song);//加载图片
+                    songArtistAlbum.setText(song.getArtistName() + " | " + song.getAlbumName());
+                    loadArtistInfoWithVolley(song);//加载图片
                 }
             }
-
-            if (info.isPlaying) {
-                //正在播放时将togglebutton设置为暂停图片
-//                        mTogglePlay.setImageResource(R.mipmap.ic_pause_white_48dp);
-            } else {
-                //在begin()的时候此时歌曲没有播放，为正在准备中，
-                //在此时将seekbar的最大值设置为歌曲的总长度, 进度设置为当前进度，由于准备中，当前进度为0
-                seekBar.setMax((int) PlayerController.getDuration());
-                seekBar.setProgress((int) PlayerController.getCurrentPosition());
-//                        mTogglePlay.setImageResource(R.mipmap.ic_play_arrow_white_48dp);
-            }
+            seekBar.setMax((int) PlayerController.getDuration());
+            seekBar.setProgress((int) PlayerController.getCurrentPosition());
         }
     }
 
 
-    private void loadArtistImgWithRetrofit(Song song) throws UnsupportedEncodingException {
+    private void loadArtistInfoWithRetrofit(Song song) {
+        try {
+            String artistName = null;
+            if (!TextUtils.isEmpty(song.getArtistName()))
+                artistName = URLEncoder.encode(song.getArtistName(), "utf-8");
+            MusicFactory.getMusicService().getArtistInfo(artistName).enqueue(new Callback<ArtistInfo>() {
+                @Override
+                public void onResponse(retrofit2.Response<ArtistInfo> response) {
+                    ArtistInfo info = response.body();
+                    LogUtils.d(info.getArtist());
+                    LogUtils.d(info.getArtist().getImage().get(3).getSize());
+                    LogUtils.d(info.getArtist().getImage().get(3).getUrl());//得不到数据？？？
+                    Glide.with(NowPlayingActivity.this)
+                            .load(info.getArtist().getImage().get(3).getUrl()).crossFade().into(albumArt);
+                }
 
-        String artistName = URLEncoder.encode(song.getArtistName(), "utf-8");
-        MusicFactory.getMusicService().getArtistInfo(artistName).enqueue(new Callback<ArtistInfo>() {
-            @Override
-            public void onResponse(retrofit2.Response<ArtistInfo> response) {
-                ArtistInfo info = response.body();
-                LogUtils.d(info.getArtist());
-                LogUtils.d(info.getArtist().getImage().get(5).getSize());
-                LogUtils.d(info.getArtist().getImage().get(5).getUrl());//得不到数据？？？
-                Glide.with(NowPlayingActivity.this)
-                        .load(info.getArtist().getImage().get(5).getUrl()).crossFade().into(albumArt);
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
+                @Override
+                public void onFailure(Throwable t) {
+                }
+            });
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void loadArtistImgWithVolley(Song song) {
+
+    private void loadArtistInfoWithVolley(Song song) {
         String artistName = null;
         try {
-            artistName = URLEncoder.encode(song.getArtistName(), "utf-8");
-
-            String formatString = String.format("%s?method=%s&lang=%s&artist=%s&format=json&api_key=%s", MusicService.LAST_FM_URL,
+            if (!TextUtils.isEmpty(song.getArtistName()))
+                artistName = URLEncoder.encode(song.getArtistName(), "utf-8");
+            String formatString = String.format(getString(R.string.artist_format_string), MusicService.LAST_FM_URL,
                     "artist.getInfo", "zh", artistName, MusicService.API_KEY);
             executeRequest(new GsonRequest<>(formatString, ArtistInfo.class, new Response.Listener<ArtistInfo>() {
                 @Override
                 public void onResponse(ArtistInfo response) {
+                    summary = response.getArtist().getBio().getSummary();
                     LogUtils.d(response.getArtist().getImage().get(3).getUrl());
                     LogUtils.d(response.getArtist().getImage().get(3).getSize());
                     Glide.with(NowPlayingActivity.this)
                             .load(response.getArtist().getImage().get(3).getUrl()).crossFade().into(albumArt);
                 }
-            }));
+            }).setRetryPolicy(new DefaultRetryPolicy(Constants.VOLLEY_TIMEOUT,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)));
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

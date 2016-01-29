@@ -57,7 +57,7 @@ public class PlayerController {
     }
 
     /**
-     * 发送设置队列和位置广播
+     * 发送设置队列和位置广播,PlayService接受
      */
     public static void setQueueAndPosition(final List<Song> songs, final int position) {
         if (info != null) {
@@ -137,11 +137,23 @@ public class PlayerController {
     }
 
     public static void setPlayState(int state) {
-
-        PreferencesUtils.setInteger(mContext, Player.PREFERENCES_STATE, state);
+        PreferencesUtils.setInteger(mContext, Player.PREFERENCES_STATE, state);//Player中get
         Intent intent = getBroadCastIntent(PlayerService.ACTION_SET_PRES);
         intent.putExtra(PlayerService.EXTRA_STATE, state);
         mContext.sendBroadcast(intent);
+    }
+
+    public static void cyclePlayState() {
+        if (Player.SHUFFLE == PreferencesUtils.getInteger(mContext, Player.PREFERENCES_STATE, Player.REPEAT_NONE)) {
+            setPlayState(Player.REPEAT_NONE);
+        } else {
+            setPlayState(Player.SHUFFLE);
+
+        }
+    }
+
+    public static int getPlayState() {
+        return PreferencesUtils.getInteger(mContext, Player.PREFERENCES_STATE, Player.REPEAT_NONE);
     }
 
     public static Player.PlayerInfo getInfo() {
@@ -183,10 +195,11 @@ public class PlayerController {
     public static class UpdateSongReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(Player.UPDATE_SONG_INFO)) {
+//            if (intent.getAction().equals(Player.UPDATE_SONG_INFO)) {
+                LogUtils.d("action: " + intent.getExtras().getString(Player.EXTRA_ACTION));
                 info = intent.getExtras().getParcelable(Player.EXTRA_INFO);
                 art = null;
-            }
+//            }
         }
     }
 }

@@ -7,6 +7,8 @@ import android.os.Build;
 import android.view.Display;
 import android.view.WindowManager;
 
+import cc.haoduoyu.umaru.model.Song;
+
 /**
  * Created by froger_mcs on 05.11.14.
  */
@@ -21,6 +23,7 @@ public class Utils {
 
     /**
      * 将时长转化成 xx:xx:xx的String形式
+     *
      * @param duration
      * @return
      */
@@ -40,10 +43,10 @@ public class Utils {
         StringBuilder result = new StringBuilder();
         if (!hour.equals("0")) {
             result.append(hour).append(":").append(minute).append(":").append(second);
-        } else if (!minute.equals("00")){
+        } else if (!minute.equals("00")) {
             result.append(minute).append(":").append(second);
         } else {
-            result.append(second);
+            result.append("00:" + second);
         }
 
         return result.toString();
@@ -75,5 +78,14 @@ public class Utils {
 
     public static boolean isAndroid5() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+    }
+
+    public static String getSongContent(Song song) {
+        String content = "文件名： " + song.getDisplayName()
+                + "\n\n文件路径： " + song.getSongData()
+                + "\n\n长度： " + Utils.durationToString(song.getDuration())
+                + "\n\n大小： " + song.getSize() / 1024
+                + "千字节(kb)\n\nMime类型： " + song.getMimeType();
+        return content;
     }
 }

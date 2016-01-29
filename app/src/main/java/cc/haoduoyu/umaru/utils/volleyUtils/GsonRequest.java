@@ -16,6 +16,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
+import cc.haoduoyu.umaru.utils.ToastUtils;
+
 /**
  * Gson解析器
  * Created by XP on 2016/1/10.
@@ -61,10 +63,11 @@ public class GsonRequest<T> extends Request<T> {
         this(Method.GET, url, clazz, listener, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LogUtils.e(error.getMessage());
+                ToastUtils.showToast("ERROR:" + error.getMessage());
+                LogUtils.e(error);
             }
         });
-        LogUtils.d("url-get "+ url);
+        LogUtils.d("url-get " + url);
     }
 
     /**

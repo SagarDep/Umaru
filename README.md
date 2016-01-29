@@ -27,8 +27,6 @@ Thanks
 
 [j256/ormlite-android](http://ormlite.com/)
 
-[baidu/asr](http://yuyin.baidu.com/asr)
-
 [frogermcs/InstaMaterial](https://github.com/frogermcs/InstaMaterial)
 
 [naman14/Timber](https://github.com/naman14/Timber)
@@ -38,3 +36,7 @@ Thanks
 [GeeKaven/WavePlayer](https://github.com/GeeKaven/WavePlayer)
 
 [drakeet/Meizhi](https://github.com/drakeet/Meizhi)
+
+[umano/AndroidSlidingUpPanel](https://github.com/umano/AndroidSlidingUpPanel)
+
+[afollestad/material-dialogs](https://github.com/afollestad/material-dialogs)

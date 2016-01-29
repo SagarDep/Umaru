@@ -43,7 +43,11 @@ public class PlayerLib {
                     cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM)),//专辑
                     cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)),//专辑ID
                     cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)),//时长
-                    cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA)));//文件路径
+                    cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.SIZE)),//大小
+                    cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA)),//文件路径
+                    cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME)),//文件名字
+                    cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.MIME_TYPE)));//MIME
+
             songs.add(song);
         }
 

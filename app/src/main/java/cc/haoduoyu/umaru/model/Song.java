@@ -18,15 +18,44 @@ public class Song implements Parcelable {
     private long size;//大小
     private String songData;//路径
     private int isMusic;
+    private String displayName;
+    private String mimeType;
 
-    public Song(int songId, String songTitle, String artistName, String albumName, int albumId, long duration, String songData) {
+    public Song() {
+    }
+
+    public Song(String songTitle) {
+        this.songTitle = songTitle;
+    }
+
+    public Song(int songId, String songTitle, String artistName, String albumName,
+                int albumId, long duration, long size, String songData, String displayName, String mimeType) {
         this.songId = songId;
         this.songTitle = songTitle;
         this.artistName = artistName;
         this.albumName = albumName;
         this.albumId = albumId;
         this.duration = duration;
+        this.size = size;
         this.songData = songData;
+        this.displayName = displayName;
+        this.mimeType = mimeType;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getMimeType() {
+        return mimeType;
+    }
+
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
     }
 
     public int getSongId() {
@@ -127,9 +156,8 @@ public class Song implements Parcelable {
         dest.writeLong(this.size);
         dest.writeString(this.songData);
         dest.writeInt(this.isMusic);
-    }
-
-    public Song() {
+        dest.writeString(this.displayName);
+        dest.writeString(this.mimeType);
     }
 
     protected Song(Parcel in) {
@@ -143,9 +171,11 @@ public class Song implements Parcelable {
         this.size = in.readLong();
         this.songData = in.readString();
         this.isMusic = in.readInt();
+        this.displayName = in.readString();
+        this.mimeType = in.readString();
     }
 
-    public static final Parcelable.Creator<Song> CREATOR = new Parcelable.Creator<Song>() {
+    public static final Creator<Song> CREATOR = new Creator<Song>() {
         public Song createFromParcel(Parcel source) {
             return new Song(source);
         }

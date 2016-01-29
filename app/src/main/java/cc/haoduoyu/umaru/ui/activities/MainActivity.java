@@ -27,6 +27,8 @@ import cc.haoduoyu.umaru.base.ToolbarActivity;
 import cc.haoduoyu.umaru.db.DBHelper;
 import cc.haoduoyu.umaru.event.MessageEvent;
 import cc.haoduoyu.umaru.model.City;
+import cc.haoduoyu.umaru.model.Song;
+import cc.haoduoyu.umaru.player.PlayerController;
 import cc.haoduoyu.umaru.ui.fragments.MainFragment;
 import cc.haoduoyu.umaru.ui.fragments.MusicFragment;
 import cc.haoduoyu.umaru.R;
@@ -129,14 +131,14 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
         switch (item.getItemId()) {
             case R.id.nav_index:
                 mToolbar.setTitle(getResources().getString(R.string.umaru));
-//                setAppBarTransparent();
+                fab.setImageResource(android.R.drawable.stat_notify_chat);
                 mCurrentFragment = getFragment(MainFragment.class.getName());
                 replaceFragment(R.id.frame_content, mCurrentFragment);
 
                 break;
             case R.id.nav_music:
                 mToolbar.setTitle(getResources().getString(R.string.music));
-//                setAppBarColorful();
+                fab.setImageResource(android.R.drawable.ic_media_play);
                 mCurrentFragment = getFragment(MusicFragment.class.getName());
                 replaceFragment(R.id.frame_content, mCurrentFragment);
 
@@ -170,13 +172,17 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     }
 
     @OnClick(R.id.fab)
-    public void onStartChatClick() {
-        DBHelper.getHelper(getApplicationContext()).clearTable(City.class);
-
-        int[] startingLocation = new int[2];
-        fab.getLocationOnScreen(startingLocation);
-        startingLocation[0] += fab.getWidth() / 2;
-        ChatActivity.startIt(startingLocation, this);
-        overridePendingTransition(0, 0);
+    public void onStartIt() {
+        if (getResources().getString(R.string.umaru).equals(mToolbar.getTitle())) {
+            int[] startingLocation = new int[2];
+            fab.getLocationOnScreen(startingLocation);
+            startingLocation[0] += fab.getWidth() / 2;
+            ChatActivity.startIt(startingLocation, this);
+            overridePendingTransition(0, 0);
+        } else if (PlayerController.getNowPlaying() != null) {
+            NowPlayingActivity.startIt(PlayerController.getNowPlaying(), this);
+        }else{
+            SnackbarUtils.showShort(fab,getString(R.string.select_song));
+        }
     }
 }

@@ -19,6 +19,16 @@
     <string name="index">主页</string>
     <string name="music">音乐</string>
     <string name="umaru">Umaru</string>
+    <string name="select_song">请选择歌曲</string>
+    <string name="panel_song">歌曲详情</string>
+    <string name="artist">艺术家</string>
+    <string name="close">关闭</string>
+    <string name="share">分享</string>
+    <string name="agree">确定</string>
+    <string name="net_error">远程服务器出现问题</string>
+    <string name="share_via_umaru">\n\n分享自Umaru</string>
+    <string name="artist_format_string" formatted="false"><![CDATA[%s?method=%s&lang=%s&artist=%s&format=json&api_key=%s]]></string>
+    <string name="href"><![CDATA[<a href]]></string>
 
     <string-array name="welcome_texts">
         <item>要来点可乐和薯条吗~</item>

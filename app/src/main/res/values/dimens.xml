@@ -38,6 +38,7 @@
     <dimen name="default_elevation">8dp</dimen>
 
     <dimen name="send_button_height">50dp</dimen>
+    <dimen name="panel_item_height">50dp</dimen>
     <dimen name="toolbar_statusbar_height">75dp</dimen>
 
 

@@ -45,4 +45,16 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta3'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'//2.4
     compile 'com.hrules:trendtextview:1.0.0'
+
+
+    compile 'com.sothree.slidinguppanel:library:3.2.1'
+    compile('com.github.afollestad.material-dialogs:core:0.8.5.3@aar') {
+        transitive = true
+    }
+
+
+
+//    repositories {
+//        mavenCentral()
+//    }
 }

@@ -27,9 +27,6 @@ public class RequestManager {
             request.setTag(tag);
         }
         mRequestQueue.add(request);
-
-        LogUtils.d("addRequest = " + request.getUrl());
-
     }
 
     public static void cancelAll(Object tag) {
