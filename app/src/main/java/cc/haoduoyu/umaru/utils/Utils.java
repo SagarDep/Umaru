@@ -1,8 +1,11 @@
 package cc.haoduoyu.umaru.utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Point;
+import android.media.audiofx.AudioEffect;
 import android.os.Build;
 import android.view.Display;
 import android.view.WindowManager;
@@ -87,5 +90,18 @@ public class Utils {
                 + "\n\n大小： " + song.getSize() / 1024
                 + "千字节(kb)\n\nMime类型： " + song.getMimeType();
         return content;
+    }
+
+    //启动均衡器
+    public static void startEqualizer(Activity context) {
+        int mAudioSession = 0;
+        try {
+            final Intent effects = new Intent(AudioEffect.ACTION_DISPLAY_AUDIO_EFFECT_CONTROL_PANEL);
+            effects.putExtra(AudioEffect.EXTRA_PACKAGE_NAME, context.getPackageName());
+            effects.putExtra(AudioEffect.EXTRA_AUDIO_SESSION, mAudioSession);
+            context.startActivity(effects);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

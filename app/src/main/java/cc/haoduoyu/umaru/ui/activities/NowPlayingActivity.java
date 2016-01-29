@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.audiofx.AudioEffect;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.text.Html;
@@ -198,6 +199,7 @@ public class NowPlayingActivity extends BaseActivity {
         }
     }
 
+    //通过PlayerController控制进度条
     class SeekObserver implements Runnable {
         private boolean stop = false;
 
@@ -305,7 +307,7 @@ public class NowPlayingActivity extends BaseActivity {
         closePanel();
         new MaterialDialog.Builder(this)
                 .title(R.string.panel_song)
-                .content(Utils.getSongContent(song))
+                .content(Utils.getSongContent(PlayerController.getNowPlaying()))
                 .positiveText(R.string.agree)
                 .show();
     }
@@ -325,6 +327,12 @@ public class NowPlayingActivity extends BaseActivity {
                 .content(!TextUtils.isEmpty(summary) ? content : getString(R.string.net_error))
                 .positiveText(R.string.agree)
                 .show();
+    }
+
+    @OnClick(R.id.panel_equalizer)
+    void equalizer() {
+        closePanel();
+        Utils.startEqualizer(this);
     }
 
     @OnClick(R.id.panel_share)
@@ -350,24 +358,19 @@ public class NowPlayingActivity extends BaseActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Player.PlayerInfo info = PlayerController.getInfo();
-            if (info != null) {
-                Song song = PlayerController.getNowPlaying();
+            Song song = PlayerController.getNowPlaying();
+            if (info != null && song != null) {
                 LogUtils.d("action: " + intent.getExtras().getString(Player.EXTRA_ACTION)
                         + "received: " + song.getDisplayName());
-                if (song != null) {
-//                    if (!info.isPlaying && !observer.isRunning()) {
-//                        new Thread(observer).start();
-//                    }
-                    songTitle.setText(song.getSongTitle());
-                    songArtistAlbum.setText(song.getArtistName() + " | " + song.getAlbumName());
-                    loadArtistInfoWithVolley(song);//加载图片
-                }
+                songTitle.setText(song.getSongTitle());
+                songArtistAlbum.setText(song.getArtistName() + " | " + song.getAlbumName());
+                songDuration.setText(Utils.durationToString(PlayerController.getDuration()));
+                seekBar.setMax((int) PlayerController.getDuration());
+                seekBar.setProgress((int) PlayerController.getCurrentPosition());
+                loadArtistInfoWithVolley(song);//加载图片
             }
-            seekBar.setMax((int) PlayerController.getDuration());
-            seekBar.setProgress((int) PlayerController.getCurrentPosition());
         }
     }
-
 
     private void loadArtistInfoWithRetrofit(Song song) {
         try {

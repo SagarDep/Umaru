@@ -244,11 +244,19 @@
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/panel_equalizer"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/panel_item_height"
+            android:gravity="center_vertical"
+            android:text="@string/equalizer"
+            android:textSize="16sp" />
+
+        <TextView
             android:id="@+id/panel_share"
             android:layout_width="match_parent"
             android:layout_height="@dimen/panel_item_height"
             android:gravity="center_vertical"
-            android:text="@string/share"
+            android:text="@string/share_song"
             android:textSize="16sp" />
     </LinearLayout>
 

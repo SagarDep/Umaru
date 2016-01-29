@@ -171,8 +171,9 @@ public class PlayerController {
     public static long getDuration() {
         if (info != null) {
             return info.duration;
+        }else {
+            return Integer.MAX_VALUE;
         }
-        return Integer.MAX_VALUE;
     }
 
     public static boolean isPlaying() {

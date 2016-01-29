@@ -29,6 +29,8 @@
     <string name="share_via_umaru">\n\n分享自Umaru</string>
     <string name="artist_format_string" formatted="false"><![CDATA[%s?method=%s&lang=%s&artist=%s&format=json&api_key=%s]]></string>
     <string name="href"><![CDATA[<a href]]></string>
+    <string name="equalizer">均衡器</string>
+    <string name="share_song">分享歌曲</string>
 
     <string-array name="welcome_texts">
         <item>要来点可乐和薯条吗~</item>
