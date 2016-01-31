@@ -1,4 +1,4 @@
-package cc.haoduoyu.umaru.api;
+package cc.haoduoyu.umaru.model;
 
 /**
  * Created by XP on 2016/1/28.

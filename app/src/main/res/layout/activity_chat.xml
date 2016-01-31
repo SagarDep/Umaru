@@ -94,7 +94,7 @@
                 android:textColor="#555555"
                 android:textSize="14sp" />
 
-            <cc.haoduoyu.umaru.widgets.sendbutton.SendButton
+            <cc.haoduoyu.umaru.widgets.SendButton
                 android:id="@+id/btnSend"
                 android:layout_width="72dp"
                 android:layout_height="match_parent"

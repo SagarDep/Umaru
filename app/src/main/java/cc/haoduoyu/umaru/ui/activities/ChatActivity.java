@@ -38,10 +38,10 @@ import java.util.Arrays;
 import butterknife.Bind;
 import cc.haoduoyu.umaru.BDConstants;
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.ui.adapter.ChatAdapter;
 import cc.haoduoyu.umaru.base.ToolbarActivity;
+import cc.haoduoyu.umaru.ui.adapter.ChatAdapter;
 import cc.haoduoyu.umaru.widgets.RevealBackgroundView;
-import cc.haoduoyu.umaru.widgets.sendbutton.SendButton;
+import cc.haoduoyu.umaru.widgets.SendButton;
 
 /**
  * Created by XP on 2016/1/12.

@@ -1,14 +1,19 @@
 package cc.haoduoyu.umaru.utils;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Point;
+import android.media.MediaExtractor;
+import android.media.MediaFormat;
 import android.media.audiofx.AudioEffect;
 import android.os.Build;
 import android.view.Display;
 import android.view.WindowManager;
+
+import java.io.IOException;
 
 import cc.haoduoyu.umaru.model.Song;
 
@@ -88,7 +93,10 @@ public class Utils {
                 + "\n\n文件路径： " + song.getSongData()
                 + "\n\n长度： " + Utils.durationToString(song.getDuration())
                 + "\n\n大小： " + song.getSize() / 1024
-                + "千字节(kb)\n\nMime类型： " + song.getMimeType();
+                + "千字节\n\nMime类型： " + song.getMimeType()
+                + "\n\n比特率： " + getRate(song.getSongData(), MediaFormat.KEY_BIT_RATE)
+                + " kb/s\n\n采样率： " + getRate(song.getSongData(), MediaFormat.KEY_SAMPLE_RATE)
+                + " Hz\n\n通道数： " + getRate(song.getSongData(), MediaFormat.KEY_CHANNEL_COUNT);
         return content;
     }
 
@@ -103,5 +111,38 @@ public class Utils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    //得到各类型Rate
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    public static String getRate(String songData, String type) {
+        String i = null;
+        MediaExtractor mex = new MediaExtractor();
+        try {
+            mex.setDataSource(songData);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        MediaFormat mf = mex.getTrackFormat(0);
+        int bitRate = mf.getInteger(MediaFormat.KEY_BIT_RATE);
+        int sampleRate = mf.getInteger(MediaFormat.KEY_SAMPLE_RATE);
+        int channelCount = mf.getInteger(MediaFormat.KEY_CHANNEL_COUNT);
+        String mime = mf.getString(MediaFormat.KEY_MIME);
+        switch (type) {
+            case MediaFormat.KEY_BIT_RATE:
+                i = String.valueOf(bitRate / 1000);
+                break;
+            case MediaFormat.KEY_SAMPLE_RATE:
+                i = String.valueOf(sampleRate);
+                break;
+            case MediaFormat.KEY_CHANNEL_COUNT:
+                i = String.valueOf(channelCount);
+                break;
+            case MediaFormat.KEY_MIME:
+                i = mime;
+                break;
+        }
+        return i;
+
     }
 }

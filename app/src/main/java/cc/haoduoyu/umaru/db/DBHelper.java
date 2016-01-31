@@ -2,7 +2,6 @@ package cc.haoduoyu.umaru.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.apkfuns.logutils.LogUtils;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;

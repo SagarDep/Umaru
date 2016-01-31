@@ -1,4 +1,4 @@
-package cc.haoduoyu.umaru.widgets.circleimageview;/*
+package cc.haoduoyu.umaru.widgets;/*
  * Copyright 2014 - 2015 Henning Dodenhof
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

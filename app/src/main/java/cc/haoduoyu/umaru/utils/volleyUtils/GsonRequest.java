@@ -1,7 +1,5 @@
 package cc.haoduoyu.umaru.utils.volleyUtils;
 
-import android.util.Log;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -13,7 +11,6 @@ import com.apkfuns.logutils.LogUtils;
 import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
 import java.util.Map;
 
 import cc.haoduoyu.umaru.utils.ToastUtils;

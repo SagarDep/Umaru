@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!--for music-->
     <!--<attr format="reference" name="cardStyle"/>-->
     <attr name="accentColor" format="reference" />

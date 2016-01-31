@@ -84,7 +84,7 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
         try {
             mediaPlayer.setDataSource(getNowPlaying().getSongData());
             mediaPlayer.prepareAsync(); //Prepares the player for playback, asynchronously.异步
-            updateNowPlaying("begin");
+//            updateNowPlaying("begin");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -283,7 +283,7 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
         intent.setAction(UPDATE_SONG_INFO);
         Bundle bundle = new Bundle();
         bundle.putParcelable(EXTRA_INFO, new PlayerInfo(this));
-        bundle.putString(EXTRA_ACTION,action);
+        bundle.putString(EXTRA_ACTION, action);
         intent.putExtras(bundle);
         context.sendOrderedBroadcast(intent, null);
         //发送更新音乐广播，第二个参数为设置权限，接收器具备相应权限才能正常接受广播，此处设null

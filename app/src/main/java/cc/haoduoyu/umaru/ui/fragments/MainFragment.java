@@ -2,18 +2,14 @@ package cc.haoduoyu.umaru.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
 import com.hrules.trendtextview.TrendTextView;

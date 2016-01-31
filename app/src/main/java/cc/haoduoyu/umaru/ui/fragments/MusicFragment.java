@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.ViewGroup;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -68,8 +67,9 @@ public class MusicFragment extends BaseFragment {
 
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getChildFragmentManager());
-        adapter.addFragment(LocalMusicFragment.newInstance(), "本地音乐");
-        adapter.addFragment(OnlineFragment.newInstance(), "在线");
+        adapter.addFragment(OnlineFragment.newInstance(0), getActivity().getString(R.string.chart));
+        adapter.addFragment(OnlineFragment.newInstance(1), getActivity().getString(R.string.chart_artists));
+        adapter.addFragment(LocalMusicFragment.newInstance(), getActivity().getString(R.string.local_music));
         viewPager.setAdapter(adapter);
     }
 

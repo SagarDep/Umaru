@@ -13,14 +13,15 @@ import com.android.volley.Response;
 import com.apkfuns.logutils.LogUtils;
 import com.thefinestartist.finestwebview.FinestWebView;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.ui.activities.ChatActivity;
 import cc.haoduoyu.umaru.model.Chat;
+import cc.haoduoyu.umaru.ui.activities.ChatActivity;
 import cc.haoduoyu.umaru.utils.volleyUtils.GsonRequest;
 import cc.haoduoyu.umaru.utils.volleyUtils.RequestManager;
 
@@ -132,13 +133,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView mTextView;
-        private TextView mTextViewUrl;
+        @Bind(R.id.item_chat_tv)
+        TextView mTextView;
+        @Bind(R.id.item_chat_tv_url)
+        TextView mTextViewUrl;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mTextView = (TextView) itemView.findViewById(R.id.item_chat_tv);
-            mTextViewUrl = (TextView) itemView.findViewById(R.id.item_chat_tv_url);
+            ButterKnife.bind(this, itemView);
         }
     }
 

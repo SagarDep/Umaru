@@ -8,12 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.apkfuns.logutils.LogUtils;
 
 import butterknife.ButterKnife;
-import cc.haoduoyu.umaru.utils.ToastUtils;
 import cc.haoduoyu.umaru.utils.volleyUtils.RequestManager;
 import de.greenrobot.event.EventBus;
 

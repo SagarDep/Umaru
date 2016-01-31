@@ -12,13 +12,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.ui.activities.NowPlayingActivity;
 import cc.haoduoyu.umaru.model.Song;
 import cc.haoduoyu.umaru.player.PlayerController;
-import cc.haoduoyu.umaru.player.PlayerLib;
+import cc.haoduoyu.umaru.ui.activities.NowPlayingActivity;
 import cc.haoduoyu.umaru.utils.Utils;
-import cc.haoduoyu.umaru.widgets.circleimageview.CircleImageView;
+import cc.haoduoyu.umaru.widgets.CircleImageView;
 
 /**
  * Created by XP on 2016/1/23.
@@ -71,20 +72,20 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private RelativeLayout mSongRoot;
-        private CircleImageView mSongImage;
-        private TextView mSongTitle;
-        private TextView mSongArtist;
-        private TextView mSongDuration;
+        @Bind(R.id.song_root)
+        RelativeLayout mSongRoot;
+        @Bind(R.id.song_image)
+        CircleImageView mSongImage;
+        @Bind(R.id.song_title)
+        TextView mSongTitle;
+        @Bind(R.id.song_artist)
+        TextView mSongArtist;
+        @Bind(R.id.song_duration)
+        TextView mSongDuration;
 
         public ViewHolder(View itemView) {
             super(itemView);
-
-            mSongRoot = (RelativeLayout) itemView.findViewById(R.id.song_root);
-            mSongImage = (CircleImageView) itemView.findViewById(R.id.song_image);
-            mSongTitle = (TextView) itemView.findViewById(R.id.song_title);
-            mSongArtist = (TextView) itemView.findViewById(R.id.song_artist);
-            mSongDuration = (TextView) itemView.findViewById(R.id.song_duration);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

@@ -1,11 +1,8 @@
 package cc.haoduoyu.umaru.utils.volleyUtils;
 
-import android.util.Log;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.apkfuns.logutils.LogUtils;
 
 import cc.haoduoyu.umaru.Umaru;
 

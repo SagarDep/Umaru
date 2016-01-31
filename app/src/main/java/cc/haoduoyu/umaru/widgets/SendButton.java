@@ -1,4 +1,4 @@
-package cc.haoduoyu.umaru.widgets.sendbutton;
+package cc.haoduoyu.umaru.widgets;
 
 import android.content.Context;
 import android.util.AttributeSet;

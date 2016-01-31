@@ -6,15 +6,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 
-import cc.haoduoyu.umaru.utils.AppManager;
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.utils.StatusBarCompat;
-import cc.haoduoyu.umaru.utils.ToastUtils;
+import cc.haoduoyu.umaru.utils.AppManager;
 import cc.haoduoyu.umaru.utils.volleyUtils.RequestManager;
-import de.greenrobot.event.EventBus;
 
 /**
  * Activity基类

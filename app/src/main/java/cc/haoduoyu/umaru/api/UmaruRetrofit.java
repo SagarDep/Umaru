@@ -1,5 +1,6 @@
 package cc.haoduoyu.umaru.api;
 
+import retrofit2.GsonConverterFactory;
 import retrofit2.Retrofit;
 
 /**
@@ -24,7 +25,7 @@ public class UmaruRetrofit {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(MusicService.LAST_FM_URL)
 //                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-//                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
 //                .client(okHttpClient)
                 .build();
         musicService = retrofit.create(MusicService.class);

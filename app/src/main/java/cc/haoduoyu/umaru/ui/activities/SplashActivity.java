@@ -2,12 +2,10 @@ package cc.haoduoyu.umaru.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 
-import butterknife.Bind;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.base.BaseActivity;
 

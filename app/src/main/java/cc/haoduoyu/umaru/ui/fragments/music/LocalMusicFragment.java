@@ -5,10 +5,10 @@ import android.support.v7.widget.RecyclerView;
 
 import butterknife.Bind;
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.player.PlayerLib;
-import cc.haoduoyu.umaru.ui.adapter.SongAdapter;
 import cc.haoduoyu.umaru.base.BaseFragment;
 import cc.haoduoyu.umaru.event.MessageEvent;
+import cc.haoduoyu.umaru.player.PlayerLib;
+import cc.haoduoyu.umaru.ui.adapter.SongAdapter;
 
 /**
  * Created by XP on 2016/1/25.
@@ -17,7 +17,7 @@ public class LocalMusicFragment extends BaseFragment {
 
 
     @Bind(R.id.song_list)
-    RecyclerView songList;
+    RecyclerView mSongList;
 
     private SongAdapter mAdapter;
 
@@ -31,8 +31,8 @@ public class LocalMusicFragment extends BaseFragment {
 
         mAdapter = new SongAdapter(getActivity());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        songList.setLayoutManager(layoutManager);
-        songList.setAdapter(mAdapter);
+        mSongList.setLayoutManager(layoutManager);
+        mSongList.setAdapter(mAdapter);
         mAdapter.setList(PlayerLib.getSongs());
         mAdapter.notifyDataSetChanged();
     }

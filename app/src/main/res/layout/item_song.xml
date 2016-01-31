@@ -6,7 +6,7 @@
     android:layout_height="60dp"
     android:layout_margin="@dimen/song_margin">
 
-    <cc.haoduoyu.umaru.widgets.circleimageview.CircleImageView
+    <cc.haoduoyu.umaru.widgets.CircleImageView
         android:id="@+id/song_image"
         android:layout_width="50dp"
         android:layout_height="50dp"

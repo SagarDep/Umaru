@@ -5,30 +5,26 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.media.audiofx.AudioEffect;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.ClickableSpan;
-import android.text.style.URLSpan;
 import android.util.TypedValue;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.thefinestartist.finestwebview.FinestWebView;
 
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
-import net.steamcrafted.materialiconlib.MaterialIconView;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -38,15 +34,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cc.haoduoyu.umaru.Constants;
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.model.ArtistInfo;
 import cc.haoduoyu.umaru.api.MusicFactory;
 import cc.haoduoyu.umaru.api.MusicService;
 import cc.haoduoyu.umaru.base.BaseActivity;
+import cc.haoduoyu.umaru.model.ArtistInfo;
 import cc.haoduoyu.umaru.model.Song;
 import cc.haoduoyu.umaru.player.Player;
 import cc.haoduoyu.umaru.player.PlayerController;
 import cc.haoduoyu.umaru.utils.ShareUtils;
-import cc.haoduoyu.umaru.utils.ToastUtils;
 import cc.haoduoyu.umaru.utils.Utils;
 import cc.haoduoyu.umaru.utils.volleyUtils.GsonRequest;
 import cc.haoduoyu.umaru.widgets.PlayPauseDrawable;
@@ -102,6 +97,7 @@ public class NowPlayingActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         song = getIntent().getExtras().getParcelable(EXTRA_NOW_PLAYING);//来自adapter
+//        song = PlayerController.getNowPlaying();
 
         LogUtils.d(song);
 
@@ -118,7 +114,7 @@ public class NowPlayingActivity extends BaseActivity {
     //初始化播放暂停按钮
     private void initFab() {
         fab.setImageDrawable(playPauseDrawable);
-        if (PlayerController.isPlaying() || !PlayerController.isPlaying()) {
+        if (PlayerController.isPlaying()) {
             playPauseDrawable.transformToPause(false);
         } else {
             playPauseDrawable.transformToPlay(false);
@@ -141,6 +137,7 @@ public class NowPlayingActivity extends BaseActivity {
 
         slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
         slidingUpPanelLayout.setPanelHeight(0);
+//        slidingUpPanelLayout.setOverlayed(true);//设置panel为透明
 
 
         observer = new SeekObserver();
@@ -317,8 +314,8 @@ public class NowPlayingActivity extends BaseActivity {
         closePanel();
         SpannableStringBuilder content = null;
         if (!TextUtils.isEmpty(summary)) {
-            content = new SpannableStringBuilder("  " + summary.split(getString(R.string.href))[0]);
-            String link = summary.substring(content.length() - 2, summary.length());
+            content = new SpannableStringBuilder(" " + summary.split(getString(R.string.href))[0]);
+            String link = summary.substring(content.length() - 1, summary.length());
             content.append("\n").append(Html.fromHtml(link));
         }
         LogUtils.d("content: " + content);
@@ -326,6 +323,15 @@ public class NowPlayingActivity extends BaseActivity {
                 .title(getResources().getString(R.string.artist))
                 .content(!TextUtils.isEmpty(summary) ? content : getString(R.string.net_error))
                 .positiveText(R.string.agree)
+                .negativeText(R.string.similar_singers)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                        new FinestWebView.Builder(NowPlayingActivity.this)
+                                .show(getString(R.string.singer_similar_url)
+                                        + PlayerController.getNowPlaying().getArtistName() + "/+similar");
+                    }
+                })
                 .show();
     }
 

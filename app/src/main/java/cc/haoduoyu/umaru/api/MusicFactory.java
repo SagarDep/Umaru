@@ -1,10 +1,6 @@
 package cc.haoduoyu.umaru.api;
 
 
-import com.apkfuns.logutils.LogUtils;
-
-import retrofit2.Call;
-
 /**
  * Created by XP on 2016/1/28.
  */

@@ -1,11 +1,9 @@
 package cc.haoduoyu.umaru.ui.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,25 +11,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.OvershootInterpolator;
 
-
-import com.apkfuns.logutils.LogUtils;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 import cc.haoduoyu.umaru.Constants;
+import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.base.BaseFragment;
 import cc.haoduoyu.umaru.base.ToolbarActivity;
-import cc.haoduoyu.umaru.db.DBHelper;
 import cc.haoduoyu.umaru.event.MessageEvent;
-import cc.haoduoyu.umaru.model.City;
-import cc.haoduoyu.umaru.model.Song;
 import cc.haoduoyu.umaru.player.PlayerController;
+import cc.haoduoyu.umaru.player.PlayerLib;
 import cc.haoduoyu.umaru.ui.fragments.MainFragment;
 import cc.haoduoyu.umaru.ui.fragments.MusicFragment;
-import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.SnackbarUtils;
 import de.greenrobot.event.EventBus;
@@ -181,8 +174,11 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
             overridePendingTransition(0, 0);
         } else if (PlayerController.getNowPlaying() != null) {
             NowPlayingActivity.startIt(PlayerController.getNowPlaying(), this);
-        }else{
-            SnackbarUtils.showShort(fab,getString(R.string.select_song));
+        } else {
+//            SnackbarUtils.showShort(fab,getString(R.string.select_song));
+            PlayerController.setQueueAndPosition(PlayerLib.getSongs(), 0);
+            PlayerController.begin();
+            NowPlayingActivity.startIt(PlayerLib.getSongs().get(0), this);
         }
     }
 }

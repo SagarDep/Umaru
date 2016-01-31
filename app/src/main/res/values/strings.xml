@@ -19,7 +19,7 @@
     <string name="index">主页</string>
     <string name="music">音乐</string>
     <string name="umaru">Umaru</string>
-    <string name="select_song">请选择歌曲</string>
+    <string name="select_song">请先在音乐库选择歌曲</string>
     <string name="panel_song">歌曲详情</string>
     <string name="artist">艺术家</string>
     <string name="close">关闭</string>
@@ -31,6 +31,12 @@
     <string name="href"><![CDATA[<a href]]></string>
     <string name="equalizer">均衡器</string>
     <string name="share_song">分享歌曲</string>
+    <string name="similar_singers">相似歌手</string>
+    <string name="singer_similar_url">http://www.last.fm/zh/music/</string>
+    <string name="online">在线</string>
+    <string name="local_music">音乐库</string>
+    <string name="chart">歌曲榜</string>
+    <string name="chart_artists">艺人榜</string>
 
     <string-array name="welcome_texts">
         <item>要来点可乐和薯条吗~</item>

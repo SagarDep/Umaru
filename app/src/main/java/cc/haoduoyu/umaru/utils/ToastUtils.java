@@ -1,6 +1,5 @@
 package cc.haoduoyu.umaru.utils;
 
-import android.content.Context;
 import android.widget.Toast;
 
 import cc.haoduoyu.umaru.Umaru;

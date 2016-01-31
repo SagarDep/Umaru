@@ -15,6 +15,7 @@
     <dimen name="normalPadding">5dp</dimen>
     <dimen name="normalPaddingX2">10dp</dimen>
     <dimen name="normalPaddingX3">15dp</dimen>
+    <dimen name="normalPaddingX5">30dp</dimen>
 
 
     <dimen name="textSize">6sp</dimen>
