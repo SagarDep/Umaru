@@ -2,6 +2,7 @@ package cc.haoduoyu.umaru.utils;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -9,7 +10,10 @@ import android.graphics.Point;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
 import android.media.audiofx.AudioEffect;
+import android.media.audiofx.BassBoost;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.provider.Settings;
 import android.view.Display;
 import android.view.WindowManager;
 
@@ -27,7 +31,6 @@ public class Utils {
     public static int dpToPx(int dp) {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
     }
-
 
     /**
      * 将时长转化成 xx:xx:xx的String形式
@@ -88,15 +91,19 @@ public class Utils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
+    public static boolean isAndroid6() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
+    }
+
     public static String getSongContent(Song song) {
         String content = "文件名： " + song.getDisplayName()
                 + "\n\n文件路径： " + song.getSongData()
                 + "\n\n长度： " + Utils.durationToString(song.getDuration())
                 + "\n\n大小： " + song.getSize() / 1024
-                + "千字节\n\nMime类型： " + song.getMimeType()
-                + "\n\n比特率： " + getRate(song.getSongData(), MediaFormat.KEY_BIT_RATE)
-                + " kb/s\n\n采样率： " + getRate(song.getSongData(), MediaFormat.KEY_SAMPLE_RATE)
-                + " Hz\n\n通道数： " + getRate(song.getSongData(), MediaFormat.KEY_CHANNEL_COUNT);
+                + "千字节\n\nMime类型： " + song.getMimeType();
+//                + "\n\n比特率： " + getRate(song.getSongData(), MediaFormat.KEY_BIT_RATE)
+//                + " kb/s\n\n采样率： " + getRate(song.getSongData(), MediaFormat.KEY_SAMPLE_RATE)
+//                + " Hz\n\n通道数： " + getRate(song.getSongData(), MediaFormat.KEY_CHANNEL_COUNT);
         return content;
     }
 
@@ -113,7 +120,7 @@ public class Utils {
         }
     }
 
-    //得到各类型Rate
+    //得到各类型Rate,API23闪退
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public static String getRate(String songData, String type) {
         String i = null;
@@ -143,6 +150,15 @@ public class Utils {
                 break;
         }
         return i;
+    }
 
+    /**
+     * 打开应用程序设置
+     *
+     * @param activity
+     */
+    public static void openAppSettings(Activity activity) {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_SETTINGS);
+        activity.startActivity(intent);
     }
 }

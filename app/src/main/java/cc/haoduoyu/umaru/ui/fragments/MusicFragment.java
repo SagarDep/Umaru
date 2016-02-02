@@ -1,10 +1,12 @@
 package cc.haoduoyu.umaru.ui.fragments;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import butterknife.Bind;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.base.BaseFragment;
 import cc.haoduoyu.umaru.event.MessageEvent;
+import cc.haoduoyu.umaru.player.PlayerLib;
 import cc.haoduoyu.umaru.ui.fragments.music.LocalMusicFragment;
 import cc.haoduoyu.umaru.ui.fragments.music.OnlineFragment;
 
@@ -41,7 +44,7 @@ public class MusicFragment extends BaseFragment {
         viewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
         if (viewPager != null) {
             setupViewPager(viewPager);
-            viewPager.setOffscreenPageLimit(2);
+            viewPager.setOffscreenPageLimit(3);
         }
         tabLayout.setupWithViewPager(viewPager);
 
@@ -52,18 +55,6 @@ public class MusicFragment extends BaseFragment {
         return R.layout.fragment_music;
     }
 
-    public void onDetach() {
-        super.onDetach();
-        try {
-            Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
-            childFragmentManager.setAccessible(true);
-            childFragmentManager.set(this, null);
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getChildFragmentManager());
@@ -71,6 +62,17 @@ public class MusicFragment extends BaseFragment {
         adapter.addFragment(OnlineFragment.newInstance(1), getActivity().getString(R.string.chart_artists));
         adapter.addFragment(LocalMusicFragment.newInstance(), getActivity().getString(R.string.local_music));
         viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                PlayerLib.scanAll(getActivity());
+            }
+        }).start();
     }
 
     static class Adapter extends FragmentPagerAdapter {

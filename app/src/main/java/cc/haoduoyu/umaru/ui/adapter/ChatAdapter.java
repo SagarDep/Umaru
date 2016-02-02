@@ -2,6 +2,7 @@ package cc.haoduoyu.umaru.ui.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -135,6 +136,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.item_chat_tv)
         TextView mTextView;
+        @Nullable
         @Bind(R.id.item_chat_tv_url)
         TextView mTextViewUrl;
 

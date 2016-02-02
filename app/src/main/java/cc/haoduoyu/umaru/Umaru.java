@@ -20,6 +20,5 @@ public class Umaru extends Application {
         super.onCreate();
         mContext = this;
         PlayerController.startService(this);
-        PlayerLib.scanAll(this);
     }
 }

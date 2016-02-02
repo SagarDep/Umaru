@@ -1,15 +1,22 @@
 package cc.haoduoyu.umaru.ui.activities;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.OvershootInterpolator;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,10 +34,10 @@ import cc.haoduoyu.umaru.ui.fragments.MainFragment;
 import cc.haoduoyu.umaru.ui.fragments.MusicFragment;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.SnackbarUtils;
+import cc.haoduoyu.umaru.utils.Utils;
 import de.greenrobot.event.EventBus;
 
 public class MainActivity extends ToolbarActivity implements NavigationView.OnNavigationItemSelectedListener {
-
 
     @Bind(R.id.drawer_layout)
     DrawerLayout drawer;
@@ -51,7 +58,6 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initViews();
-
         mCurrentFragment = getFragment(MainFragment.class.getName());
         replaceFragment(R.id.frame_content, mCurrentFragment);
     }
@@ -174,11 +180,12 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
             overridePendingTransition(0, 0);
         } else if (PlayerController.getNowPlaying() != null) {
             NowPlayingActivity.startIt(PlayerController.getNowPlaying(), this);
-        } else {
-//            SnackbarUtils.showShort(fab,getString(R.string.select_song));
+        } else if (PlayerLib.getSongs().size() != 0) {
             PlayerController.setQueueAndPosition(PlayerLib.getSongs(), 0);
             PlayerController.begin();
             NowPlayingActivity.startIt(PlayerLib.getSongs().get(0), this);
+        } else {
+            SnackbarUtils.showShort(fab, getString(R.string.fab_no_music));
         }
     }
 }

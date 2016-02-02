@@ -1,7 +1,6 @@
 package cc.haoduoyu.umaru.ui.activities;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -13,21 +12,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
-import com.baidu.speech.VoiceRecognitionService;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -96,7 +90,7 @@ public class ChatActivity extends ToolbarActivity implements RecognitionListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initViews();
+//        initViews();
 
         mAppBar.setBackgroundColor(Color.TRANSPARENT);
         mAdapter = new ChatAdapter(this);
@@ -145,42 +139,42 @@ public class ChatActivity extends ToolbarActivity implements RecognitionListener
         }
     }
 
-    private void initViews() {
-        txtResult = (TextView) findViewById(R.id.txtResult);
-        txtLog = (TextView) findViewById(R.id.txtLog);
-        btn = (Button) findViewById(R.id.btn);
-        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this, new ComponentName(this, VoiceRecognitionService.class));
-        speechRecognizer.setRecognitionListener(this);
-
-        speechTips = View.inflate(this, R.layout.bd_asr_popup_speech, null);//音频指示器
-        speechWave = speechTips.findViewById(R.id.wave);
-        speechTips.setVisibility(View.GONE);
-        addContentView(speechTips,
-                new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));//添加View
-        btn.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        speechTips.setVisibility(View.VISIBLE);
-                        speechRecognizer.cancel();
-                        Intent intent = new Intent();
-                        bindParams(intent);
-                        intent.putExtra("vad", "touch");
-                        txtResult.setText("");
-                        txtLog.setText("");
-                        speechRecognizer.startListening(intent);
-                        return true;
-                    case MotionEvent.ACTION_UP:
-                        speechRecognizer.stopListening();
-                        speechTips.setVisibility(View.GONE);
-                        break;
-                }
-                return false;
-            }
-        });
-
-    }
+//    private void initViews() {
+//        txtResult = (TextView) findViewById(R.id.txtResult);
+//        txtLog = (TextView) findViewById(R.id.txtLog);
+//        btn = (Button) findViewById(R.id.btn);
+//        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this, new ComponentName(this, VoiceRecognitionService.class));
+//        speechRecognizer.setRecognitionListener(this);
+//
+//        speechTips = View.inflate(this, R.layout.bd_asr_popup_speech, null);//音频指示器
+//        speechWave = speechTips.findViewById(R.id.wave);
+//        speechTips.setVisibility(View.GONE);
+//        addContentView(speechTips,
+//                new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));//添加View
+//        btn.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_DOWN:
+//                        speechTips.setVisibility(View.VISIBLE);
+//                        speechRecognizer.cancel();
+//                        Intent intent = new Intent();
+//                        bindParams(intent);
+//                        intent.putExtra("vad", "touch");
+//                        txtResult.setText("");
+//                        txtLog.setText("");
+//                        speechRecognizer.startListening(intent);
+//                        return true;
+//                    case MotionEvent.ACTION_UP:
+//                        speechRecognizer.stopListening();
+//                        speechTips.setVisibility(View.GONE);
+//                        break;
+//                }
+//                return false;
+//            }
+//        });
+//
+//    }
 
 
     public void bindParams(Intent intent) {

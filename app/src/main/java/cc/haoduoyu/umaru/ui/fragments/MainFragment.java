@@ -107,18 +107,7 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
         }
         currentCityId = cityDao.queryForEq(City.Q, "danyang").get(0).getCityId();
     }
-    public void onDetach() {
-        super.onDetach();
-        try {
-            Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
-            childFragmentManager.setAccessible(true);
-            childFragmentManager.set(this, null);
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
 
     public void onEvent(MessageEvent event) {
         if (event.message.equals("pic")) {

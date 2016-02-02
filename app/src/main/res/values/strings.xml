@@ -37,6 +37,7 @@
     <string name="local_music">音乐库</string>
     <string name="chart">歌曲榜</string>
     <string name="chart_artists">艺人榜</string>
+    <string name="fab_no_music">音乐库空空如也，去其他地方先下点音乐吧</string>
 
     <string-array name="welcome_texts">
         <item>要来点可乐和薯条吗~</item>
