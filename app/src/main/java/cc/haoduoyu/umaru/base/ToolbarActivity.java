@@ -1,15 +1,20 @@
 package cc.haoduoyu.umaru.base;
 
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.afollestad.materialdialogs.color.CircleView;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cc.haoduoyu.umaru.R;
+import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.StatusBarCompat;
 import cc.haoduoyu.umaru.utils.Utils;
 
@@ -55,6 +60,18 @@ public abstract class ToolbarActivity extends BaseActivity {
 
         StatusBarCompat.compat(this);//状态栏变色
         startToolbarAnimation();
+        setColorPrimary();
+
+    }
+
+    protected void setColorPrimary() {
+        int color = PreferencesUtils.getInteger(this, getString(R.string.color_primary), R.color.colorPrimary);
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(color));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(CircleView.shiftColorDown(color));
+            getWindow().setNavigationBarColor(color);
+        }
     }
 
     @Override
@@ -71,8 +88,8 @@ public abstract class ToolbarActivity extends BaseActivity {
      * toolbar动画
      */
     protected void startToolbarAnimation() {
-        int actionbarSize = Utils.dpToPx(56);
-        getToolbar().setTranslationY(-actionbarSize);
+        int size = Utils.dpToPx(81);
+        getToolbar().setTranslationY(-size);
         getToolbar().animate()
                 .translationY(0)
                 .setDuration(500)

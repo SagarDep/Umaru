@@ -16,4 +16,8 @@
     <color name="btn_send_pressed">#006633</color>
     <color name="fab_color_shadow">#44000000</color>
 
+    <color name="md_grey_500">#9e9e9e</color>
+    <color name="md_grey_600">#757575</color>
+    <color name="md_grey_800">#424242</color>
+
 </resources>

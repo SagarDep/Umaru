@@ -1,7 +1,6 @@
 package cc.haoduoyu.umaru.ui.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -14,7 +13,6 @@ import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
 import com.hrules.trendtextview.TrendTextView;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 

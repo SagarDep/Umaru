@@ -1,22 +1,16 @@
 package cc.haoduoyu.umaru.ui.activities;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.OvershootInterpolator;
-
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +28,6 @@ import cc.haoduoyu.umaru.ui.fragments.MainFragment;
 import cc.haoduoyu.umaru.ui.fragments.MusicFragment;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.SnackbarUtils;
-import cc.haoduoyu.umaru.utils.Utils;
 import de.greenrobot.event.EventBus;
 
 public class MainActivity extends ToolbarActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -112,6 +105,7 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
         int id = item.getItemId();
         switch (id) {
             case R.id.action_settings:
+                startActivity(new Intent(this, SettingActivity.class));
                 break;
             case R.id.action_night:
                 Constants.isDay = !Constants.isDay;
@@ -143,11 +137,13 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
 
                 break;
             case R.id.nav_settings:
-
+                startActivity(new Intent(this, SettingActivity.class));
                 break;
             case R.id.nav_about:
+                startActivity(new Intent(this, AboutActivity.class));
                 break;
             case R.id.nav_help:
+                startActivity(new Intent(this, SettingActivity.class));
                 break;
         }
 

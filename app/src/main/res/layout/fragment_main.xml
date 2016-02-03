@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -42,10 +43,9 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="sunny"
-
             android:textColor="@color/white"
-            android:textSize="@dimen/textSizeX5" />
+            android:textSize="@dimen/textSizeX5"
+            tools:text="sunny" />
 
         <TextView
             android:id="@+id/weather_city"
@@ -54,10 +54,9 @@
             android:layout_below="@+id/weather_now_txt"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/normalMargin"
-
-            android:text="Suzhou,China"
             android:textColor="@color/white"
-            android:textSize="@dimen/textSizeX2" />
+            android:textSize="@dimen/textSizeX2"
+            tools:text="Suzhou,China" />
 
         <TextView
             android:id="@+id/weather_now_tmp"
@@ -65,12 +64,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/weather_city"
             android:layout_centerHorizontal="true"
-
             android:layout_marginTop="@dimen/normalMargin"
-            android:text="12"
             android:textColor="@color/white"
+            android:textSize="@dimen/textSizeX9"
 
-            android:textSize="@dimen/textSizeX9" />
+            tools:text="12" />
     </RelativeLayout>
     <!--</android.support.v7.widget.CardView>-->
 
@@ -90,14 +88,13 @@
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:layout_below="@id/weather_background"
-
         android:layout_marginTop="@dimen/cardMarginTop"
         android:padding="@dimen/normalPaddingX3">
 
         <cc.haoduoyu.umaru.widgets.CircleImageView
             android:id="@+id/welcome_avatar"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="@dimen/avatar_size"
+            android:layout_height="@dimen/avatar_size"
             android:src="@drawable/xiaomai" />
 
         <com.hrules.trendtextview.TrendTextView

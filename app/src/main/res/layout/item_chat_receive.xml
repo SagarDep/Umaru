@@ -6,9 +6,9 @@
 
     <cc.haoduoyu.umaru.widgets.CircleImageView
         android:id="@+id/welcome_avatar"
-        android:layout_width="38dp"
-        android:layout_height="38dp"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_width="@dimen/avatar_size"
+        android:layout_height="@dimen/avatar_size"
+        android:layout_margin="@dimen/avatar_margin"
         android:src="@drawable/xiaomai" />
 
     <TextView

@@ -2,7 +2,6 @@ package cc.haoduoyu.umaru.utils;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -10,8 +9,6 @@ import android.graphics.Point;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
 import android.media.audiofx.AudioEffect;
-import android.media.audiofx.BassBoost;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.provider.Settings;
 import android.view.Display;

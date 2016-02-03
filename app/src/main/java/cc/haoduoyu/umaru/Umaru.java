@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 
 import cc.haoduoyu.umaru.player.PlayerController;
-import cc.haoduoyu.umaru.player.PlayerLib;
 
 /**
  * Created by XP on 2016/1/10.

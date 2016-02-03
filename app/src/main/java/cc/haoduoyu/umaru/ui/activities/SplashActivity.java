@@ -84,10 +84,10 @@ public class SplashActivity extends BaseActivity {
                 finish();
             } else {
                 new MaterialDialog.Builder(this)
-                        .title("权限申请")
-                        .content("在设置-应用-Umaru-权限中开启权限，以正常使用Umaru")
-                        .positiveText("去设置")
-                        .negativeText("取消")
+                        .title(R.string.request_permission)
+                        .content(R.string.permission_content)
+                        .positiveText(R.string.go_setting)
+                        .negativeText(R.string.cancel)
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(MaterialDialog dialog, DialogAction which) {

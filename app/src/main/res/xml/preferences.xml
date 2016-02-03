@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="色彩">
+
+        <Preference
+            android:key="color_primary"
+            android:summary="主题主色调 (实验性功能)"
+            android:title="主色调" />
+
+        <Preference
+            android:key="color_accent"
+            android:summary="主题强调色 (实验性功能)"
+            android:title="强调色" />
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="个性化">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="animation"
+            android:summary="开启或关闭动画"
+            android:title="动画" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="媒体">
+
+        <Preference
+            android:key="equalizer"
+            android:summary="用于修饰音乐效果"
+            android:title="均衡器" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="关于">
+
+        <Preference
+            android:key="about"
+            android:summary="0.9.0"
+            android:title="关于Umaru" />
+
+        <Preference
+            android:key="github"
+            android:summary="参与Github项目或者提交Bug"
+            android:title="开放源代码" />
+
+        <Preference
+            android:key="donate"
+            android:summary="如果你喜欢这个项目，可以在这里打赏我"
+            android:title="捐赠" />
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

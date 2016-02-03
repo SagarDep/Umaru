@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <ImageView
+        android:id="@+id/iv"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_statusbar_height"
         android:background="?colorPrimary" />
