@@ -54,12 +54,52 @@
     <string name="color_primary">主色调</string>
     <string name="color_accent">强调色</string>
     <string name="colors">颜色</string>
+    <string name="color_custom">自定义颜色</string>
+    <string name="presets">预设颜色</string>
+    <string name="back">后退</string>
+    <string name="copy_link">复制链接</string>
+    <string name="open_with">打开浏览器</string>
+    <string name="refresh">刷新</string>
+    <string name="tuling">图灵</string>
+    <string name="animation">animation</string>
+    <string name="snackbar_chat">点击上面的圆形按钮与我聊聊吧~</string>
+    <string name="snackbar_error">网络连接异常</string>
+    <string name="city">city</string>
+    <string name="nowtxt">nowtxt</string>
+    <string name="nowtmp">nowtmp</string>
+    <string name="sug">sug</string>
+    <string name="send">发送</string>
+
 
     <string-array name="welcome_texts">
         <item>要来点可乐和薯条吗~</item>
         <item>嗨，我是 Umaru!</item>
         <item>和我聊聊吧</item>
         <item>今天的天气似乎不错</item>
+    </string-array>
+
+    <string-array name="settings_entry_values_cache">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+    <string-array name="settings_entries_cache">
+        <item>有网络时缓存超时60s</item>
+        <item>有网络时缓存超时60s，无网络时缓存超时4周</item>
+    </string-array>
+
+    <string-array name="settings_entry_values_pic">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="settings_entries_pic">
+        <item>低</item>
+        <item>中</item>
+        <item>高</item>
+        <item>极高</item>
     </string-array>
 
 </resources>

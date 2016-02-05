@@ -10,6 +10,7 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/about_header_height"
+        android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <!--提供了一个可以折叠的Toolbar-->
         <!--CollapsingToolbarTitleStyle使原有效果字体透明-->
@@ -30,8 +31,8 @@
                 android:orientation="vertical">
 
                 <cc.haoduoyu.umaru.widgets.CircleImageView
-                    android:layout_width="76dp"
-                    android:layout_height="76dp"
+                    android:layout_width="68dp"
+                    android:layout_height="68dp"
                     android:layout_marginTop="12dp"
                     android:src="@drawable/xiaomai" />
 
@@ -87,7 +88,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_card"
+                android:background="@drawable/bg_about"
                 android:padding="16dp">
 
                 <TextView
@@ -118,7 +119,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_card">
+                android:background="@drawable/bg_about">
 
                 <cc.haoduoyu.umaru.widgets.CircleImageView
                     android:id="@+id/avatar_r"
@@ -168,7 +169,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/bg_card"
+                android:background="@drawable/bg_about"
                 android:padding="16dp">
 
                 <TextView

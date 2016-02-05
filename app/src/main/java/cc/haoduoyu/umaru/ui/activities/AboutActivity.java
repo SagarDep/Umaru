@@ -11,13 +11,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.color.CircleView;
+import com.apkfuns.logutils.LogUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cc.haoduoyu.umaru.BuildConfig;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.base.BaseActivity;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
+import cc.haoduoyu.umaru.utils.SettingUtils;
 
 /**
  * scroll: 所有想滚动出屏幕的view都需要设置这个flag- 没有设置这个flag的view将被固定在屏幕顶部。
@@ -49,11 +52,10 @@ public class AboutActivity extends BaseActivity {
         setContentView(R.layout.activity_about);
         ButterKnife.bind(this);
         setVersionName();
-        mCollapsingToolbarLayout.setTitle(getString(R.string.app_name));
+        mCollapsingToolbarLayout.setTitle(getString(R.string.about));
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.about);
 
         setColorPrimary();
         header.setBackgroundColor(PreferencesUtils.getInteger(this, getString(R.string.color_primary), R.color.colorPrimary));
@@ -74,6 +76,12 @@ public class AboutActivity extends BaseActivity {
             getWindow().setStatusBarColor(CircleView.shiftColorDown(color));
             getWindow().setNavigationBarColor(color);
         }
+    }
+
+    @OnClick(R.id.version)
+    void show() {
+        LogUtils.d("a:" + SettingUtils.getInstance(this).isEnableAnimations());
+        LogUtils.d(PreferencesUtils.getAll(this));
     }
 
     @Override

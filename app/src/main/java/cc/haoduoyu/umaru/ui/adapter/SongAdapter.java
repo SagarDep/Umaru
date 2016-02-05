@@ -2,6 +2,7 @@ package cc.haoduoyu.umaru.ui.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +20,6 @@ import cc.haoduoyu.umaru.model.Song;
 import cc.haoduoyu.umaru.player.PlayerController;
 import cc.haoduoyu.umaru.ui.activities.NowPlayingActivity;
 import cc.haoduoyu.umaru.utils.Utils;
-import cc.haoduoyu.umaru.widgets.CircleImageView;
 
 /**
  * Created by XP on 2016/1/23.
@@ -49,8 +49,10 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final Song s = mSongList.get(position);
-
-        holder.mSongImage.setImageResource(R.mipmap.default_artwork);
+//        holder.mSongImage.setImageResource(R.mipmap.default_artwork);
+        GradientDrawable drawable = (GradientDrawable) holder.mSongImage.getBackground();
+        drawable.setColor(Utils.getRandomMaterialColor());
+        holder.mSongImage.setText(s.getSongTitle().substring(0, 1));
         holder.mSongTitle.setText(s.getSongTitle());
         holder.mSongArtist.setText(s.getArtistName());
         holder.mSongDuration.setText(Utils.durationToString(s.getDuration()));
@@ -75,7 +77,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         @Bind(R.id.song_root)
         RelativeLayout mSongRoot;
         @Bind(R.id.song_image)
-        CircleImageView mSongImage;
+        TextView mSongImage;
         @Bind(R.id.song_title)
         TextView mSongTitle;
         @Bind(R.id.song_artist)

@@ -11,7 +11,6 @@ import android.widget.ViewSwitcher;
 import com.android.volley.Response;
 import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
-import com.hrules.trendtextview.TrendTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +25,8 @@ import cc.haoduoyu.umaru.model.City;
 import cc.haoduoyu.umaru.model.Weather;
 import cc.haoduoyu.umaru.utils.Once;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
+import cc.haoduoyu.umaru.utils.SettingUtils;
+import cc.haoduoyu.umaru.utils.Utils;
 import cc.haoduoyu.umaru.utils.volleyUtils.GsonRequest;
 
 /**
@@ -43,8 +44,8 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
     TextView wNowTxtTv;//天气描述
     @Bind(R.id.weather_now_tmp)
     TextView wNowTmpTv;//天气温度
-    @Bind(R.id.welcome_htv1)
-    TrendTextView hTextView;
+    @Bind(R.id.weather_suggestion)
+    TextView wSugTv;
 
     CityDao cityDao;
     String currentCityId;
@@ -56,7 +57,6 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
 
     @Override
     protected void initViews() {
-
     }
 
     @Override
@@ -84,7 +84,12 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
             currentCityId = cityList.get(0).getCityId();
         }
 
-        loadWeather(currentCityId);
+        if (SettingUtils.getInstance(getActivity()).isEnableCache()
+                && !Utils.isNetworkReachable(getActivity())) {
+            loadFromPreference();
+        } else {
+            loadWeather(currentCityId);
+        }
         loadWeatherPic();
     }
 
@@ -108,10 +113,8 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
 
 
     public void onEvent(MessageEvent event) {
-        if (event.message.equals("pic")) {
-
+        if (event.message.equals(MessageEvent.WEATHER_PIC)) {
             loadWeatherPic();
-
         }
 
     }
@@ -142,18 +145,28 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
             public void onResponse(Weather response) {
                 Weather.HeWeather heWeather = response.getHeWeather().get(0);
                 if ("ok".equals(heWeather.getStatus())) {
+
                     wCityTv.setText(heWeather.getBasic().getCity());
-                    wUpdateTimeTv.setText("更新于" + heWeather.getBasic().getUpdate().getLoc().substring(11));
                     wNowTxtTv.setText(heWeather.getNow().getCond().getTxt());
                     wNowTmpTv.setText(heWeather.getNow().getTmp());
-                    hTextView.animateText(heWeather.getSuggestion().getComf().getTxt());
-
-//                Log.d("weather", response.getHeWeather().get(0).getBasic().getCity());
+                    wSugTv.setText(heWeather.getSuggestion().getComf().getTxt());
+                    saveToPreference(heWeather);
                 }
             }
         }));
     }
 
+    private void saveToPreference(Weather.HeWeather heWeather) {
+        PreferencesUtils.setString(getContext(), getActivity().getString(R.string.city), heWeather.getBasic().getCity());
+        PreferencesUtils.setString(getContext(), getActivity().getString(R.string.nowtxt), heWeather.getNow().getCond().getTxt());
+        PreferencesUtils.setString(getContext(), getActivity().getString(R.string.nowtmp), heWeather.getNow().getTmp());
+        PreferencesUtils.setString(getContext(), getActivity().getString(R.string.sug), heWeather.getSuggestion().getComf().getTxt());
+    }
 
-
+    private void loadFromPreference() {
+        wCityTv.setText(PreferencesUtils.getString(getActivity(), getActivity().getString(R.string.city)));
+        wNowTxtTv.setText(PreferencesUtils.getString(getActivity(), getActivity().getString(R.string.nowtxt)));
+        wNowTmpTv.setText(PreferencesUtils.getString(getActivity(), getActivity().getString(R.string.nowtmp)));
+        wSugTv.setText(PreferencesUtils.getString(getActivity(), getActivity().getString(R.string.sug)));
+    }
 }

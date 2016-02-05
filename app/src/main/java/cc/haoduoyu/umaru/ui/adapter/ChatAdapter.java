@@ -62,7 +62,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             holder.mTextViewUrl.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new FinestWebView.Builder((Activity) mContext).show(mChat.get(position).getUrl());
+                    new FinestWebView.Builder((Activity) mContext)
+                            .showMenuShareVia(false)
+                            .stringResCopyLink(R.string.copy_link)
+                            .stringResOpenWith(R.string.open_with)
+                            .stringResRefresh(R.string.refresh)
+                            .show(mChat.get(position).getUrl());
                 }
             });
         }
@@ -112,6 +117,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             @Override
             public void onResponse(Chat response) {
                 response.setFlag(Chat.RECEIVE);
+                response.setContent(response.getContent().replace(mContext.getString(R.string.tuling), mContext.getString(R.string.umaru)));
                 mChat.add(response);
                 notifyDataSetChanged();
                 if (mContext instanceof ChatActivity) {

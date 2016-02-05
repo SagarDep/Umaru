@@ -23,6 +23,8 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.apkfuns.logutils.LogUtils;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -34,6 +36,7 @@ import cc.haoduoyu.umaru.BDConstants;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.base.ToolbarActivity;
 import cc.haoduoyu.umaru.ui.adapter.ChatAdapter;
+import cc.haoduoyu.umaru.utils.SettingUtils;
 import cc.haoduoyu.umaru.widgets.RevealBackgroundView;
 import cc.haoduoyu.umaru.widgets.SendButton;
 
@@ -42,7 +45,6 @@ import cc.haoduoyu.umaru.widgets.SendButton;
  */
 public class ChatActivity extends ToolbarActivity implements RecognitionListener, SendButton.OnSendClickListener, RevealBackgroundView.OnStateChangeListener {
 
-    private static final String TAG = "ChatActivity";
     public static final String ARG_REVEAL_START_LOCATION = "reveal_start_location";
     private static final int EVENT_ERROR = 11;
     private TextView txtResult;
@@ -90,14 +92,21 @@ public class ChatActivity extends ToolbarActivity implements RecognitionListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        initViews();
+        initViews();
 
+        //动画开关
+        if (SettingUtils.getInstance(this).isEnableAnimations())
+            setupRevealBackground(savedInstanceState);
+        else vRevealBackground.setToFinishedFrame();
+
+    }
+
+    private void initViews() {
         mAppBar.setBackgroundColor(Color.TRANSPARENT);
         mAdapter = new ChatAdapter(this);
         mAdapter.loadRandomWelcomeTexts();
         mRecyclerview.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerview.setAdapter(mAdapter);
-
 
         //当一个视图树将要绘制时调用这个回调函数
         sendLl.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -109,9 +118,7 @@ public class ChatActivity extends ToolbarActivity implements RecognitionListener
             }
         });
 //        sendLl.setTranslationY(sendLl.getHeight());//写在这里没有动画
-
-        setupRevealBackground(savedInstanceState);
-
+        vRevealBackground.setOnStateChangeListener(this);
         sendBtn.setOnSendClickListener(this);
     }
 
@@ -123,7 +130,7 @@ public class ChatActivity extends ToolbarActivity implements RecognitionListener
      */
     private void setupRevealBackground(Bundle savedInstanceState) {
 //        vRevealBackground.setFillPaintColor(Color.GRAY);
-        vRevealBackground.setOnStateChangeListener(this);
+//        vRevealBackground.setOnStateChangeListener(this);
         if (savedInstanceState == null || savedInstanceState != null) {
             final int[] startingLocation = getIntent().getIntArrayExtra(ARG_REVEAL_START_LOCATION);
             vRevealBackground.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -374,7 +381,7 @@ public class ChatActivity extends ToolbarActivity implements RecognitionListener
         txtLog.append(msg + "\n");
         ScrollView sv = (ScrollView) txtLog.getParent();
         sv.smoothScrollTo(0, 1000000);
-        Log.d(TAG, "----" + msg);
+        LogUtils.d("----" + msg);
     }
 
 

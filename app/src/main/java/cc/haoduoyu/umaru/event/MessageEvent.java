@@ -5,6 +5,9 @@ package cc.haoduoyu.umaru.event;
  */
 public class MessageEvent {
 
+    public static final String WEATHER_PIC = "weather_pic";
+    public static final String LOAD_DONE = "load_done";
+
     public final String message;
 
     public MessageEvent(String message) {

@@ -11,13 +11,14 @@ import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
@@ -30,13 +31,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cc.haoduoyu.umaru.Constants;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.api.MusicFactory;
 import cc.haoduoyu.umaru.api.MusicService;
-import cc.haoduoyu.umaru.base.BaseActivity;
+import cc.haoduoyu.umaru.base.ToolbarActivity;
 import cc.haoduoyu.umaru.model.ArtistInfo;
 import cc.haoduoyu.umaru.model.Song;
 import cc.haoduoyu.umaru.player.Player;
@@ -50,7 +49,7 @@ import retrofit2.Callback;
 /**
  * Created by XP on 2016/1/9.
  */
-public class NowPlayingActivity extends BaseActivity {
+public class NowPlayingActivity extends ToolbarActivity {
 
     @Bind(R.id.sliding_layout)
     SlidingUpPanelLayout slidingUpPanelLayout;
@@ -77,11 +76,19 @@ public class NowPlayingActivity extends BaseActivity {
     public static final String EXTRA_NOW_PLAYING = "extra_now_playing";
     private Song song;
     private SeekObserver observer = null;
-    //    private int iconIndex;
     private String summary;
 
     private UpdateNowPlayingReceiver updateNowPlayingReceiver;
 
+    @Override
+    protected boolean canBack() {
+        return true;
+    }
+
+    @Override
+    protected int provideContentViewId() {
+        return R.layout.activity_nowplaying;
+    }
 
     public static void startIt(Song song, Activity startingActivity) {
         Intent intent = new Intent(startingActivity, NowPlayingActivity.class);
@@ -92,53 +99,40 @@ public class NowPlayingActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_nowplaying);
-        ButterKnife.bind(this);
-
-        song = getIntent().getExtras().getParcelable(EXTRA_NOW_PLAYING);//来自adapter
-//        song = PlayerController.getNowPlaying();
-
-        LogUtils.d(song);
-
+        initData();
         initViews();
-
-        updateNowPlayingReceiver = new UpdateNowPlayingReceiver();
-
-//        iconIndex = PreferencesUtils.getInteger(this, Player.PREFERENCES_STATE, Player.REPEAT_NONE);
-        loadArtistInfoWithVolley(song);
-
-
     }
 
-    //初始化播放暂停按钮
-    private void initFab() {
+    private void initData() {
+        song = getIntent().getExtras().getParcelable(EXTRA_NOW_PLAYING);//来自adapter
+        setTitle("");
+        LogUtils.d(song);
+    }
+
+    public void initViews() {
+
+        updateShuffle();
+        setAppBarTransparent();
+        loadArtistInfoWithVolley(song);
+
         fab.setImageDrawable(playPauseDrawable);
         if (PlayerController.isPlaying()) {
             playPauseDrawable.transformToPause(false);
         } else {
-            playPauseDrawable.transformToPlay(false);
+            playPauseDrawable.transformToPause(false);
         }
         LogUtils.d("isPlaying:" + PlayerController.isPlaying());
 
-    }
-
-
-    /**
-     * 初始化View
-     */
-    public void initViews() {
-        initFab();
-        updateShuffle();
         MaterialDrawableBuilder mBuilder = MaterialDrawableBuilder.with(this)
                 .setIcon(MaterialDrawableBuilder.IconValue.MENU)
                 .setSizeDp(30);
         menu.setImageDrawable(mBuilder.build());
 
+        updateNowPlayingReceiver = new UpdateNowPlayingReceiver();
+
         slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
         slidingUpPanelLayout.setPanelHeight(0);
 //        slidingUpPanelLayout.setOverlayed(true);//设置panel为透明
-
 
         observer = new SeekObserver();
         seekBar.setOnSeekBarChangeListener(new SeekBarChangeListener());
@@ -147,7 +141,6 @@ public class NowPlayingActivity extends BaseActivity {
             songTitle.setText(song.getSongTitle());
             songArtistAlbum.setText(song.getArtistName() + " | " + song.getAlbumName());
             songDuration.setText(Utils.durationToString(song.getDuration()));
-            songElapsedTime.setText("00:01");
             seekBar.setMax((int) song.getDuration());
         }
     }
@@ -328,6 +321,8 @@ public class NowPlayingActivity extends BaseActivity {
                     @Override
                     public void onClick(MaterialDialog dialog, DialogAction which) {
                         new FinestWebView.Builder(NowPlayingActivity.this)
+                                .showMenuShareVia(false).stringResCopyLink(R.string.copy_link)
+                                .stringResOpenWith(R.string.open_with).stringResRefresh(R.string.refresh)
                                 .show(getString(R.string.singer_similar_url)
                                         + PlayerController.getNowPlaying().getArtistName() + "/+similar");
                     }
@@ -345,6 +340,25 @@ public class NowPlayingActivity extends BaseActivity {
     void panelShare() {
         closePanel();
         ShareUtils.share(this, song.getDisplayName());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.music, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_share:
+                ShareUtils.share(this, song.getDisplayName());
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -409,20 +423,21 @@ public class NowPlayingActivity extends BaseActivity {
         try {
             if (!TextUtils.isEmpty(song.getArtistName()))
                 artistName = URLEncoder.encode(song.getArtistName(), "utf-8");
-            String formatString = String.format(getString(R.string.artist_format_string), MusicService.LAST_FM_URL,
-                    "artist.getInfo", "zh", artistName, MusicService.API_KEY);
+            String formatString = String.format(getString(R.string.artist_format_string),
+                    MusicService.LAST_FM_URL, "artist.getInfo", "zh", artistName, MusicService.API_KEY);
             executeRequest(new GsonRequest<>(formatString, ArtistInfo.class, new Response.Listener<ArtistInfo>() {
                 @Override
                 public void onResponse(ArtistInfo response) {
+
                     summary = response.getArtist().getBio().getSummary();
-                    LogUtils.d(response.getArtist().getImage().get(3).getUrl());
-                    LogUtils.d(response.getArtist().getImage().get(3).getSize());
                     Glide.with(NowPlayingActivity.this)
-                            .load(response.getArtist().getImage().get(3).getUrl()).crossFade().into(albumArt);
+                            .load(response.getArtist().getImage().get(3).getUrl())
+                            .placeholder(R.mipmap.default_artwork).crossFade().into(albumArt);
                 }
-            }).setRetryPolicy(new DefaultRetryPolicy(Constants.VOLLEY_TIMEOUT,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)));
+            }));
+//            }).setRetryPolicy(new DefaultRetryPolicy(Constants.VOLLEY_TIMEOUT,
+//                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+//                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)));
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

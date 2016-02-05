@@ -14,8 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <android.support.percent.PercentRelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -37,15 +36,7 @@
                     android:layout_height="match_parent"
                     android:background="#22000000" />
 
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:layout_gravity="top"
-                    android:layout_marginTop="@dimen/appBarTopMargin"
-                    android:background="@android:color/transparent"
-                    android:theme="@style/Theme.AppCompat"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                <include layout="@layout/view_toolbar"></include>
 
             </FrameLayout>
 
@@ -220,7 +211,7 @@
             android:id="@+id/panel_close"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:gravity="center_vertical|right"
+            android:gravity="bottom|right"
             android:paddingRight="@dimen/normalPaddingX3"
             android:text="@string/close"
             android:textColor="?colorAccent"

@@ -97,14 +97,15 @@
             android:layout_height="@dimen/avatar_size"
             android:src="@drawable/xiaomai" />
 
-        <com.hrules.trendtextview.TrendTextView
-            android:id="@+id/welcome_htv1"
+        <TextView
+            android:id="@+id/weather_suggestion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/welcome_avatar"
-            android:padding="@dimen/normalPadding"
-            android:textColor="#999999"
-            android:textSize="@dimen/textSizeX3" />
+            android:padding="@dimen/normalPaddingX3"
+            android:textColor="@color/md_grey_800"
+            android:textSize="@dimen/textSizeX3"
+            tools:text="白天天气晴好白天天气晴好白天天气晴好白天天气晴好白天天气晴好" />
 
         <!--<com.hanks.htextview.HTextView-->
         <!--android:id="@+id/welcome_htv2"-->

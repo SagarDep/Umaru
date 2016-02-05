@@ -15,6 +15,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
+import cc.haoduoyu.umaru.utils.SettingUtils;
 import cc.haoduoyu.umaru.utils.StatusBarCompat;
 import cc.haoduoyu.umaru.utils.Utils;
 
@@ -59,9 +60,10 @@ public abstract class ToolbarActivity extends BaseActivity {
         }
 
         StatusBarCompat.compat(this);//状态栏变色
-        startToolbarAnimation();
         setColorPrimary();
 
+        if (SettingUtils.getInstance(this).isEnableAnimations())
+            startToolbarAnimation();
     }
 
     protected void setColorPrimary() {

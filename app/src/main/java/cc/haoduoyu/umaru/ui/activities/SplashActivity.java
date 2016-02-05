@@ -64,7 +64,7 @@ public class SplashActivity extends BaseActivity {
      */
     private void checkPermission() {
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+        if (ContextCompat.checkSelfPermission(this,(Manifest.permission.READ_EXTERNAL_STORAGE))
                 != PackageManager.PERMISSION_GRANTED) {
             //申请权限
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},

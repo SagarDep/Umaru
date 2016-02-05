@@ -16,13 +16,46 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="个性化">
+    <PreferenceCategory android:title="配置">
 
         <SwitchPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="animation"
             android:summary="开启或关闭动画"
             android:title="动画" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:enabled="true"
+            android:key="enable_cache"
+            android:title="允许缓存" />
+
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/settings_entries_cache"
+            android:entryValues="@array/settings_entry_values_cache"
+            android:key="cache"
+            android:negativeButtonText="@null"
+            android:summary="选择缓存策略（重启应用后才能生效）"
+            android:title="缓存策略" />
+
+        <ListPreference
+            android:defaultValue="2"
+            android:entries="@array/settings_entries_pic"
+            android:entryValues="@array/settings_entry_values_pic"
+            android:key="pic"
+            android:negativeButtonText="@null"
+            android:title="图片质量" />
+
+        <Preference
+            android:key="clear"
+            android:summary="进入应用设置界面"
+            android:title="应用管理" />
+
+        <Preference
+            android:key="avatar"
+            android:summary="修改个人头像 (实验性功能)"
+            android:title="个人头像" />
 
     </PreferenceCategory>
 
@@ -44,7 +77,7 @@
 
         <Preference
             android:key="github"
-            android:summary="参与Github项目或者提交Bug"
+            android:summary="查看Github上的代码或者提出建议"
             android:title="开放源代码" />
 
         <Preference

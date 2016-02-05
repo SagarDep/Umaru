@@ -19,6 +19,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import cc.haoduoyu.umaru.Constants;
 import cc.haoduoyu.umaru.R;
+import cc.haoduoyu.umaru.Umaru;
 import cc.haoduoyu.umaru.base.BaseFragment;
 import cc.haoduoyu.umaru.base.ToolbarActivity;
 import cc.haoduoyu.umaru.event.MessageEvent;
@@ -27,7 +28,9 @@ import cc.haoduoyu.umaru.player.PlayerLib;
 import cc.haoduoyu.umaru.ui.fragments.MainFragment;
 import cc.haoduoyu.umaru.ui.fragments.MusicFragment;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
+import cc.haoduoyu.umaru.utils.SettingUtils;
 import cc.haoduoyu.umaru.utils.SnackbarUtils;
+import cc.haoduoyu.umaru.utils.Utils;
 import de.greenrobot.event.EventBus;
 
 public class MainActivity extends ToolbarActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -51,6 +54,7 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initViews();
+
         mCurrentFragment = getFragment(MainFragment.class.getName());
         replaceFragment(R.id.frame_content, mCurrentFragment);
     }
@@ -65,18 +69,24 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        startToolbarAnimation();
-        startFabAnimation();
+        if (SettingUtils.getInstance(this).isEnableAnimations()) {
+            startToolbarAnimation();
+            startFabAnimation();
+        }
         setAppBarTransparent();
 
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                SnackbarUtils.showSnackBackWithAction(fab, "点击上面的圆形按钮与我聊聊吧~", "OK");
+                if (!Utils.isNetworkReachable(Umaru.getContext()))
+                    SnackbarUtils.showLong(fab, getString(R.string.snackbar_error));
+                else
+                    SnackbarUtils.showSnackBackWithAction(fab, getString(R.string.snackbar_chat), "OK");
             }
         }, 1558);
-        replaceFragment(R.id.frame_content, new MainFragment());
+
+//        replaceFragment(R.id.frame_content, new MainFragment());
     }
 
     protected void startFabAnimation() {
@@ -110,7 +120,7 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
             case R.id.action_night:
                 Constants.isDay = !Constants.isDay;
                 PreferencesUtils.setBoolean(this, "w_pic", Constants.isDay);
-                EventBus.getDefault().post(new MessageEvent("pic"));
+                EventBus.getDefault().post(new MessageEvent(MessageEvent.WEATHER_PIC));
                 break;
         }
 
@@ -173,7 +183,8 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
             fab.getLocationOnScreen(startingLocation);
             startingLocation[0] += fab.getWidth() / 2;
             ChatActivity.startIt(startingLocation, this);
-            overridePendingTransition(0, 0);
+            if (SettingUtils.getInstance(this).isEnableAnimations())
+                overridePendingTransition(0, 0);
         } else if (PlayerController.getNowPlaying() != null) {
             NowPlayingActivity.startIt(PlayerController.getNowPlaying(), this);
         } else if (PlayerLib.getSongs().size() != 0) {

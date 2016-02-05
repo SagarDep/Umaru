@@ -5,10 +5,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
 import android.media.audiofx.AudioEffect;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.provider.Settings;
 import android.view.Display;
@@ -27,6 +30,21 @@ public class Utils {
 
     public static int dpToPx(int dp) {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
+    }
+
+    /**
+     * 判断网络是否可用
+     *
+     * @param context
+     */
+    public static Boolean isNetworkReachable(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo current = cm.getActiveNetworkInfo();
+        if (current == null) {
+            return false;
+        }
+        return (current.isAvailable());
     }
 
     /**
@@ -157,5 +175,55 @@ public class Utils {
     public static void openAppSettings(Activity activity) {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_SETTINGS);
         activity.startActivity(intent);
+    }
+
+    /**
+     * 得到Material标准色
+     * http://www.google.com/design/spec/style/color.html#color-color-palette
+     *
+     * @return
+     */
+    public static int getRandomMaterialColor() {
+        int[] colors = new int[]{
+                //RED 400,500,600
+                Color.parseColor("#EF5350"), Color.parseColor("#F44336"), Color.parseColor("#E53935"),
+                //PINK
+                Color.parseColor("#EC407A"), Color.parseColor("#E91E63"), Color.parseColor("#D81B60"),
+                //PURPLE
+                Color.parseColor("#AB47BC"), Color.parseColor("#9C27B0"), Color.parseColor("#8E24AA"),
+                //DEEP PURPLE
+                Color.parseColor("#7E57C2"), Color.parseColor("#673AB7"), Color.parseColor("#5E35B1"),
+                //INDIGO
+                Color.parseColor("#5C6BC0"), Color.parseColor("#3F51B5"), Color.parseColor("#3949AB"),
+                //BLUE
+                Color.parseColor("#42A5F5"), Color.parseColor("#2196F3"), Color.parseColor("#1E88E5"),
+                //Light Blue
+                Color.parseColor("#29B6F6"), Color.parseColor("#03A9F4"), Color.parseColor("#039BE5"),
+                //Cyan
+                Color.parseColor("#26C6DA"), Color.parseColor("#00BCD4"), Color.parseColor("#00ACC1"),
+                //Teal
+                Color.parseColor("#26A69A"), Color.parseColor("#009688"), Color.parseColor("#00897B"),
+                //Green
+                Color.parseColor("#66BB6A"), Color.parseColor("#4CAF50"), Color.parseColor("#43A047"),
+                //Light Green
+                Color.parseColor("#9CCC65"), Color.parseColor("#8BC34A"), Color.parseColor("#7CB342"),
+                //Lime
+                Color.parseColor("#D4E157"), Color.parseColor("#CDDC39"), Color.parseColor("#C0CA33"),
+                //Yellow
+                Color.parseColor("#FFEE58"), Color.parseColor("#FFEB3B"), Color.parseColor("#FDD835"),
+                //Amber
+                Color.parseColor("#FFCA28"), Color.parseColor("#FFC107"), Color.parseColor("#FFB300"),
+                //Orange
+                Color.parseColor("#FFA726"), Color.parseColor("#FF9800"), Color.parseColor("#FB8C00"),
+                //Deep Orange
+                Color.parseColor("#FF7043"), Color.parseColor("#FF5722"), Color.parseColor("#F4511E"),
+                //Brown
+                Color.parseColor("#8D6E63"), Color.parseColor("#795548"), Color.parseColor("#6D4C41"),
+                //Grey
+                Color.parseColor("#BDBDBD"), Color.parseColor("#9E9E9E"), Color.parseColor("#757575"),
+                //Blue Grey
+                Color.parseColor("#78909C"), Color.parseColor("#607D8B"), Color.parseColor("#546E7A"),
+        };
+        return colors[(int) (Math.random() * colors.length)];
     }
 }

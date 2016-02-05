@@ -32,7 +32,6 @@ dependencies {
     compile 'com.android.support:percent:23.1.1'
     compile 'com.android.support:cardview-v7:23.1.1'
 
-
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'net.steamcrafted:materialiconlib:1.0.7'
     compile 'com.mcxiaoke.volley:library:1.0.19'
@@ -41,20 +40,12 @@ dependencies {
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'com.thefinestartist:finestwebview:1.1.2'
     compile 'com.apkfuns.logutils:library:1.0.6'
-    compile 'com.squareup.okhttp:okhttp:2.7.0'
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta3'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'//2.4
-    compile 'com.hrules:trendtextview:1.0.0'
-
-
+    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'//gson 2.4
     compile 'com.sothree.slidinguppanel:library:3.2.1'
     compile('com.github.afollestad.material-dialogs:commons:0.8.5.3@aar') {
         transitive = true
     }
+    compile 'com.yalantis:ucrop:1.2.+'
 
-
-
-//    repositories {
-//        mavenCentral()
-//    }
 }

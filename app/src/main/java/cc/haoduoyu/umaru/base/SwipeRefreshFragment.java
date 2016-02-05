@@ -57,7 +57,7 @@ public abstract class SwipeRefreshFragment extends BaseFragment {
                         mSwipeRefreshLayout.setRefreshing(false);
                     }
                 }
-            }, 2358);
+            }, 1358);
         } else {//如果需要刷新
             mSwipeRefreshLayout.setRefreshing(true);
         }

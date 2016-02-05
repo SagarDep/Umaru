@@ -20,8 +20,10 @@ public class OnlineFragment extends SwipeRefreshFragment {
     @Bind(R.id.online_list)
     RecyclerView mOnlineList;
 
-    OnlineMusicAdapter mAdapter;
-    int type;
+    private OnlineMusicAdapter mAdapter;
+    private int type;
+    private static final int PRELOAD_SIZE = 2;
+
 
     /**
      * Activity重新创建时，会重新构建它所管理的Fragment，原先的Fragment的字段值将会全部丢失，
@@ -43,9 +45,10 @@ public class OnlineFragment extends SwipeRefreshFragment {
         super.initViews();
         type = getArguments().getInt("type");
         mAdapter = new OnlineMusicAdapter(getActivity(), type);
-        RecyclerView.LayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mOnlineList.setLayoutManager(layoutManager);
         mOnlineList.setAdapter(mAdapter);
+        mOnlineList.addOnScrollListener(getOnBottomListener(layoutManager));
     }
 
     @Override
@@ -62,7 +65,6 @@ public class OnlineFragment extends SwipeRefreshFragment {
         } else if (type == 1) {
             mAdapter.loadFirst(1);
         }
-        setRequestDataRefresh(false);
     }
 
     @Override
@@ -83,6 +85,31 @@ public class OnlineFragment extends SwipeRefreshFragment {
     }
 
     public void onEvent(MessageEvent event) {
+        if (event.message.equals(MessageEvent.LOAD_DONE)) {
+            setRequestDataRefresh(false);
+        }
+    }
 
+    /**
+     * 自动加载更多
+     *
+     * @param layoutManager
+     * @return
+     */
+    RecyclerView.OnScrollListener getOnBottomListener(final StaggeredGridLayoutManager layoutManager) {
+        return new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView rv, int dx, int dy) {
+                int[] lastVisibleItems = layoutManager.findLastCompletelyVisibleItemPositions(null);
+                int lastVisibleItem = Math.max(lastVisibleItems[0], lastVisibleItems[1]);
+//                LogUtils.d(layoutManager.findLastCompletelyVisibleItemPositions(null));
+                int totalCount = mAdapter.getItemCount() - PRELOAD_SIZE;
+                boolean isBottom = lastVisibleItem >= totalCount;
+                if (!mSwipeRefreshLayout.isRefreshing() && isBottom) {
+//                    mSwipeRefreshLayout.setRefreshing(true);
+                    mAdapter.loadNextPage(type);
+                }
+            }
+        };
     }
 }

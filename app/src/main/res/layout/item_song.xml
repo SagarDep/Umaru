@@ -6,14 +6,26 @@
     android:layout_height="60dp"
     android:layout_margin="@dimen/song_margin">
 
-    <cc.haoduoyu.umaru.widgets.CircleImageView
+    <!--<cc.haoduoyu.umaru.widgets.CircleImageView-->
+    <!--android:id="@+id/song_image"-->
+    <!--android:layout_width="50dp"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:src="@drawable/xiaomai" />-->
+    <TextView
         android:id="@+id/song_image"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/xiaomai" />
+        android:background="@drawable/circle_text"
+        android:gravity="center"
+        android:textSize="@dimen/textSizeX3"
+        android:textColor="@color/white"
+        tools:text="L" />
 
 
     <TextView
