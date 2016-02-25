@@ -148,11 +148,11 @@ public class Weather implements Serializable{
             return suggestion;
         }
 
-        public List<DailyForecastEntity> getDaily_forecast() {
+        public List<DailyForecastEntity> getDailyForecast() {
             return daily_forecast;
         }
 
-        public List<HourlyForecastEntity> getHourly_forecast() {
+        public List<HourlyForecastEntity> getHourlyForecast() {
             return hourly_forecast;
         }
 

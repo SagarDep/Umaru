@@ -1,4 +1,4 @@
-package cc.haoduoyu.umaru.ui.fragments.music;
+package cc.haoduoyu.umaru.ui.fragments;
 
 import android.os.Bundle;
 import android.os.Handler;

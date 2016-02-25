@@ -26,11 +26,11 @@
             android:id="@+id/nav_about"
             android:icon="@drawable/information"
             android:title="@string/about" />
-        <item
+        <!--<item-->
 
-            android:id="@+id/nav_help"
-            android:icon="@drawable/help_circle"
-            android:title="@string/help_and_feedback" />
+            <!--android:id="@+id/nav_help"-->
+            <!--android:icon="@drawable/help_circle"-->
+            <!--android:title="@string/help_and_feedback" />-->
     </group>
 
 </menu>

@@ -1,4 +1,4 @@
-package cc.haoduoyu.umaru.db.dao;
+package cc.haoduoyu.umaru.db;
 
 import android.content.Context;
 

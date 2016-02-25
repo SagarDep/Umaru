@@ -43,10 +43,13 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        if(rootView==null) { //java.lang.IllegalStateException: Activity has been destroyed
         rootView = inflater.inflate(provideLayoutId(), container, false);
+//        }
         LogUtils.d(getClass().getSimpleName() + "onCreateView");
         ButterKnife.bind(this, rootView);
         initViews();
+
         return rootView;
 
     }

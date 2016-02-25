@@ -26,7 +26,7 @@ public class SnackbarUtils {
 
     public static void showSnackBackWithAction(View view, CharSequence text, CharSequence btnText) {
 
-        Snackbar.make(view, text, Snackbar.LENGTH_LONG).setAction(btnText, new View.OnClickListener() {
+        Snackbar.make(view, text, Snackbar.LENGTH_INDEFINITE).setAction(btnText, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Snackbar.make(v, "Great!", Snackbar.LENGTH_LONG).show();

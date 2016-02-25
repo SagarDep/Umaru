@@ -70,7 +70,7 @@ public class OnlineMusicAdapter extends RecyclerView.Adapter<OnlineMusicAdapter.
         if (type == 0) {
             final TopTracks.TracksEntity.TrackEntity t = mTrackList.get(position);
             int picQuality = Integer.parseInt(SettingUtils.getInstance(mContext).getPicQuality());
-            LogUtils.d(picQuality);
+//            LogUtils.d(picQuality);
             Glide.with(mContext).load(t.getImage().get(picQuality).getText())
                     .into(holder.mImageView);
             holder.mSongName.setText(t.getName());

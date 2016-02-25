@@ -17,8 +17,6 @@ import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.base.BaseFragment;
 import cc.haoduoyu.umaru.event.MessageEvent;
 import cc.haoduoyu.umaru.player.PlayerLib;
-import cc.haoduoyu.umaru.ui.fragments.music.LocalMusicFragment;
-import cc.haoduoyu.umaru.ui.fragments.music.OnlineFragment;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 
 /**
@@ -52,7 +50,11 @@ public class MusicFragment extends BaseFragment {
             viewPager.setOffscreenPageLimit(3);
         }
         tabLayout.setupWithViewPager(viewPager);
+    }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override

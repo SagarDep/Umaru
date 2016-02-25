@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -37,15 +38,13 @@ public abstract class ToolbarActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
-
         setContentView(provideContentViewId());
         ButterKnife.bind(this);
-        if (mToolbar == null || mAppBar == null) {
-            throw new IllegalStateException("No Toolbar");
-        }
+
+//        if (mToolbar == null || mAppBar == null) {
+//            throw new IllegalStateException("No Toolbar");
+//        }
         mToolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

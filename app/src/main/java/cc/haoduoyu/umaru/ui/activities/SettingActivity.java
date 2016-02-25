@@ -1,5 +1,8 @@
 package cc.haoduoyu.umaru.ui.activities;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -71,5 +74,10 @@ public class SettingActivity extends ToolbarActivity implements ColorChooserDial
                 getWindow().setNavigationBarColor(color);
             }
         }
+    }
+
+    public static void startIt(Context context) {
+        Intent intent = new Intent(context, SettingActivity.class);
+        context.startActivity(intent);
     }
 }

@@ -1,5 +1,7 @@
 package cc.haoduoyu.umaru.ui.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -96,13 +98,8 @@ public class AboutActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-    public void onResume() {
-        super.onResume();
-    }
-
-
-    public void onPause() {
-        super.onPause();
+    public static void startIt(Context context) {
+        Intent intent = new Intent(context, AboutActivity.class);
+        context.startActivity(intent);
     }
 }

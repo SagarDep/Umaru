@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -9,16 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="388dp"
         android:scaleType="centerCrop"></ImageView>
-
-
-    <!--<android.support.v7.widget.CardView-->
-    <!--android:id="@+id/cardview_weather"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginLeft="@dimen/cardMarginHorizontal"-->
-    <!--android:layout_marginRight="@dimen/cardMarginHorizontal"-->
-    <!--android:layout_marginTop="@dimen/cardMarginTopX5"-->
-    <!--app:contentPadding="@dimen/normalPaddingX2">-->
 
     <RelativeLayout
         android:id="@+id/weather_rl"
@@ -70,57 +61,60 @@
 
             tools:text="12" />
     </RelativeLayout>
-    <!--</android.support.v7.widget.CardView>-->
-
-    <!--<android.support.v7.widget.CardView-->
-    <!--android:id="@+id/cardview_welcome"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_below="@id/weather_rl"-->
-    <!--android:alpha="55"-->
-    <!--android:background="@color/umaru"-->
-    <!--android:layout_marginLeft="@dimen/cardMarginHorizontal"-->
-    <!--android:layout_marginRight="@dimen/cardMarginHorizontal"-->
-    <!--android:layout_marginTop="@dimen/cardMarginTopX2"-->
-    <!--app:contentPadding="@dimen/normalPaddingX2">-->
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:layout_below="@id/weather_background"
-        android:layout_marginTop="@dimen/cardMarginTop"
-        android:padding="@dimen/normalPaddingX3">
+        android:padding="@dimen/normalPaddingX2">
 
         <cc.haoduoyu.umaru.widgets.CircleImageView
             android:id="@+id/welcome_avatar"
             android:layout_width="@dimen/avatar_size"
             android:layout_height="@dimen/avatar_size"
-            android:src="@drawable/xiaomai" />
+            android:src="@drawable/xiaomai"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/weather_suggestion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/welcome_avatar"
-            android:padding="@dimen/normalPaddingX3"
+            android:padding="@dimen/normalPaddingX2"
             android:textColor="@color/md_grey_800"
             android:textSize="@dimen/textSizeX3"
-            tools:text="白天天气晴好白天天气晴好白天天气晴好白天天气晴好白天天气晴好" />
+            android:visibility="gone"
+            tools:text="气晴好白天天气晴好白天晴天气好白天天气晴好白天天气晴好" />
 
-        <!--<com.hanks.htextview.HTextView-->
-        <!--android:id="@+id/welcome_htv2"-->
-        <!--android:layout_width="285dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@+id/welcome_htv1"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:padding="@dimen/normalPadding"-->
-        <!--android:textColor="#999999"-->
-        <!--android:textSize="@dimen/textSizeX3"-->
-        <!--app:animateType="typer" />-->
+        <TextView
+            android:id="@+id/weather_7days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/normalPadding"
+            android:text="@string/seven_days"
+            android:textColor="@color/md_grey_500"
+            android:textSize="@dimen/textSizeX2" />
 
+        <TextView
+            android:id="@+id/weather_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/chart"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/normalPadding"
+            android:text="@string/more"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/textSizeX2" />
+
+
+        <lecho.lib.hellocharts.view.LineChartView
+            android:id="@+id/chart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/weather_7days"
+            android:layout_marginTop="10dp" />
 
     </RelativeLayout>
-    <!--</android.support.v7.widget.CardView>-->
 
 
 </RelativeLayout>

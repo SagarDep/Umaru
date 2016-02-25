@@ -20,13 +20,16 @@ import butterknife.OnClick;
 import cc.haoduoyu.umaru.Constants;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.Umaru;
+import cc.haoduoyu.umaru.api.MusicFactory;
 import cc.haoduoyu.umaru.base.BaseFragment;
 import cc.haoduoyu.umaru.base.ToolbarActivity;
 import cc.haoduoyu.umaru.event.MessageEvent;
 import cc.haoduoyu.umaru.player.PlayerController;
 import cc.haoduoyu.umaru.player.PlayerLib;
+import cc.haoduoyu.umaru.ui.fragments.LocalMusicFragment;
 import cc.haoduoyu.umaru.ui.fragments.MainFragment;
 import cc.haoduoyu.umaru.ui.fragments.MusicFragment;
+import cc.haoduoyu.umaru.ui.fragments.OnlineFragment;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.SettingUtils;
 import cc.haoduoyu.umaru.utils.SnackbarUtils;
@@ -54,27 +57,12 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initViews();
-
-        mCurrentFragment = getFragment(MainFragment.class.getName());
-        replaceFragment(R.id.frame_content, mCurrentFragment);
     }
 
-    /**
-     * 初始化View
-     */
     private void initViews() {
-        setSupportActionBar(mToolbar);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
 
-        if (SettingUtils.getInstance(this).isEnableAnimations()) {
-            startToolbarAnimation();
-            startFabAnimation();
-        }
+        initDrawer();
         setAppBarTransparent();
-
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -86,7 +74,20 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
             }
         }, 1558);
 
-//        replaceFragment(R.id.frame_content, new MainFragment());
+        if (SettingUtils.getInstance(this).isEnableAnimations()) {
+            startToolbarAnimation();
+            startFabAnimation();
+        }
+
+        mCurrentFragment = getFragment(MainFragment.class.getName());
+        replaceFragmentWithSelected(mCurrentFragment);
+    }
+
+    private void initDrawer() {
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
     protected void startFabAnimation() {
@@ -115,7 +116,7 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
         int id = item.getItemId();
         switch (id) {
             case R.id.action_settings:
-                startActivity(new Intent(this, SettingActivity.class));
+                SettingActivity.startIt(this);
                 break;
             case R.id.action_night:
                 Constants.isDay = !Constants.isDay;
@@ -133,38 +134,31 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
         drawer.closeDrawer(GravityCompat.START);
         switch (item.getItemId()) {
             case R.id.nav_index:
-                mToolbar.setTitle(getResources().getString(R.string.umaru));
+                setTitle(getResources().getString(R.string.umaru));
                 fab.setImageResource(android.R.drawable.stat_notify_chat);
                 mCurrentFragment = getFragment(MainFragment.class.getName());
-                replaceFragment(R.id.frame_content, mCurrentFragment);
-
+                replaceFragmentWithSelected(mCurrentFragment);
                 break;
             case R.id.nav_music:
-                mToolbar.setTitle(getResources().getString(R.string.music));
+                setTitle(getResources().getString(R.string.music));
                 fab.setImageResource(android.R.drawable.ic_media_play);
                 mCurrentFragment = getFragment(MusicFragment.class.getName());
-                replaceFragment(R.id.frame_content, mCurrentFragment);
-
+                replaceFragmentWithSelected(mCurrentFragment);
                 break;
             case R.id.nav_settings:
-                startActivity(new Intent(this, SettingActivity.class));
+                SettingActivity.startIt(this);
                 break;
             case R.id.nav_about:
-                startActivity(new Intent(this, AboutActivity.class));
-                break;
-            case R.id.nav_help:
-                startActivity(new Intent(this, SettingActivity.class));
+                AboutActivity.startIt(this);
                 break;
         }
-
-
         return true;
     }
 
 
     private BaseFragment getFragment(String fragmentName) {
         BaseFragment baseFragment = mBaseFragmentByName.get(fragmentName);
-        if (baseFragment == null) {
+        if (mBaseFragmentByName.get(fragmentName) == null) {
             try {
                 baseFragment = (BaseFragment) Class.forName(fragmentName).newInstance();
                 //为null时new指定name的fragment

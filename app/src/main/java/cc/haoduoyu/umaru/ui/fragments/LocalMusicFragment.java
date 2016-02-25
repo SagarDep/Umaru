@@ -1,4 +1,4 @@
-package cc.haoduoyu.umaru.ui.fragments.music;
+package cc.haoduoyu.umaru.ui.fragments;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;

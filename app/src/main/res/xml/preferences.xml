@@ -77,7 +77,7 @@
 
         <Preference
             android:key="github"
-            android:summary="查看Github上的代码或者提出建议"
+            android:summary="查看Github上的源代码"
             android:title="开放源代码" />
 
         <Preference

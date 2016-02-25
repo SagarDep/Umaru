@@ -39,7 +39,7 @@ public class BaseActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = this
                 .getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frame_content, fragment);
-        fragmentTransaction.addToBackStack(null);//带返回栈
+//        fragmentTransaction.addToBackStack(null);//带返回栈
         fragmentTransaction.commit();
 
     }
@@ -52,6 +52,7 @@ public class BaseActivity extends AppCompatActivity {
 
     Fragment mContent;
 
+    //会导致视图叠加
     public void switchFragment(Fragment from, Fragment to) {
         if (mContent != to) {
             mContent = to;

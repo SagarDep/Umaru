@@ -44,7 +44,7 @@ public class SettingUtils {
     }
 
     public String getPicQuality() {
-        return mPreferences.getString(PIC, "1");
+        return mPreferences.getString(PIC, "2");
     }
 
 }
