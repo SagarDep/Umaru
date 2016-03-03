@@ -99,7 +99,6 @@
             android:id="@+id/weather_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/chart"
             android:layout_alignParentRight="true"
             android:padding="@dimen/normalPadding"
             android:text="@string/more"
@@ -108,7 +107,7 @@
 
 
         <lecho.lib.hellocharts.view.LineChartView
-            android:id="@+id/chart"
+            android:id="@+id/weather_chart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/weather_7days"

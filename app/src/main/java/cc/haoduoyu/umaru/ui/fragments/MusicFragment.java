@@ -74,12 +74,6 @@ public class MusicFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                PlayerLib.scanAll(getActivity());
-            }
-        }).start();
     }
 
     static class Adapter extends FragmentPagerAdapter {

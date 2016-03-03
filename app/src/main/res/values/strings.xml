@@ -46,7 +46,7 @@
     <string name="introduce_content">可爱的Umaru机器人，天气、听歌、问路，无论什么问题也难不倒她</string>
     <string name="developers">开发者</string>
     <string name="open_source">开放源代码</string>
-    <string name="open_source_content">JakeWharton/butterknife\nTemplarian/materialiconlib\ngoogle/volley\ngoogle/gson\nbumptech/glide\ngreenrobot/EventBus\nTheFinestArtist/FinestWebView-Android\npengwei1024/logutils\nsquare/OkHttp\nsquare/Retrofit\nhrules6872/trendtextview\nj256/ormlite-android\nfrogermcs/InstaMaterial\nnaman14/Timber\nZhaoKaiQiang/JianDan\nGeeKaven/WavePlayer\ndrakeet/Meizhi\numano/AndroidSlidingUpPanel\nafollestad/material-dialogs</string>
+    <string name="open_source_content">JakeWharton/butterknife\nTemplarian/materialiconlib\ngoogle/volley\ngoogle/gson\nbumptech/glide\ngreenrobot/EventBus\nTheFinestArtist/FinestWebView-Android\npengwei1024/logutils\nsquare/OkHttp\nsquare/Retrofit\nhrules6872/trendtextview\nj256/ormlite-android\nfrogermcs/InstaMaterial\nnaman14/Timber\nZhaoKaiQiang/JianDan\nGeeKaven/WavePlayer\ndrakeet/Meizhi\numano/AndroidSlidingUpPanel\nafollestad/material-dialogs\nlecho/hellocharts-android</string>
     <string name="github">https://github.com/bigggge/Umaru</string>
     <string name="donate">donate</string>
     <string name="donate_id">UMARU</string>
@@ -75,6 +75,12 @@
     <string name="after_tomorrow">后天</string>
     <string name="more">更多</string>
     <string name="know">知道了</string>
+    <string name="tmp">温度</string>
+    <string name="tmp_formatter">℃</string>
+    <string name="go_chat">和我聊聊</string>
+    <string name="ask_me">你可以这样问我</string>
+    <string name="chat_guide_content">今天上海的天气怎么样\n\n明天从苏州到上海的火车\n\n播放一些歌曲\n\n拨打10001的电话\n\n发短信给10010\n\n最近流行的歌手</string>
+    <string name="dont_show_again">不再显示</string>
 
 
     <string-array name="welcome_texts">

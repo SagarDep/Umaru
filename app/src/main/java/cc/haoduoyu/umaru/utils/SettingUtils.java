@@ -12,6 +12,7 @@ public class SettingUtils {
 
     private static final String ANIMATION = "animation";
     private static final String ENABLE_CACHE = "enable_cache";
+    private static final String ENABLE_GUIDE = "enable_guide";
     private static final String CACHE = "cache";
     private static final String PIC = "pic";
 
@@ -37,6 +38,17 @@ public class SettingUtils {
 
     public boolean isEnableCache() {
         return mPreferences.getBoolean(ENABLE_CACHE, true);
+    }
+
+    public boolean isEnableChatGuide() {
+        return mPreferences.getBoolean(ENABLE_GUIDE, true);
+    }
+
+    public void setEnableChatGuide(boolean enable) {
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putBoolean(ENABLE_GUIDE, enable);
+        editor.commit();
+        mPreferences.getBoolean(ENABLE_GUIDE, true);
     }
 
     public String getCache() {

@@ -32,6 +32,7 @@ public class SettingFragment extends PreferenceFragment {
     private static final String AVATAR = "avatar";
     private static final String ANIMATION = "animation";
     private static final String ENABLE_CACHE = "enable_cache";
+    private static final String ENABLE_GUIDE = "enable_guide";
     private static final String CACHE = "cache";
     private static final String PIC = "pic";
     private static final String CLEAR = "clear";
@@ -44,7 +45,7 @@ public class SettingFragment extends PreferenceFragment {
 
     Preference colorPrimary, colorAccent;
     Preference avatar;
-    SwitchPreference animation, enableCache;
+    SwitchPreference animation, enableCache, enableGuide;
     ListPreference cache, pic;
     Preference clear;
     Preference equalizer;
@@ -66,6 +67,7 @@ public class SettingFragment extends PreferenceFragment {
         cache = (ListPreference) findPreference(CACHE);
         pic = (ListPreference) findPreference(PIC);
         clear = findPreference(CLEAR);
+        enableGuide = (SwitchPreference) findPreference(ENABLE_GUIDE);
         equalizer = findPreference(EQUALIZER);
         about = findPreference(ABOUT);
         github = findPreference(GITHUB);
@@ -131,22 +133,24 @@ public class SettingFragment extends PreferenceFragment {
             }
         });
 
-        colorAccent.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                new ColorChooserDialog.Builder((SettingActivity) getActivity(), R.string.color_accent)
-                        .titleSub(R.string.colors)
-                        .customButton(R.string.color_custom)
-                        .cancelButton(R.string.cancel)
-                        .doneButton(R.string.agree)
-                        .presetsButton(R.string.presets)
-                        .backButton(R.string.back)
-                        .accentMode(true)
-                        .preselect(PreferencesUtils.getInteger(getActivity(), getString(R.string.color_accent), R.color.colorAccent))
-                        .show();
-                return true;
-            }
-        });
+        if (colorAccent != null) {
+            colorAccent.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    new ColorChooserDialog.Builder((SettingActivity) getActivity(), R.string.color_accent)
+                            .titleSub(R.string.colors)
+                            .customButton(R.string.color_custom)
+                            .cancelButton(R.string.cancel)
+                            .doneButton(R.string.agree)
+                            .presetsButton(R.string.presets)
+                            .backButton(R.string.back)
+                            .accentMode(true)
+                            .preselect(PreferencesUtils.getInteger(getActivity(), getString(R.string.color_accent), R.color.colorAccent))
+                            .show();
+                    return true;
+                }
+            });
+        }
 
         enableCache.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -190,13 +194,15 @@ public class SettingFragment extends PreferenceFragment {
             }
         });
 
-        avatar.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
+        if (avatar != null) {
+            avatar.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
 //                pickFromGallery();
-                return true;
-            }
-        });
+                    return true;
+                }
+            });
+        }
 
         equalizer.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -206,14 +212,16 @@ public class SettingFragment extends PreferenceFragment {
             }
         });
 
-        donate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                clipboardManager.setPrimaryClip(ClipData.newPlainText(getActivity().getString(R.string.donate),
-                        getActivity().getString(R.string.donate_id)));
-                ToastUtils.showToast(getActivity().getString(R.string.donate_done));
-                return true;
-            }
-        });
+        if (donate != null) {
+            donate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    clipboardManager.setPrimaryClip(ClipData.newPlainText(getActivity().getString(R.string.donate),
+                            getActivity().getString(R.string.donate_id)));
+                    ToastUtils.showToast(getActivity().getString(R.string.donate_done));
+                    return true;
+                }
+            });
+        }
     }
 }

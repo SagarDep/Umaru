@@ -1,6 +1,7 @@
 package cc.haoduoyu.umaru.ui.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,8 +10,10 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -67,7 +70,7 @@ public class ChatActivity extends ToolbarActivity implements SendButton.OnSendCl
         initViews();
 
         //动画开关
-        if (SettingUtils.getInstance(this).isEnableAnimations())
+        if (SettingUtils.getInstance(this).isEnableAnimations() && getIntent().getIntArrayExtra(ARG_REVEAL_START_LOCATION) != null)
             setupRevealBackground(savedInstanceState);
         else vRevealBackground.setToFinishedFrame();
 
@@ -101,9 +104,7 @@ public class ChatActivity extends ToolbarActivity implements SendButton.OnSendCl
      * @param savedInstanceState
      */
     private void setupRevealBackground(Bundle savedInstanceState) {
-//        vRevealBackground.setFillPaintColor(Color.GRAY);
-//        vRevealBackground.setOnStateChangeListener(this);
-        if (savedInstanceState == null || savedInstanceState != null) {
+        if (savedInstanceState == null) {
             final int[] startingLocation = getIntent().getIntArrayExtra(ARG_REVEAL_START_LOCATION);
             vRevealBackground.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
@@ -127,9 +128,9 @@ public class ChatActivity extends ToolbarActivity implements SendButton.OnSendCl
 //            rvComments.smoothScrollBy(0, rvComments.getChildAt(0).getHeight() * commentsAdapter.getItemCount());
 
 //            sendEt.setText(null);
+            hideKeyboard();
             mAdapter.loadChat(sendEt.getText().toString().replace("\n", "").replace(" ", ""));
             mRecyclerview.smoothScrollToPosition(mAdapter.getItemCount() - 1);
-//            mAdapter.notifyDataSetChanged();
             sendBtn.setCurrentState(SendButton.STATE_DONE);
         }
     }
@@ -163,5 +164,13 @@ public class ChatActivity extends ToolbarActivity implements SendButton.OnSendCl
 
     public RecyclerView getRecyclerView() {
         return mRecyclerview;
+    }
+
+    private void hideKeyboard() {
+        if (getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
+            if (getCurrentFocus() != null)
+                ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getCurrentFocus()
+                        .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 }

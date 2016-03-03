@@ -37,14 +37,22 @@ import android.widget.ImageView;
 
 import cc.haoduoyu.umaru.R;
 
+/**
+ * 1. 首先通过setImageXxx()方法设置图片Bitmap；
+ * 2. 进入构造函数CircleImageView()获取自定义参数，以及调用setup()函数；
+ * 3. 进入setup()函数（非常关键），进行图片画笔边界画笔(Paint)一些重绘参数初始化：构建渲染器BitmapShader用Bitmap来填充绘制区域,设置样式和内外圆半径计算等，以及调用updateShaderMatrix()函数和 invalidate()函数；
+ * 4. 进入updateShaderMatrix()函数，计算缩放比例和平移，设置BitmapShader的Matrix参数等；
+ * 5. 触发ondraw()函数完成最终的绘制。使用配置好的Paint先画出绘制内圆形来以后再画边界圆形。
+ */
 public class CircleImageView extends ImageView {
-
+    //缩放类型
     private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;
 
     private static final Bitmap.Config BITMAP_CONFIG = Bitmap.Config.ARGB_8888;
     private static final int COLORDRAWABLE_DIMENSION = 2;
-
+    //默认边界宽度
     private static final int DEFAULT_BORDER_WIDTH = 0;
+    //默认边界颜色
     private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
     private static final int DEFAULT_FILL_COLOR = Color.TRANSPARENT;
     private static final boolean DEFAULT_BORDER_OVERLAY = false;
@@ -62,12 +70,12 @@ public class CircleImageView extends ImageView {
     private int mFillColor = DEFAULT_FILL_COLOR;
 
     private Bitmap mBitmap;
-    private BitmapShader mBitmapShader;
-    private int mBitmapWidth;
-    private int mBitmapHeight;
+    private BitmapShader mBitmapShader;//位图渲染
+    private int mBitmapWidth;//位图宽度
+    private int mBitmapHeight;//位图高度
 
-    private float mDrawableRadius;
-    private float mBorderRadius;
+    private float mDrawableRadius;//图片半径
+    private float mBorderRadius;//带边框的图片半径
 
     private ColorFilter mColorFilter;
 
@@ -87,19 +95,26 @@ public class CircleImageView extends ImageView {
 
     public CircleImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        //通过obtainStyledAttributes 获得一组值赋给 TypedArray（数组） , 这一组值来自于res/values/attrs.xml中的name="CircleImageView"的declare-styleable中。
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircleImageView, defStyle, 0);
-
+        //通过TypedArray提供的一系列方法getXXXX取得我们在xml里定义的参数值；
+        //获取边界的宽度
         mBorderWidth = a.getDimensionPixelSize(R.styleable.CircleImageView_civ_border_width, DEFAULT_BORDER_WIDTH);
+        //获取边界的颜色
         mBorderColor = a.getColor(R.styleable.CircleImageView_civ_border_color, DEFAULT_BORDER_COLOR);
         mBorderOverlay = a.getBoolean(R.styleable.CircleImageView_civ_border_overlay, DEFAULT_BORDER_OVERLAY);
         mFillColor = a.getColor(R.styleable.CircleImageView_civ_fill_color, DEFAULT_FILL_COLOR);
-
+        //调用 recycle() 回收TypedArray,以便后面重用
         a.recycle();
 
         init();
     }
 
+    /**
+     * 通过设置mSetupPending和mReady控制第一次执行setup函数里下面代码要在构造函数执行完毕时。
+     * 再者如果用户再进行setImageXXX()设置图片的话，就直接会执行setup()下面的代码，因为这之后mReady一直为true。
+     */
     private void init() {
         super.setScaleType(SCALE_TYPE);
         mReady = true;

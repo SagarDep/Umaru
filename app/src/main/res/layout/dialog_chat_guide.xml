@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="你可以这样问我？"-->
+        <!--android:textColor="#80000000"-->
+        <!--android:textSize="@dimen/textSizeX3" />-->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/chat_guide_content"
+        android:textSize="@dimen/textSizeX2.5" />
+
+
+    <CheckBox
+        android:id="@+id/showGuide"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="@string/dont_show_again"
+        android:textSize="@dimen/textSizeX2.5" />
+
+</LinearLayout>

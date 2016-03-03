@@ -1,22 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="色彩">
+    <PreferenceCategory android:title="配置">
 
         <Preference
             android:key="color_primary"
-            android:summary="主题主色调 (实验性功能)"
+            android:summary="主题主色调"
             android:title="主色调" />
 
-        <Preference
-            android:key="color_accent"
-            android:summary="主题强调色 (实验性功能)"
-            android:title="强调色" />
-
-
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="配置">
+        <!--<Preference-->
+        <!--android:key="color_accent"-->
+        <!--android:summary="主题强调色 (实验性功能)"-->
+        <!--android:title="强调色"-->
+        <!--/>-->
 
         <SwitchPreference
             android:defaultValue="true"
@@ -52,10 +48,17 @@
             android:summary="进入应用设置界面"
             android:title="应用管理" />
 
-        <Preference
-            android:key="avatar"
-            android:summary="修改个人头像 (实验性功能)"
-            android:title="个人头像" />
+        <!--<Preference-->
+        <!--android:key="avatar"-->
+        <!--android:summary="修改个人头像 (实验性功能)"-->
+        <!--android:title="个人头像" />-->
+
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="enable_guide"
+            android:summary="开启或关闭聊天引导对话框"
+            android:title="聊天引导" />
 
     </PreferenceCategory>
 
@@ -80,10 +83,10 @@
             android:summary="查看Github上的源代码"
             android:title="开放源代码" />
 
-        <Preference
-            android:key="donate"
-            android:summary="如果你喜欢这个项目，可以在这里打赏我"
-            android:title="捐赠" />
+        <!--<Preference-->
+            <!--android:key="donate"-->
+            <!--android:summary="如果你喜欢这个项目，可以在这里打赏我"-->
+            <!--android:title="捐赠" />-->
 
     </PreferenceCategory>
 

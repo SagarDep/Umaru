@@ -34,7 +34,7 @@ public class BaseActivity extends AppCompatActivity {
 // 比较常用的方法就是，将发出这个请求的Activity或者Fragment作为标签，并在onStop()中调用cancelAll()
     }
 
-    protected void replaceFragmentWithSelected(Fragment fragment) {
+    public void replaceFragmentWithSelected(Fragment fragment) {
 
         FragmentTransaction fragmentTransaction = this
                 .getSupportFragmentManager().beginTransaction();

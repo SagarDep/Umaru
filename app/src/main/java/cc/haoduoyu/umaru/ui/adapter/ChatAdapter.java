@@ -2,6 +2,7 @@ package cc.haoduoyu.umaru.ui.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -22,7 +23,12 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.model.Chat;
+import cc.haoduoyu.umaru.player.PlayerController;
+import cc.haoduoyu.umaru.player.PlayerLib;
 import cc.haoduoyu.umaru.ui.activities.ChatActivity;
+import cc.haoduoyu.umaru.ui.activities.MainActivity;
+import cc.haoduoyu.umaru.ui.activities.NowPlayingActivity;
+import cc.haoduoyu.umaru.utils.Utils;
 import cc.haoduoyu.umaru.utils.volleyUtils.GsonRequest;
 import cc.haoduoyu.umaru.utils.volleyUtils.RequestManager;
 
@@ -58,7 +64,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         holder.mTextView.setText(mChat.get(position).getContent());
 
         if (!TextUtils.isEmpty(mChat.get(position).getUrl())) {
-            holder.mTextViewUrl.setText("点击查看信息");
+            holder.mTextViewUrl.setText("查看详情");
             holder.mTextViewUrl.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -87,25 +93,102 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             return Chat.RECEIVE;
     }
 
-    public void loadData() {
-
-        for (int i = 0; i < 100; i++) {
-            mChat.add(new Chat(Chat.RECEIVE, i + ""));
-        }
-    }
-
     /**
      * 加载聊天消息
      *
      * @param text
      */
     public void loadChat(String text) {
-
-
         Chat sendText = new Chat(Chat.SEND, text);
         mChat.add(sendText);
         notifyDataSetChanged();
+        //识别特定文字
+        recognizeText(text);
+    }
 
+    /**
+     * 识别特定文字
+     *
+     * @param text
+     */
+    private void recognizeText(final String text) {
+        if (text.contains("放一首歌吧") || text.contains("听歌") || text.contains("播放")) {
+
+            mChat.add(new Chat(Chat.RECEIVE, "即将播放音乐..."));
+            notifyDataSetChanged();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (PlayerController.getNowPlaying() != null) {
+                        NowPlayingActivity.startIt(PlayerController.getNowPlaying(), (Activity) mContext);
+                    } else if (PlayerLib.getSongs().size() != 0) {
+                        PlayerController.setQueueAndPosition(PlayerLib.getSongs(), 0);
+                        PlayerController.begin();
+                        NowPlayingActivity.startIt(PlayerLib.getSongs().get(0), (Activity) mContext);
+                    }
+                }
+            }, 1555);
+
+        } else if (text.contains("歌手") || text.contains("歌曲榜") ||
+                text.contains("艺人榜") || text.contains("音乐")) {
+            mChat.add(new Chat(Chat.RECEIVE, "正在查询" + text + "..."));
+            notifyDataSetChanged();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    //启动MusicFragment
+                    MainActivity.startIt(1, (Activity) mContext);
+                }
+            }, 1555);
+
+        } else if (text.contains("电话") || text.contains("拨打")) {
+            mChat.add(new Chat(Chat.RECEIVE, "正在打开电话..."));
+            notifyDataSetChanged();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    String number = "";
+                    for (int i = 0; i < text.length(); i++) {
+                        if (text.charAt(i) >= 48 && text.charAt(i) <= 57) {
+                            number += text.charAt(i);
+                        }
+                    }
+                    Utils.dial(mContext, number.length() >= 3 ? number : null);
+                }
+            }, 1255);
+        } else if (text.contains("短信")) {
+            mChat.add(new Chat(Chat.RECEIVE, "正在打开短信..."));
+            notifyDataSetChanged();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    String number = "";
+                    for (int i = 0; i < text.length(); i++) {
+                        if (text.charAt(i) >= 48 && text.charAt(i) <= 57) {
+                            number += text.charAt(i);
+                        }
+                    }
+                    Utils.sms(mContext, number.length() >= 5 ? number : null);
+                }
+            }, 1255);
+        } else {
+            loadWithTuling(text);
+        }
+
+
+    }
+
+    /**
+     * 从图灵接口加载
+     *
+     * @param text
+     */
+
+    private void loadWithTuling(String text) {
         // 该方法内部实现了在每个观察者上面调用onChanged事件。
         // 每当发现数据集有改变的情况，或者读取到数据的新状态时，就会调用此方法
         Map<String, String> params = new HashMap<>();

@@ -12,12 +12,19 @@ import android.media.MediaFormat;
 import android.media.audiofx.AudioEffect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.telephony.PhoneNumberUtils;
+import android.text.format.Time;
 import android.view.Display;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+
+import com.apkfuns.logutils.LogUtils;
 
 import java.io.IOException;
+import java.util.Calendar;
 
 import cc.haoduoyu.umaru.model.Song;
 
@@ -225,5 +232,41 @@ public class Utils {
                 Color.parseColor("#78909C"), Color.parseColor("#607D8B"), Color.parseColor("#546E7A"),
         };
         return colors[(int) (Math.random() * colors.length)];
+    }
+
+    /**
+     * 是否是白天
+     *
+     * @return
+     */
+    public static boolean isDay() {
+        Time time = new Time();
+        time.setToNow();
+        LogUtils.d(time.hour);
+        if (6 <= time.hour && time.hour <= 18) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 拨打电话
+     *
+     * @param context
+     * @param number
+     */
+    public static void dial(Context context, String number) {
+        Uri uri = Uri.parse("tel:" + number);
+        LogUtils.d(uri);
+        Intent intent = new Intent(Intent.ACTION_DIAL, uri);
+        context.startActivity(intent);
+    }
+
+    public static void sms(Context context, String number) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + number));
+        intent.putExtra("sms_body", "请输入短信内容");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 }

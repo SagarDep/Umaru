@@ -16,6 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/welcome_avatar"
+        android:layout_marginTop="5dp"
         android:layout_toRightOf="@+id/welcome_avatar"
         android:textSize="@dimen/textSizeX3"
         tools:text="test" />
@@ -26,6 +27,8 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/item_chat_tv"
         android:layout_below="@+id/item_chat_tv"
-        android:text=""
-        android:textSize="@dimen/textSizeX3" />
+        android:layout_marginTop="3dp"
+        android:textColor="@color/md_grey_800"
+        android:textSize="@dimen/textSizeX2"
+        tools:text="查看详情" />
 </RelativeLayout>

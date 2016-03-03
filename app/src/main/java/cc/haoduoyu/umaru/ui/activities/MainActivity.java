@@ -1,5 +1,6 @@
 package cc.haoduoyu.umaru.ui.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -45,12 +46,19 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     @Bind(R.id.fab)
     FloatingActionButton fab;
 
+    private static final String INDEX = "index";
     private BaseFragment mCurrentFragment;
     private Map<String, BaseFragment> mBaseFragmentByName = new HashMap<>();
 
     @Override
     protected int provideContentViewId() {
         return R.layout.activity_main;
+    }
+
+    public static void startIt(int index, Activity startingActivity) {
+        Intent intent = new Intent(startingActivity, MainActivity.class);
+        intent.putExtra(INDEX, index);//启动动画
+        startingActivity.startActivity(intent);
     }
 
     @Override
@@ -60,29 +68,44 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     }
 
     private void initViews() {
-
         initDrawer();
         setAppBarTransparent();
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (!Utils.isNetworkReachable(Umaru.getContext()))
-                    SnackbarUtils.showLong(fab, getString(R.string.snackbar_error));
-                else
-                    SnackbarUtils.showSnackBackWithAction(fab, getString(R.string.snackbar_chat), "OK");
-            }
-        }, 1558);
+        initSnackBar();
 
         if (SettingUtils.getInstance(this).isEnableAnimations()) {
             startToolbarAnimation();
             startFabAnimation();
         }
 
-        mCurrentFragment = getFragment(MainFragment.class.getName());
+        if (getIntent().getIntExtra(INDEX, 0) == 1) {
+            setTitle(getResources().getString(R.string.music));
+            fab.setImageResource(android.R.drawable.ic_media_play);
+            mCurrentFragment = getFragment(MusicFragment.class.getName());
+        } else {
+            mCurrentFragment = getFragment(MainFragment.class.getName());
+        }
         replaceFragmentWithSelected(mCurrentFragment);
     }
 
+    /**
+     * 初始化SnackBar
+     */
+    private void initSnackBar() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!Utils.isNetworkReachable(Umaru.getContext()))
+                    SnackbarUtils.showLong(fab, getString(R.string.snackbar_error));
+                else if (getString(R.string.umaru).equals(mToolbar.getTitle()) &&
+                        !SettingUtils.getInstance(MainActivity.this).isEnableChatGuide())
+                    SnackbarUtils.showSnackBackWithAction(fab, getString(R.string.snackbar_chat), getString(R.string.know));
+            }
+        }, 1558);
+    }
+
+    /**
+     * 初始化Drawer
+     */
     private void initDrawer() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -90,6 +113,9 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    /**
+     * 启动FAB动画
+     */
     protected void startFabAnimation() {
         fab.setTranslationY(2 * getResources().getDimensionPixelOffset(R.dimen.fab_size));
         fab.animate().translationY(0).setInterpolator(new OvershootInterpolator(1.f)).setStartDelay(400).setDuration(500);
@@ -118,11 +144,11 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
             case R.id.action_settings:
                 SettingActivity.startIt(this);
                 break;
-            case R.id.action_night:
-                Constants.isDay = !Constants.isDay;
-                PreferencesUtils.setBoolean(this, "w_pic", Constants.isDay);
-                EventBus.getDefault().post(new MessageEvent(MessageEvent.WEATHER_PIC));
-                break;
+//            case R.id.action_night:
+//                Constants.isDay = !Constants.isDay;
+//                PreferencesUtils.setBoolean(this, "w_pic", Constants.isDay);
+//                EventBus.getDefault().post(new MessageEvent(MessageEvent.WEATHER_PIC));
+//                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -172,7 +198,7 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
 
     @OnClick(R.id.fab)
     public void onStartIt() {
-        if (getResources().getString(R.string.umaru).equals(mToolbar.getTitle())) {
+        if (getString(R.string.umaru).equals(mToolbar.getTitle())) {
             int[] startingLocation = new int[2];
             fab.getLocationOnScreen(startingLocation);
             startingLocation[0] += fab.getWidth() / 2;

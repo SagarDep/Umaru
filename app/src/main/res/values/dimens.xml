@@ -22,7 +22,8 @@
 
     <dimen name="textSize">6sp</dimen>
     <dimen name="textSizeX2">13sp</dimen>
-    <dimen name="textSizeX3">18sp</dimen>
+    <dimen name="textSizeX2.5">15sp</dimen>
+    <dimen name="textSizeX3">16sp</dimen>
     <dimen name="textSizeX4">22sp</dimen>
     <dimen name="textSizeX5">26sp</dimen>
     <dimen name="textSizeX6">30sp</dimen>
@@ -36,7 +37,6 @@
     <dimen name="cardMarginTop">30dp</dimen>
     <dimen name="cardMarginTopX2">60dp</dimen>
     <dimen name="cardMarginTopX3">100dp</dimen>
-    <dimen name="cardMarginTopX5">150dp</dimen>
 
     <dimen name="default_elevation">8dp</dimen>
 

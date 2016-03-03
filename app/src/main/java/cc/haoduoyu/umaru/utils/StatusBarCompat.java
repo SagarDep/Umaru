@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 /**
  * 状态栏变色
  * @TargetApi(19)
- * Created by XP on 2016/1/16.
+ * Created by zhy on 15/9/21.
  */
 public class StatusBarCompat {
     private static final int INVALID_VAL = -1;
