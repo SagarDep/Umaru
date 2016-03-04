@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -17,7 +16,6 @@ import butterknife.ButterKnife;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.SettingUtils;
-import cc.haoduoyu.umaru.utils.StatusBarCompat;
 import cc.haoduoyu.umaru.utils.Utils;
 
 /**
@@ -58,11 +56,17 @@ public abstract class ToolbarActivity extends BaseActivity {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);//给左上角图标的左边加上一个返回的图标
         }
 
-        StatusBarCompat.compat(this);//状态栏变色
+//        StatusBarCompat.compat(this);
         setColorPrimary();
 
         if (SettingUtils.getInstance(this).isEnableAnimations())
             startToolbarAnimation();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
     }
 
     protected void setColorPrimary() {

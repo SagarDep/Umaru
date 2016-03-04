@@ -9,5 +9,8 @@ public class Constants {
     public static final String WEATHER_PIC_DAY = "http://7xq3d5.com1.z0.glb.clouddn.com/day.png";
     public static final String WEATHER_PIC_NIGHT = "http://7xq3d5.com1.z0.glb.clouddn.com/night.png";
     public static final int VOLLEY_TIMEOUT = 100000;
+    public static final String WZ_URL = "http://ids1.suda.edu.cn/amserver/UI/Login?goto=http://myauth.suda.edu.cn/default.aspx?app=wzjw";
+
+
 }
 

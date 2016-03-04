@@ -7,6 +7,7 @@ public class MessageEvent {
 
     public static final String WEATHER_PIC = "weather_pic";
     public static final String LOAD_DONE = "load_done";
+    public static final String WZ = "wz";
 
     public final String message;
 

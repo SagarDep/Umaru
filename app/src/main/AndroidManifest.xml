@@ -37,6 +37,9 @@
         <activity
             android:name=".ui.activities.SettingActivity"
             android:label="@string/settings"></activity>
+        <activity
+            android:name=".ui.activities.WebViewActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
 
         <!-- Player Service -->
         <service

@@ -2,6 +2,8 @@ package cc.haoduoyu.umaru.utils;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -20,6 +22,7 @@ import android.text.format.Time;
 import android.view.Display;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import com.apkfuns.logutils.LogUtils;
 
@@ -265,8 +268,15 @@ public class Utils {
 
     public static void sms(Context context, String number) {
         Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + number));
-        intent.putExtra("sms_body", "请输入短信内容");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("sms_body", "");
         context.startActivity(intent);
+    }
+
+    public static void copyToClipBoard(Context context, String text, String success) {
+        ClipData clipData = ClipData.newPlainText("umaru", text);
+        ClipboardManager manager = (ClipboardManager) context.getSystemService(
+                Context.CLIPBOARD_SERVICE);
+        manager.setPrimaryClip(clipData);
+        Toast.makeText(context, success, Toast.LENGTH_SHORT).show();
     }
 }

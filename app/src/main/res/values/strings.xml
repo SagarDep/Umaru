@@ -81,6 +81,21 @@
     <string name="ask_me">你可以这样问我</string>
     <string name="chat_guide_content">今天上海的天气怎么样\n\n明天从苏州到上海的火车\n\n播放一些歌曲\n\n拨打10001的电话\n\n发短信给10010\n\n最近流行的歌手</string>
     <string name="dont_show_again">不再显示</string>
+    <string name="account_bind">账号绑定</string>
+    <string name="account">account</string>
+    <string name="password">password</string>
+    <string name="account_error">请输入正确的学号</string>
+    <string name="password_error">密码不能为空</string>
+    <string name="account_hint">请输入学号</string>
+    <string name="password_hint">请输入密码</string>
+    <string name="account_not_bind">教务账号未绑定</string>
+    <string name="now_bind_account">"当前绑定账号为: "</string>
+    <string name="bind_success">绑定成功</string>
+    <string name="wz_account">绑定文正教务账号，账号密码并不会上传，你无需担心账号安全</string>
+    <string name="cookie">cookie</string>
+    <string name="copy_done">复制成功</string>
+    <string name="open_failed">打开失败</string>
+    <string name="clean_web_cache">清除浏览器缓存</string>
 
 
     <string-array name="welcome_texts">

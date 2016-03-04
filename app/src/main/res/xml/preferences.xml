@@ -43,10 +43,14 @@
             android:negativeButtonText="@null"
             android:title="图片质量" />
 
+        <!--<Preference-->
+            <!--android:key="clear"-->
+            <!--android:summary="进入应用设置界面"-->
+            <!--android:title="应用管理" />-->
+
         <Preference
-            android:key="clear"
-            android:summary="进入应用设置界面"
-            android:title="应用管理" />
+            android:key="account"
+            android:title="账号绑定" />
 
         <!--<Preference-->
         <!--android:key="avatar"-->

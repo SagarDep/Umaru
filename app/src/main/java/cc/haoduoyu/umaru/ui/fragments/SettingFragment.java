@@ -10,12 +10,22 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
+import android.support.design.widget.TextInputLayout;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
 
 import cc.haoduoyu.umaru.BuildConfig;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.ui.activities.AboutActivity;
+import cc.haoduoyu.umaru.ui.activities.ChatActivity;
 import cc.haoduoyu.umaru.ui.activities.SettingActivity;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.SettingUtils;
@@ -36,6 +46,7 @@ public class SettingFragment extends PreferenceFragment {
     private static final String CACHE = "cache";
     private static final String PIC = "pic";
     private static final String CLEAR = "clear";
+    private static final String ACCOUNT = "account";
     private static final String EQUALIZER = "equalizer";
     private static final String ABOUT = "about";
     private static final String GITHUB = "github";
@@ -48,10 +59,13 @@ public class SettingFragment extends PreferenceFragment {
     SwitchPreference animation, enableCache, enableGuide;
     ListPreference cache, pic;
     Preference clear;
+    Preference account;
     Preference equalizer;
     Preference about, github, donate;
 
     ClipboardManager clipboardManager;
+    EditText accountEt, passwordEt;
+    TextInputLayout accountLayout, passwordLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,12 +81,18 @@ public class SettingFragment extends PreferenceFragment {
         cache = (ListPreference) findPreference(CACHE);
         pic = (ListPreference) findPreference(PIC);
         clear = findPreference(CLEAR);
+        account = findPreference(ACCOUNT);
         enableGuide = (SwitchPreference) findPreference(ENABLE_GUIDE);
         equalizer = findPreference(EQUALIZER);
         about = findPreference(ABOUT);
         github = findPreference(GITHUB);
         donate = findPreference(DONATE);
 
+        if (!TextUtils.isEmpty(PreferencesUtils.getString(getActivity(), getString(R.string.account)))) {
+            account.setSummary(getString(R.string.now_bind_account) + PreferencesUtils.getString(getActivity(), getString(R.string.account)));
+        } else {
+            account.setSummary(R.string.account_not_bind);
+        }
         cache.setSummary(showCache(SettingUtils.getInstance(getActivity()).getCache()));
         pic.setSummary(showPicQuality(SettingUtils.getInstance(getActivity()).getPicQuality()));
         about.setIntent(new Intent(getActivity(), AboutActivity.class));
@@ -133,7 +153,7 @@ public class SettingFragment extends PreferenceFragment {
             }
         });
 
-        if (colorAccent != null) {
+        if (colorAccent != null)
             colorAccent.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -150,7 +170,7 @@ public class SettingFragment extends PreferenceFragment {
                     return true;
                 }
             });
-        }
+
 
         enableCache.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -186,15 +206,52 @@ public class SettingFragment extends PreferenceFragment {
             }
         });
 
-        clear.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        if (clear != null)
+            clear.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Utils.openAppSettings(getActivity());
+                    return true;
+                }
+            });
+
+        account.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                Utils.openAppSettings(getActivity());
+
+                MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+                        .title(R.string.account_bind)
+                        .customView(R.layout.dialog_account_bind, true)
+                        .positiveText(R.string.agree)
+                        .negativeText(R.string.cancel)
+                        .autoDismiss(false)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(MaterialDialog dialog, DialogAction which) {
+                                saveAccount(dialog);
+                            }
+                        }).onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(MaterialDialog dialog, DialogAction which) {
+                                dialog.dismiss();
+                            }
+                        }).build();
+
+                accountLayout = (TextInputLayout) dialog.getCustomView().findViewById(R.id.til_account);
+                accountLayout.setHint(getString(R.string.account_hint));
+                passwordLayout = (TextInputLayout) dialog.getCustomView().findViewById(R.id.til_password);
+                passwordLayout.setHint(getString(R.string.password_hint));
+                accountEt = accountLayout.getEditText();
+                accountEt.setText(PreferencesUtils.getString(getActivity(), getString(R.string.account)));
+                passwordEt = passwordLayout.getEditText();
+                passwordEt.setText(PreferencesUtils.getString(getActivity(), getString(R.string.password)));
+
+                dialog.show();
                 return true;
             }
         });
 
-        if (avatar != null) {
+        if (avatar != null)
             avatar.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -202,7 +259,7 @@ public class SettingFragment extends PreferenceFragment {
                     return true;
                 }
             });
-        }
+
 
         equalizer.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -216,12 +273,31 @@ public class SettingFragment extends PreferenceFragment {
             donate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    clipboardManager.setPrimaryClip(ClipData.newPlainText(getActivity().getString(R.string.donate),
-                            getActivity().getString(R.string.donate_id)));
-                    ToastUtils.showToast(getActivity().getString(R.string.donate_done));
+                    Utils.copyToClipBoard(getActivity(), getString(R.string.umaru), getString(R.string.donate_done));
                     return true;
                 }
             });
+        }
+    }
+
+
+    private void saveAccount(MaterialDialog dialog) {
+        if (accountEt.getText().toString().length() < 10) {
+            accountLayout.setErrorEnabled(true);
+            passwordLayout.setErrorEnabled(false);
+            accountLayout.setError(getString(R.string.account_error));
+        } else if (TextUtils.isEmpty(passwordEt.getText().toString())) {
+            passwordLayout.setErrorEnabled(true);
+            accountLayout.setErrorEnabled(false);
+            passwordLayout.setError(getString(R.string.password_error));
+        } else {
+            accountLayout.setErrorEnabled(false);
+            passwordLayout.setErrorEnabled(false);
+            PreferencesUtils.setString(getActivity(), getString(R.string.account), accountEt.getText().toString());
+            PreferencesUtils.setString(getActivity(), getString(R.string.password), passwordEt.getText().toString());
+            dialog.dismiss();
+            account.setSummary(getString(R.string.now_bind_account) + PreferencesUtils.getString(getActivity(), getString(R.string.account)));
+            ToastUtils.showToast(getString(R.string.bind_success));
         }
     }
 }

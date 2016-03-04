@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import butterknife.Bind;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.base.ToolbarActivity;
+import cc.haoduoyu.umaru.event.MessageEvent;
 import cc.haoduoyu.umaru.ui.adapter.ChatAdapter;
 import cc.haoduoyu.umaru.utils.SettingUtils;
 import cc.haoduoyu.umaru.widgets.RevealBackgroundView;
@@ -172,5 +173,12 @@ public class ChatActivity extends ToolbarActivity implements SendButton.OnSendCl
                 ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getCurrentFocus()
                         .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
+    }
+
+    public void onEvent(MessageEvent event) {
+        if (event.message.equals(MessageEvent.WEATHER_PIC)) {
+//            loadWeatherPic();
+        }
+
     }
 }

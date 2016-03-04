@@ -2,6 +2,7 @@ package cc.haoduoyu.umaru.ui.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -9,18 +10,42 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.StringRequest;
 import com.apkfuns.logutils.LogUtils;
 import com.thefinestartist.finestwebview.FinestWebView;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.CookieStore;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cc.haoduoyu.umaru.Constants;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.model.Chat;
 import cc.haoduoyu.umaru.player.PlayerController;
@@ -28,9 +53,14 @@ import cc.haoduoyu.umaru.player.PlayerLib;
 import cc.haoduoyu.umaru.ui.activities.ChatActivity;
 import cc.haoduoyu.umaru.ui.activities.MainActivity;
 import cc.haoduoyu.umaru.ui.activities.NowPlayingActivity;
+import cc.haoduoyu.umaru.ui.activities.WebViewActivity;
+import cc.haoduoyu.umaru.utils.MD5Utils;
+import cc.haoduoyu.umaru.utils.PreferencesUtils;
+import cc.haoduoyu.umaru.utils.ToastUtils;
 import cc.haoduoyu.umaru.utils.Utils;
 import cc.haoduoyu.umaru.utils.volleyUtils.GsonRequest;
 import cc.haoduoyu.umaru.utils.volleyUtils.RequestManager;
+import retrofit2.http.POST;
 
 /**
  * Created by XP on 2016/1/20.
@@ -175,11 +205,119 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                     Utils.sms(mContext, number.length() >= 5 ? number : null);
                 }
             }, 1255);
-        } else {
+        } else if (text.contains("教务")) {
+
+            if (!TextUtils.isEmpty(PreferencesUtils.getString(mContext, mContext.getString(R.string.account)))) {
+                mChat.add(new Chat(Chat.RECEIVE, "正在打开..."));
+                notifyDataSetChanged();
+//                final String username = PreferencesUtils.getString(mContext, mContext.getString(R.string.account));
+//                final String password = PreferencesUtils.getString(mContext, mContext.getString(R.string.password));
+//                final String md5 = MD5Utils.md5Encode(password);
+//                LogUtils.d(URL + " " + username + " " + password + " " + md5);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        WebViewActivity.startIt(mContext, Constants.WZ_URL, null);
+                    }
+                }, 1255);
+
+            } else
+                ToastUtils.showToast(mContext.getString(R.string.account_not_bind));
+        } else
             loadWithTuling(text);
+    }
+
+    public CookieManager cookieManager = null;
+    public static String cookies;
+
+    /**
+     * IDButton:Submit
+     * encoded:false
+     * goto:
+     * gx_charset:UTF-8
+     * IDToken0:
+     * IDToken1:1217443023
+     * IDToken9:080019
+     * IDToken2:ec5bb526f85028e09d4449ac86c3fea5
+     *
+     * @param url
+     * @param username
+     * @param password
+     * @return
+     */
+    public String sendPost(String url, String username, String password, String md5) {
+        CookieSyncManager.createInstance(mContext);
+        // 每次登录操作的时候先清除cookie
+        removeAllCookie();
+        // 根据url获得HttpPost对象
+        HttpPost httpRequest = new HttpPost(url);
+        // 取得默认的HttpClient
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+        String strResult = null;
+        // NameValuePair实现请求参数的封装
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("IDButton", "Submit"));
+        params.add(new BasicNameValuePair("encoded", "false"));
+        params.add(new BasicNameValuePair("goto", ""));
+        params.add(new BasicNameValuePair("gx_charset", "UTF-8"));
+        params.add(new BasicNameValuePair("IDToken0", ""));
+        params.add(new BasicNameValuePair("IDToken1", username));
+        params.add(new BasicNameValuePair("IDToken9", password));
+        params.add(new BasicNameValuePair("IDToken2", md5));
+//        httpRequest.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+        httpRequest.addHeader("Cookie", cookies);
+        httpRequest.addHeader("Content-Type", "application/x-www-form-urlencoded");
+        httpRequest.addHeader("Origin", "http://ids1.suda.edu.cn");
+        httpRequest.addHeader("Referer", "http://ids1.suda.edu.cn/amserver/UI/Login?goto=http://myauth.suda.edu.cn/default.aspx?app=wzjw");
+        try {
+            // 添加请求参数到请求对象
+            httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+            // 获得响应对象
+            HttpResponse httpResponse = httpclient.execute(httpRequest);
+            // 判断是否请求成功
+            if (httpResponse.getStatusLine().getStatusCode() == 200) {
+                // 获得响应返回Json格式数据
+                strResult = EntityUtils.toString(httpResponse.getEntity());
+                // 取得Cookie
+                CookieStore mCookieStore = httpclient.getCookieStore();
+                List<Cookie> cookies = mCookieStore.getCookies();
+                if (cookies.isEmpty()) {
+                    System.out.println("Cookies为空");
+                } else {
+                    for (int i = 0; i < cookies.size(); i++) {
+                        // 保存cookie
+                        Cookie cookie = cookies.get(i);
+                        LogUtils.d("Cookie" + cookies.get(i).getName() + "=" + cookies.get(i).getValue());
+                        cookieManager = CookieManager.getInstance();
+                        String cookieString = cookie.getName() + "=" + cookie.getValue() + "; domain=" + cookie.getDomain();
+                        cookieManager.setCookie(url, cookieString);
+                        PreferencesUtils.setString(mContext, mContext.getString(R.string.cookie), cookieString);
+                    }
+                }
+                return strResult;
+            } else {
+                strResult = "错误响应:" + httpResponse.getStatusLine().toString();
+            }
+        } catch (ClientProtocolException e) {
+            strResult = "错误响应:" + e.getMessage();
+            e.printStackTrace();
+            return strResult;
+        } catch (IOException e) {
+            strResult = "错误响应:" + e.getMessage();
+            e.printStackTrace();
+            return strResult;
+        } catch (Exception e) {
+            strResult = "错误响应:" + e.getMessage();
+            e.printStackTrace();
+            return strResult;
         }
+        return strResult;
+    }
 
-
+    private void removeAllCookie() {
+        cookieManager = CookieManager.getInstance();
+        cookieManager.removeAllCookie();
+        CookieSyncManager.getInstance().sync();
     }
 
     /**
@@ -189,8 +327,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
      */
 
     private void loadWithTuling(String text) {
-        // 该方法内部实现了在每个观察者上面调用onChanged事件。
-        // 每当发现数据集有改变的情况，或者读取到数据的新状态时，就会调用此方法
+
         Map<String, String> params = new HashMap<>();
         params.put("key", "3f1a3d85cfbb83fb58ba5c38997343dc");
         params.put("info", text);
@@ -234,30 +371,4 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             ButterKnife.bind(this, itemView);
         }
     }
-
 }
-//public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-//    class ViewHolder0 extends RecyclerView.ViewHolder {
-//        ...
-//    }
-//
-//    class ViewHolder2 extends RecyclerView.ViewHolder {
-//        ...
-//    }
-//
-//    @Override
-//    public int getItemViewType(int position) {
-//        // Just as an example, return 0 or 2 depending on position
-//        // Note that unlike in ListView adapters, types don't have to be contiguous
-//        return position % 2 * 2;
-//    }
-//
-//    @Override
-//    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        switch (viewType) {
-//            case 0: return new ViewHolder0(...);
-//            case 2: return new ViewHolder2(...);
-//            ...
-//        }
-//    }
-//}
