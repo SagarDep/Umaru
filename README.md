@@ -1,10 +1,10 @@
 # Umaru
-<img src="http://7xq3d5.com1.z0.glb.clouddn.com/Screenshot_20160204-192900%5B1%5D.png" alt="ss" title="screenshot" width="324" height="576" />
+<img src="http://7xq3d5.com1.z0.glb.clouddn.com/Screenshot_20160305-203718%5B1%5D.png" alt="ss" title="screenshot" width="324" height="576" />
 <img src="http://7xq3d5.com1.z0.glb.clouddn.com/Screenshot_20160204-192840%5B1%5D.png" alt="ss" title="screenshot" width="324" height="576" />
 <img src="http://7xq3d5.com1.z0.glb.clouddn.com/Screenshot_20160204-192656%5B1%5D.png" alt="ss" title="screenshot" width="324" height="576" />
 <img src="http://7xq3d5.com1.z0.glb.clouddn.com/Screenshot_20160204-192849%5B1%5D.png" alt="ss" title="screenshot" width="324" height="576" />
 <img src="http://7xq3d5.com1.z0.glb.clouddn.com/Screenshot_20160204-192923%5B1%5D.png" alt="ss" title="screenshot" width="324" height="576" />
-<img src="http://7xq3d5.com1.z0.glb.clouddn.com/Screenshot_20160204-193005%5B1%5D.png" alt="ss" title="screenshot" width="324" height="576" />
+<img src="http://7xq3d5.com1.z0.glb.clouddn.com/Screenshot_20160305-203707%5B1%5D.png" alt="ss" title="screenshot" width="324" height="576" />
 
 Thanks
 感谢以下开源项目的帮助
