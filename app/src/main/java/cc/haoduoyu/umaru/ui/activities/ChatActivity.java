@@ -48,7 +48,6 @@ public class ChatActivity extends ToolbarActivity implements SendButton.OnSendCl
     RecyclerView mRecyclerview;
     ChatAdapter mAdapter;
 
-
     @Override
     public boolean canBack() {
         return true;
@@ -138,11 +137,10 @@ public class ChatActivity extends ToolbarActivity implements SendButton.OnSendCl
 
     private boolean validateComment() {
         if (TextUtils.isEmpty(sendEt.getText())) {
-            sendBtn.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake_error));//translate画面转换位置移动动画效果
-
+            sendBtn.startAnimation(AnimationUtils
+                    .loadAnimation(this, R.anim.shake_error));//translate画面转换位置移动动画效果
             return false;
         }
-
         return true;
     }
 
@@ -179,6 +177,5 @@ public class ChatActivity extends ToolbarActivity implements SendButton.OnSendCl
         if (event.message.equals(MessageEvent.WEATHER_PIC)) {
 //            loadWeatherPic();
         }
-
     }
 }

@@ -156,6 +156,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                         PlayerController.setQueueAndPosition(PlayerLib.getSongs(), 0);
                         PlayerController.begin();
                         NowPlayingActivity.startIt(PlayerLib.getSongs().get(0), (Activity) mContext);
+                    } else {
+                        ToastUtils.showToast(mContext.getString(R.string.fab_no_music));
                     }
                 }
             }, 1555);
@@ -237,7 +239,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
      * gx_charset:UTF-8
      * IDToken0:
      * IDToken1:1217443023
-     * IDToken9:080019
+     * IDToken9:
      * IDToken2:ec5bb526f85028e09d4449ac86c3fea5
      *
      * @param url

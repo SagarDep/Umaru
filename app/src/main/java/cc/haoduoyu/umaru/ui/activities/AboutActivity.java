@@ -10,6 +10,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.color.CircleView;
@@ -19,6 +20,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cc.haoduoyu.umaru.BuildConfig;
+import cc.haoduoyu.umaru.Constants;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.base.BaseActivity;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
@@ -46,7 +48,6 @@ public class AboutActivity extends BaseActivity {
     TextView mVersionTextView;
     @Bind(R.id.collapsing_toolbar)
     CollapsingToolbarLayout mCollapsingToolbarLayout;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +86,12 @@ public class AboutActivity extends BaseActivity {
         LogUtils.d("a:" + SettingUtils.getInstance(this).isEnableAnimations());
         LogUtils.d(PreferencesUtils.getAll(this));
     }
+
+    @OnClick(R.id.developer)
+    void develop() {
+        WebViewActivity.startIt(this, Constants.HAO_DUO_YU, null);
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {

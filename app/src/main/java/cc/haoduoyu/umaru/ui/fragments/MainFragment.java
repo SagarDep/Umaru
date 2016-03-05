@@ -145,7 +145,7 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
                 insertToDB();
             }
         });
-        List<City> cityList = cityDao.queryForEq(City.Q, "danyang");
+        List<City> cityList = cityDao.queryForEq(City.Q, "suzhou");
         LogUtils.d(cityList);
         if (cityList.size() == 0) {
             insertToDB();
@@ -169,7 +169,7 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
         for (City c : cities) {
             cityDao.addCity(c);
         }
-        currentCityId = cityDao.queryForEq(City.Q, "danyang").get(0).getCityId();
+        currentCityId = cityDao.queryForEq(City.Q, "suzhou").get(0).getCityId();
     }
 
 

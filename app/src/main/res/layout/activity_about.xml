@@ -117,6 +117,7 @@
                 android:textColor="@color/md_grey_600" />
 
             <RelativeLayout
+                android:id="@+id/developer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_about">
