@@ -19,7 +19,6 @@ Thanks
 [pengwei1024/logutils](https://github.com/pengwei1024/LogUtils)
 [square/OkHttp](http://square.github.io/okhttp/)
 [square/Retrofit](http://square.github.io/retrofit/)
-[hrules6872/trendtextview](https://github.com/hrules6872/TrendTextView)
 [j256/ormlite-android](http://ormlite.com/)
 [frogermcs/InstaMaterial](https://github.com/frogermcs/InstaMaterial)
 [naman14/Timber](https://github.com/naman14/Timber)

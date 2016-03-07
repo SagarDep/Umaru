@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 
 import cc.haoduoyu.umaru.player.PlayerController;
+import cc.haoduoyu.umaru.player.PlayerLib;
+import cc.haoduoyu.umaru.utils.CrashHandler;
 
 /**
  * Created by XP on 2016/1/10.
@@ -18,6 +20,7 @@ public class Umaru extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = this;
-        PlayerController.startService(this);
+        CrashHandler crashHandler = CrashHandler.getInstance();
+        crashHandler.init(this);
     }
 }

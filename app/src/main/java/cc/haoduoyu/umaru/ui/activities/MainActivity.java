@@ -1,6 +1,7 @@
 package cc.haoduoyu.umaru.ui.activities;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,6 +32,7 @@ import cc.haoduoyu.umaru.ui.fragments.LocalMusicFragment;
 import cc.haoduoyu.umaru.ui.fragments.MainFragment;
 import cc.haoduoyu.umaru.ui.fragments.MusicFragment;
 import cc.haoduoyu.umaru.ui.fragments.OnlineFragment;
+import cc.haoduoyu.umaru.utils.AppManager;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.SettingUtils;
 import cc.haoduoyu.umaru.utils.SnackbarUtils;
@@ -57,7 +59,7 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
 
     public static void startIt(int index, Activity startingActivity) {
         Intent intent = new Intent(startingActivity, MainActivity.class);
-        intent.putExtra(INDEX, index);//启动动画
+        intent.putExtra(INDEX, index);
         startingActivity.startActivity(intent);
     }
 
@@ -65,6 +67,7 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initViews();
+        PlayerController.startService(this);
     }
 
     private void initViews() {
@@ -144,11 +147,6 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
             case R.id.action_settings:
                 SettingActivity.startIt(this);
                 break;
-//            case R.id.action_night:
-//                Constants.isDay = !Constants.isDay;
-//                PreferencesUtils.setBoolean(this, "w_pic", Constants.isDay);
-//                EventBus.getDefault().post(new MessageEvent(MessageEvent.WEATHER_PIC));
-//                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -177,6 +175,11 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
             case R.id.nav_about:
                 AboutActivity.startIt(this);
                 break;
+            case R.id.nav_exit:
+                PlayerController.stop();
+                AppManager.getAppManager().finishAllActivityAndExit(this);
+                break;
+
         }
         return true;
     }

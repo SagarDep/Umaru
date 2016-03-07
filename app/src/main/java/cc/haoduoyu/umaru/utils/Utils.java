@@ -7,10 +7,13 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
+import android.media.MediaMetadataRetriever;
 import android.media.audiofx.AudioEffect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -278,5 +281,21 @@ public class Utils {
                 Context.CLIPBOARD_SERVICE);
         manager.setPrimaryClip(clipData);
         Toast.makeText(context, success, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * 取得媒体文件信息，主要是得到专辑封面
+     */
+    public static Bitmap getSongPic(Song song) {
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+
+        try {
+            retriever.setDataSource(song.getSongData());
+            byte[] stream = retriever.getEmbeddedPicture();
+            if (stream != null) return BitmapFactory.decodeByteArray(stream, 0, stream.length);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

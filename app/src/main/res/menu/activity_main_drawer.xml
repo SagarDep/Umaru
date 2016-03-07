@@ -4,11 +4,11 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_index"
-            android:icon="@drawable/music_note"
+            android:icon="@drawable/ic_action_action_face_unlock"
             android:title="@string/index" />
         <item
             android:id="@+id/nav_music"
-            android:icon="@drawable/music_note"
+            android:icon="@drawable/ic_action_av_my_library_music"
             android:title="@string/music" />
     </group>
 
@@ -18,19 +18,21 @@
         <item
 
             android:id="@+id/nav_settings"
-            android:icon="@drawable/settings"
+            android:icon="@drawable/ic_action_action_settings"
             android:title="@string/settings" />
 
         <item
 
             android:id="@+id/nav_about"
-            android:icon="@drawable/information"
+            android:icon="@drawable/ic_action_action_info_outline"
             android:title="@string/about" />
-        <!--<item-->
 
-            <!--android:id="@+id/nav_help"-->
-            <!--android:icon="@drawable/help_circle"-->
-            <!--android:title="@string/help_and_feedback" />-->
+        <item
+
+            android:id="@+id/nav_exit"
+            android:icon="@drawable/ic_action_action_exit_to_app"
+            android:title="@string/exit" />
+
     </group>
 
 </menu>

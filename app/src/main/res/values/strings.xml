@@ -96,6 +96,11 @@
     <string name="copy_done">复制成功</string>
     <string name="open_failed">打开失败</string>
     <string name="clean_web_cache">清除浏览器缓存</string>
+    <string name="crash_uri">crash_uri</string>
+    <string name="log">错误报告</string>
+    <string name="send_log">发送错误报告</string>
+    <string name="exit">退出</string>
+    <string name="path">路径：</string>
 
 
     <string-array name="welcome_texts">

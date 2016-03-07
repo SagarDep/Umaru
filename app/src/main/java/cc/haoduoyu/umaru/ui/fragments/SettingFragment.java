@@ -27,8 +27,10 @@ import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.ui.activities.AboutActivity;
 import cc.haoduoyu.umaru.ui.activities.ChatActivity;
 import cc.haoduoyu.umaru.ui.activities.SettingActivity;
+import cc.haoduoyu.umaru.utils.CrashHandler;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.SettingUtils;
+import cc.haoduoyu.umaru.utils.ShareUtils;
 import cc.haoduoyu.umaru.utils.ToastUtils;
 import cc.haoduoyu.umaru.utils.Utils;
 
@@ -47,6 +49,7 @@ public class SettingFragment extends PreferenceFragment {
     private static final String PIC = "pic";
     private static final String CLEAR = "clear";
     private static final String ACCOUNT = "account";
+    private static final String CRASH = "crash";
     private static final String EQUALIZER = "equalizer";
     private static final String ABOUT = "about";
     private static final String GITHUB = "github";
@@ -60,6 +63,7 @@ public class SettingFragment extends PreferenceFragment {
     ListPreference cache, pic;
     Preference clear;
     Preference account;
+    Preference crash;
     Preference equalizer;
     Preference about, github, donate;
 
@@ -82,6 +86,7 @@ public class SettingFragment extends PreferenceFragment {
         pic = (ListPreference) findPreference(PIC);
         clear = findPreference(CLEAR);
         account = findPreference(ACCOUNT);
+        crash = findPreference(CRASH);
         enableGuide = (SwitchPreference) findPreference(ENABLE_GUIDE);
         equalizer = findPreference(EQUALIZER);
         about = findPreference(ABOUT);
@@ -98,6 +103,7 @@ public class SettingFragment extends PreferenceFragment {
         about.setIntent(new Intent(getActivity(), AboutActivity.class));
         about.setSummary("Version " + BuildConfig.VERSION_NAME);
         github.setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(getActivity().getString(R.string.github))));
+        crash.setSummary(getString(R.string.path) + CrashHandler.PATH);
 
         setClickListener();
     }
@@ -251,6 +257,14 @@ public class SettingFragment extends PreferenceFragment {
             }
         });
 
+        crash.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                ShareUtils.sendCrash(getActivity());
+                return true;
+            }
+        });
+
         if (avatar != null)
             avatar.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
@@ -260,14 +274,14 @@ public class SettingFragment extends PreferenceFragment {
                 }
             });
 
-
-        equalizer.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Utils.startEqualizer(getActivity());
-                return true;
-            }
-        });
+        if (equalizer != null)
+            equalizer.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Utils.startEqualizer(getActivity());
+                    return true;
+                }
+            });
 
         if (donate != null) {
             donate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

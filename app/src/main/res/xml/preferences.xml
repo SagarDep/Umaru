@@ -64,16 +64,20 @@
             android:summary="开启或关闭聊天引导对话框"
             android:title="聊天引导" />
 
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="媒体">
-
         <Preference
-            android:key="equalizer"
-            android:summary="用于修饰音乐效果"
-            android:title="均衡器" />
+            android:key="crash"
+            android:title="发送错误报告" />
 
     </PreferenceCategory>
+
+    <!--<PreferenceCategory android:title="媒体">-->
+
+        <!--<Preference-->
+            <!--android:key="equalizer"-->
+            <!--android:summary="用于修饰音乐效果"-->
+            <!--android:title="均衡器" />-->
+
+    <!--</PreferenceCategory>-->
 
     <PreferenceCategory android:title="关于">
 

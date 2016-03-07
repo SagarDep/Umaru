@@ -47,6 +47,7 @@ import cc.haoduoyu.umaru.widgets.PlayPauseDrawable;
 import retrofit2.Callback;
 
 /**
+ * 正在播放
  * Created by XP on 2016/1/9.
  */
 public class NowPlayingActivity extends ToolbarActivity {
@@ -104,7 +105,7 @@ public class NowPlayingActivity extends ToolbarActivity {
     }
 
     private void initData() {
-        song = getIntent().getExtras().getParcelable(EXTRA_NOW_PLAYING);//来自adapter
+        song = getIntent().getExtras().getParcelable(EXTRA_NOW_PLAYING);
         setTitle("");
         LogUtils.d(song);
     }
@@ -113,7 +114,7 @@ public class NowPlayingActivity extends ToolbarActivity {
 
         updateShuffle();
         setAppBarTransparent();
-        loadArtistInfoWithVolley(song);
+        loadArtistPic(song);
 
         fab.setImageDrawable(playPauseDrawable);
         if (PlayerController.isPlaying()) {
@@ -142,6 +143,16 @@ public class NowPlayingActivity extends ToolbarActivity {
             songArtistAlbum.setText(song.getArtistName() + " | " + song.getAlbumName());
             songDuration.setText(Utils.durationToString(song.getDuration()));
             seekBar.setMax((int) song.getDuration());
+        }
+    }
+
+    private void loadArtistPic(Song song) {
+        if (Utils.getSongPic(song) == null && song != null) {
+            loadArtistInfoWithVolley(song);//从网络加载图片
+            LogUtils.d("load from web" + song);
+        } else {
+            albumArt.setImageBitmap(Utils.getSongPic(song));
+            LogUtils.d("load from local" + song);
         }
     }
 
@@ -270,9 +281,8 @@ public class NowPlayingActivity extends ToolbarActivity {
     }
 
     @OnClick(R.id.playpausefloating)
-    void playPause() {
+    void playOrPause() {
         PlayerController.togglePlay();
-        updatePlayPauseFloatingButton();
     }
 
     @OnClick(R.id.shuffle)
@@ -387,7 +397,8 @@ public class NowPlayingActivity extends ToolbarActivity {
                 songDuration.setText(Utils.durationToString(PlayerController.getDuration()));
                 seekBar.setMax((int) PlayerController.getDuration());
                 seekBar.setProgress((int) PlayerController.getCurrentPosition());
-                loadArtistInfoWithVolley(song);//加载图片
+                loadArtistPic(song);
+                updatePlayPauseFloatingButton();
             }
         }
     }

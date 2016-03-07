@@ -99,10 +99,6 @@
             android:screenOrientation="sensor"
             android:theme="@style/FinestWebViewTheme.Light" />
 
-        <!--UCrop-->
-        <activity
-            android:name="com.yalantis.ucrop.UCropActivity"
-            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

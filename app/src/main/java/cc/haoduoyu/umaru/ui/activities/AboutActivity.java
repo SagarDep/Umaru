@@ -81,6 +81,11 @@ public class AboutActivity extends BaseActivity {
         }
     }
 
+    @OnClick(R.id.u_icon)
+    void crash() {
+        throw new RuntimeException("CrashHandler Test");
+    }
+
     @OnClick(R.id.version)
     void show() {
         LogUtils.d("a:" + SettingUtils.getInstance(this).isEnableAnimations());

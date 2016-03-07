@@ -19,6 +19,7 @@ import java.util.Random;
 
 import cc.haoduoyu.umaru.model.Song;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
+import cc.haoduoyu.umaru.utils.Utils;
 
 
 /**
@@ -80,6 +81,8 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
     public void begin() {
         mediaPlayer.stop();
         mediaPlayer.reset();
+
+        art = Utils.getSongPic(getNowPlaying());
 
         try {
             mediaPlayer.setDataSource(getNowPlaying().getSongData());
@@ -279,6 +282,8 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
      */
     private void updateNowPlaying(String action) {
 
+        PlayerService.getInstance().notifyNowPlaying();
+
         Intent intent = new Intent();
         intent.setAction(UPDATE_SONG_INFO);
         Bundle bundle = new Bundle();
@@ -287,7 +292,7 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
         intent.putExtras(bundle);
         context.sendOrderedBroadcast(intent, null);
         //发送更新音乐广播，第二个参数为设置权限，接收器具备相应权限才能正常接受广播，此处设null
-        //PlayController接受
+        //PlayController,NowPlayingActivity接受
     }
 
     /**

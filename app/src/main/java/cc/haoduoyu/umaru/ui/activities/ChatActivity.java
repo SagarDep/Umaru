@@ -122,12 +122,7 @@ public class ChatActivity extends ToolbarActivity implements SendButton.OnSendCl
     @Override
     public void onSendClickListener(View v) {
         if (validateComment()) {
-//            commentsAdapter.addItem();
-//            commentsAdapter.setAnimationsLocked(false);
-//            commentsAdapter.setDelayEnterAnimation(false);
-//            rvComments.smoothScrollBy(0, rvComments.getChildAt(0).getHeight() * commentsAdapter.getItemCount());
 
-//            sendEt.setText(null);
             hideKeyboard();
             mAdapter.loadChat(sendEt.getText().toString().replace("\n", "").replace(" ", ""));
             mRecyclerview.smoothScrollToPosition(mAdapter.getItemCount() - 1);
