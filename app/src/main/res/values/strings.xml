@@ -39,14 +39,14 @@
     <string name="chart_artists">艺人榜</string>
     <string name="fab_no_music">音乐库空空如也，去其他地方先下点音乐吧</string>
     <string name="request_permission">权限申请</string>
-    <string name="permission_content">在设置-应用-Umaru-权限中开启权限，以正常使用Umaru</string>
+    <string name="permission_content">在设置-应用-Umaru-权限中开启权限，以正常使用Umaru，这些权限都是必要的。</string>
     <string name="go_setting">去设置</string>
     <string name="cancel">取消</string>
     <string name="introduce">介绍</string>
     <string name="introduce_content">可爱的Umaru机器人，天气、听歌、问路，无论什么问题也难不倒她</string>
     <string name="developers">开发者</string>
     <string name="open_source">开放源代码</string>
-    <string name="open_source_content">JakeWharton/butterknife\nTemplarian/materialiconlib\ngoogle/volley\ngoogle/gson\nbumptech/glide\ngreenrobot/EventBus\nTheFinestArtist/FinestWebView-Android\npengwei1024/logutils\nsquare/OkHttp\nsquare/Retrofit\nj256/ormlite-android\nfrogermcs/InstaMaterial\nnaman14/Timber\nZhaoKaiQiang/JianDan\nGeeKaven/WavePlayer\ndrakeet/Meizhi\numano/AndroidSlidingUpPanel\nafollestad/material-dialogs\nlecho/hellocharts-android</string>
+    <string name="open_source_content">JakeWharton/butterknife\nTemplarian/materialiconlib\ngoogle/volley\ngoogle/gson\nbumptech/glide\ngreenrobot/EventBus\nTheFinestArtist/FinestWebView-Android\npengwei1024/logutils\nsquare/OkHttp\nsquare/Retrofit\nj256/ormlite-android\nfrogermcs/InstaMaterial\nnaman14/Timber\nZhaoKaiQiang/JianDan\nGeeKaven/WavePlayer\ndrakeet/Meizhi\numano/AndroidSlidingUpPanel\nafollestad/material-dialogs\nlecho/hellocharts-android\n讯飞/语音识别</string>
     <string name="github">https://github.com/bigggge/Umaru</string>
     <string name="donate">donate</string>
     <string name="donate_id">UMARU</string>
@@ -101,6 +101,9 @@
     <string name="send_log">发送错误报告</string>
     <string name="exit">退出</string>
     <string name="path">路径：</string>
+    <string name="chat">聊天</string>
+    <string name="denied_permission">"未被允许的权限: "</string>
+    <string name="error">error</string>
 
 
     <string-array name="welcome_texts">

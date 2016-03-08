@@ -65,7 +65,7 @@ public class PlayerService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        LogUtils.d("service onCreate() call");
+        LogUtils.i("onCreate()");
         context = Umaru.getContext();
         if (instance == null) {
             instance = this;
@@ -217,16 +217,7 @@ public class PlayerService extends Service {
      * 结束
      */
     public void stop() {
-        LogUtils.i("stop() called");
-        finish();
-    }
-
-    /**
-     * 结束并清空资源
-     */
-    public void finish() {
-        LogUtils.i("finish() called");
-
+        LogUtils.i("stop()");
         notificationManager.cancel(NOTIFICATION_ID);
         player.finish();
         player = null;

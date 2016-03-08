@@ -1,6 +1,5 @@
 package cc.haoduoyu.umaru.ui.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -117,7 +116,7 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(MaterialDialog dialog, DialogAction which) {
-                            startActivity(new Intent(getActivity(), ChatActivity.class));
+                            ChatActivity.startIt(getActivity());
                         }
                     }).onNegative(new MaterialDialog.SingleButtonCallback() {
                         @Override

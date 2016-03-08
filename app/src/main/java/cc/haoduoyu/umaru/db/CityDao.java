@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import cc.haoduoyu.umaru.db.DBHelper;
 import cc.haoduoyu.umaru.model.City;
 
 /**

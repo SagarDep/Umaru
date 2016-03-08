@@ -1,10 +1,13 @@
 package cc.haoduoyu.umaru.ui.activities;
 
 import android.app.Activity;
-import android.app.ActivityManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,24 +22,20 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import cc.haoduoyu.umaru.Constants;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.Umaru;
-import cc.haoduoyu.umaru.api.MusicFactory;
 import cc.haoduoyu.umaru.base.BaseFragment;
 import cc.haoduoyu.umaru.base.ToolbarActivity;
 import cc.haoduoyu.umaru.event.MessageEvent;
 import cc.haoduoyu.umaru.player.PlayerController;
 import cc.haoduoyu.umaru.player.PlayerLib;
-import cc.haoduoyu.umaru.ui.fragments.LocalMusicFragment;
 import cc.haoduoyu.umaru.ui.fragments.MainFragment;
 import cc.haoduoyu.umaru.ui.fragments.MusicFragment;
-import cc.haoduoyu.umaru.ui.fragments.OnlineFragment;
 import cc.haoduoyu.umaru.utils.AppManager;
-import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.SettingUtils;
 import cc.haoduoyu.umaru.utils.SnackbarUtils;
 import cc.haoduoyu.umaru.utils.Utils;
+import cc.haoduoyu.umaru.widgets.FloatViewService;
 import de.greenrobot.event.EventBus;
 
 public class MainActivity extends ToolbarActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -51,6 +50,8 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     private static final String INDEX = "index";
     private BaseFragment mCurrentFragment;
     private Map<String, BaseFragment> mBaseFragmentByName = new HashMap<>();
+    private FloatViewService mFloatViewService;
+
 
     @Override
     protected int provideContentViewId() {
@@ -66,14 +67,16 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initService();
         initViews();
-        PlayerController.startService(this);
+        EventBus.getDefault().register(this);
     }
 
     private void initViews() {
         initDrawer();
         setAppBarTransparent();
         initSnackBar();
+        updateFloatView();
 
         if (SettingUtils.getInstance(this).isEnableAnimations()) {
             startToolbarAnimation();
@@ -88,6 +91,15 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
             mCurrentFragment = getFragment(MainFragment.class.getName());
         }
         replaceFragmentWithSelected(mCurrentFragment);
+    }
+
+    private void initService() {
+        //启动播放器服务
+        PlayerController.startService(this);
+        //启动悬浮窗服务
+        Intent intent = new Intent(this, FloatViewService.class);
+        startService(intent);
+        bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
     /**
@@ -123,6 +135,66 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
         fab.setTranslationY(2 * getResources().getDimensionPixelOffset(R.dimen.fab_size));
         fab.animate().translationY(0).setInterpolator(new OvershootInterpolator(1.f)).setStartDelay(400).setDuration(500);
     }
+
+    public void onEvent(MessageEvent event) {
+        if (event.message.equals(MessageEvent.SHOW_OR_HIDE_FLOATVIEW)) {
+            updateFloatView();
+        }
+    }
+
+    private void updateFloatView() {
+        //bindService方法会异步执行,不延迟悬浮窗不会显示
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (SettingUtils.getInstance(MainActivity.this).isEnableFloatView()) {
+                    showFloatingView();
+                } else {
+                    hideFloatingView();
+                }
+            }
+        }, 333);
+
+    }
+
+    /**
+     * 显示悬浮图标
+     */
+    public void showFloatingView() {
+        if (mFloatViewService != null) {
+            mFloatViewService.showFloat();
+        }
+    }
+
+    /**
+     * 隐藏悬浮图标
+     */
+    public void hideFloatingView() {
+        if (mFloatViewService != null) {
+            mFloatViewService.hideFloat();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
+    /**
+     * 连接到Service
+     */
+    private final ServiceConnection mServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            mFloatViewService = ((FloatViewService.FloatViewServiceBinder) iBinder).getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            mFloatViewService = null;
+        }
+    };
 
     @Override
     public void onBackPressed() {
@@ -169,6 +241,9 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
                 mCurrentFragment = getFragment(MusicFragment.class.getName());
                 replaceFragmentWithSelected(mCurrentFragment);
                 break;
+            case R.id.nav_chat:
+                ChatActivity.startIt(this);
+                break;
             case R.id.nav_settings:
                 SettingActivity.startIt(this);
                 break;
@@ -176,12 +251,18 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
                 AboutActivity.startIt(this);
                 break;
             case R.id.nav_exit:
-                PlayerController.stop();
-                AppManager.getAppManager().finishAllActivityAndExit(this);
+                exit();
                 break;
 
         }
         return true;
+    }
+
+    private void exit() {
+        stopService(new Intent(this, FloatViewService.class));
+        unbindService(mServiceConnection);
+        PlayerController.stop();
+        AppManager.getAppManager().finishAllActivityAndExit(this);
     }
 
 

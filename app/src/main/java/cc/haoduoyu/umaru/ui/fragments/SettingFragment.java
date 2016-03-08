@@ -1,6 +1,5 @@
 package cc.haoduoyu.umaru.ui.fragments;
 
-import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
@@ -12,10 +11,6 @@ import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
 import android.support.design.widget.TextInputLayout;
 import android.text.TextUtils;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -24,8 +19,8 @@ import com.afollestad.materialdialogs.color.ColorChooserDialog;
 
 import cc.haoduoyu.umaru.BuildConfig;
 import cc.haoduoyu.umaru.R;
+import cc.haoduoyu.umaru.event.MessageEvent;
 import cc.haoduoyu.umaru.ui.activities.AboutActivity;
-import cc.haoduoyu.umaru.ui.activities.ChatActivity;
 import cc.haoduoyu.umaru.ui.activities.SettingActivity;
 import cc.haoduoyu.umaru.utils.CrashHandler;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
@@ -33,6 +28,7 @@ import cc.haoduoyu.umaru.utils.SettingUtils;
 import cc.haoduoyu.umaru.utils.ShareUtils;
 import cc.haoduoyu.umaru.utils.ToastUtils;
 import cc.haoduoyu.umaru.utils.Utils;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by XP on 2016/2/3.
@@ -42,6 +38,7 @@ public class SettingFragment extends PreferenceFragment {
     private static final String COLOR_PRIMARY = "color_primary";
     private static final String COLOR_ACCENT = "color_accent";
     private static final String AVATAR = "avatar";
+    private static final String FLOAT_VIEW = "floatview";
     private static final String ANIMATION = "animation";
     private static final String ENABLE_CACHE = "enable_cache";
     private static final String ENABLE_GUIDE = "enable_guide";
@@ -59,7 +56,7 @@ public class SettingFragment extends PreferenceFragment {
 
     Preference colorPrimary, colorAccent;
     Preference avatar;
-    SwitchPreference animation, enableCache, enableGuide;
+    SwitchPreference floatView, animation, enableCache, enableGuide;
     ListPreference cache, pic;
     Preference clear;
     Preference account;
@@ -80,6 +77,7 @@ public class SettingFragment extends PreferenceFragment {
         colorPrimary = findPreference(COLOR_PRIMARY);
         colorAccent = findPreference(COLOR_ACCENT);
         avatar = findPreference(AVATAR);
+        floatView = (SwitchPreference) findPreference(FLOAT_VIEW);
         animation = (SwitchPreference) findPreference(ANIMATION);
         enableCache = (SwitchPreference) findPreference(ENABLE_CACHE);
         cache = (ListPreference) findPreference(CACHE);
@@ -177,6 +175,13 @@ public class SettingFragment extends PreferenceFragment {
                 }
             });
 
+        floatView.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                EventBus.getDefault().post(new MessageEvent(MessageEvent.SHOW_OR_HIDE_FLOATVIEW));
+                return true;
+            }
+        });
 
         enableCache.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override

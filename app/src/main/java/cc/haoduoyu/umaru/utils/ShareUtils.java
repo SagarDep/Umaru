@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-import java.io.File;
-
 import cc.haoduoyu.umaru.R;
 
 /**

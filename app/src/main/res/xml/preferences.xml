@@ -16,6 +16,12 @@
 
         <SwitchPreference
             android:defaultValue="true"
+            android:key="floatview"
+            android:summary="开启或关闭桌面悬浮窗"
+            android:title="悬浮窗" />
+
+        <SwitchPreference
+            android:defaultValue="true"
             android:key="animation"
             android:summary="开启或关闭动画"
             android:title="动画" />

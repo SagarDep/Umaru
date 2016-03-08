@@ -2,7 +2,6 @@ package cc.haoduoyu.umaru.ui.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -14,13 +13,7 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpHeaderParser;
-import com.android.volley.toolbox.StringRequest;
 import com.apkfuns.logutils.LogUtils;
 import com.thefinestartist.finestwebview.FinestWebView;
 
@@ -37,7 +30,6 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,13 +46,11 @@ import cc.haoduoyu.umaru.ui.activities.ChatActivity;
 import cc.haoduoyu.umaru.ui.activities.MainActivity;
 import cc.haoduoyu.umaru.ui.activities.NowPlayingActivity;
 import cc.haoduoyu.umaru.ui.activities.WebViewActivity;
-import cc.haoduoyu.umaru.utils.MD5Utils;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.ToastUtils;
 import cc.haoduoyu.umaru.utils.Utils;
 import cc.haoduoyu.umaru.utils.volleyUtils.GsonRequest;
 import cc.haoduoyu.umaru.utils.volleyUtils.RequestManager;
-import retrofit2.http.POST;
 
 /**
  * Created by XP on 2016/1/20.

@@ -28,11 +28,9 @@ public class PlayerController {
      * 启动播放器服务
      */
     public static void startService(Context context) {
-//    if (mContext == null) {
         mContext = context;
         Intent serviceIntent = new Intent(context, PlayerService.class);
         context.startService(serviceIntent);
-//    }
     }
 
     /**

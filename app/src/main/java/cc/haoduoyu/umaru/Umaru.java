@@ -3,8 +3,10 @@ package cc.haoduoyu.umaru;
 import android.app.Application;
 import android.content.Context;
 
-import cc.haoduoyu.umaru.player.PlayerController;
-import cc.haoduoyu.umaru.player.PlayerLib;
+import com.apkfuns.logutils.LogUtils;
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechUtility;
+
 import cc.haoduoyu.umaru.utils.CrashHandler;
 
 /**
@@ -12,6 +14,7 @@ import cc.haoduoyu.umaru.utils.CrashHandler;
  */
 public class Umaru extends Application {
     private static Context mContext;
+
     public static Context getContext() {
         return mContext;
     }
@@ -20,7 +23,9 @@ public class Umaru extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = this;
+        SpeechUtility.createUtility(this, SpeechConstant.APPID + Constants.XF_APP_ID);
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(this);
+        LogUtils.configAllowLog = true;
     }
 }

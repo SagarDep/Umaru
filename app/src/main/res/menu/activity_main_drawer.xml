@@ -6,10 +6,17 @@
             android:id="@+id/nav_index"
             android:icon="@drawable/ic_action_action_face_unlock"
             android:title="@string/index" />
+
+        <item
+            android:id="@+id/nav_chat"
+            android:icon="@drawable/ic_action_action_question_answer"
+            android:title="@string/chat" />
+
         <item
             android:id="@+id/nav_music"
             android:icon="@drawable/ic_action_av_my_library_music"
             android:title="@string/music" />
+
     </group>
 
     <group

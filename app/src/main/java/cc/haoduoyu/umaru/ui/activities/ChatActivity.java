@@ -1,6 +1,5 @@
 package cc.haoduoyu.umaru.ui.activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,11 +17,28 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.apkfuns.logutils.LogUtils;
+import com.iflytek.cloud.ErrorCode;
+import com.iflytek.cloud.InitListener;
+import com.iflytek.cloud.RecognizerResult;
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechError;
+import com.iflytek.cloud.ui.RecognizerDialog;
+import com.iflytek.cloud.ui.RecognizerDialogListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+
 import butterknife.Bind;
+import butterknife.OnClick;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.base.ToolbarActivity;
 import cc.haoduoyu.umaru.event.MessageEvent;
 import cc.haoduoyu.umaru.ui.adapter.ChatAdapter;
+import cc.haoduoyu.umaru.utils.JsonParser;
 import cc.haoduoyu.umaru.utils.SettingUtils;
 import cc.haoduoyu.umaru.widgets.RevealBackgroundView;
 import cc.haoduoyu.umaru.widgets.SendButton;
@@ -46,6 +62,7 @@ public class ChatActivity extends ToolbarActivity implements SendButton.OnSendCl
     SendButton sendBtn;
     @Bind(R.id.chatRecyclerview)
     RecyclerView mRecyclerview;
+    RecognizerDialog iatDialog;
     ChatAdapter mAdapter;
 
     @Override
@@ -58,16 +75,23 @@ public class ChatActivity extends ToolbarActivity implements SendButton.OnSendCl
         return R.layout.activity_chat;
     }
 
-    public static void startIt(int[] startingLocation, Activity startingActivity) {
-        Intent intent = new Intent(startingActivity, ChatActivity.class);
+    public static void startIt(int[] startingLocation, Context context) {
+        Intent intent = new Intent(context, ChatActivity.class);
         intent.putExtra(ARG_REVEAL_START_LOCATION, startingLocation);//启动动画
-        startingActivity.startActivity(intent);
+        context.startActivity(intent);
+    }
+
+    public static void startIt(Context context) {
+        Intent intent = new Intent(context, ChatActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initViews();
+        initXf();
 
         //动画开关
         if (SettingUtils.getInstance(this).isEnableAnimations() && getIntent().getIntArrayExtra(ARG_REVEAL_START_LOCATION) != null)
@@ -122,12 +146,15 @@ public class ChatActivity extends ToolbarActivity implements SendButton.OnSendCl
     @Override
     public void onSendClickListener(View v) {
         if (validateComment()) {
-
-            hideKeyboard();
-            mAdapter.loadChat(sendEt.getText().toString().replace("\n", "").replace(" ", ""));
-            mRecyclerview.smoothScrollToPosition(mAdapter.getItemCount() - 1);
-            sendBtn.setCurrentState(SendButton.STATE_DONE);
+            loadChat();
         }
+    }
+
+    private void loadChat() {
+        hideKeyboard();
+        mAdapter.loadChat(sendEt.getText().toString().replace("\n", "").replace(" ", ""));
+        mRecyclerview.smoothScrollToPosition(mAdapter.getItemCount() - 1);
+        sendBtn.setCurrentState(SendButton.STATE_DONE);
     }
 
     private boolean validateComment() {
@@ -173,4 +200,80 @@ public class ChatActivity extends ToolbarActivity implements SendButton.OnSendCl
 //            loadWeatherPic();
         }
     }
+
+    private void initXf() {
+        //创建SpeechRecognizer对象，第二个参数：本地听写时传InitListener
+        iatDialog = new RecognizerDialog(this, mInitListener);
+        //设置不带标点
+        iatDialog.setParameter(SpeechConstant.ASR_PTT, "0");
+        iatDialog.setParameter(SpeechConstant.LANGUAGE, "zh_cn");
+        //普通话：mandarin(默认)粤 语：cantonese四川话：lmz河南话：henanese
+        iatDialog.setParameter(SpeechConstant.ACCENT, "mandarin ");
+        //应用领域用于听写和语音语义服务。当前支持的应用领域有：短信和日常用语：iat (默认)视频：video地图：poi音乐：music
+        iatDialog.setParameter(SpeechConstant.DOMAIN, "iat");
+    }
+
+    @OnClick(R.id.mic)
+    void mic() {
+        //设置回调接口
+        iatDialog.setListener(mRecognizerDialogListener);
+        //开始听写
+        iatDialog.show();
+    }
+
+    /**
+     * 初始化监听器。
+     */
+    private InitListener mInitListener = new InitListener() {
+
+        @Override
+        public void onInit(int code) {
+            if (code != ErrorCode.SUCCESS) {
+                LogUtils.d(getString(R.string.error) + code);
+
+            }
+        }
+    };
+
+    /**
+     * 讯飞听写UI监听器
+     */
+    private RecognizerDialogListener mRecognizerDialogListener = new RecognizerDialogListener() {
+
+        public void onResult(RecognizerResult results, boolean isLast) {
+            if (!isLast)
+                parseResults(results);
+        }
+
+        public void onError(SpeechError error) {
+            LogUtils.d(error.getPlainDescription(true));
+        }
+
+    };
+
+    private HashMap<String, String> mIatResults = new LinkedHashMap<>();
+
+    private void parseResults(RecognizerResult results) {
+        String text = JsonParser.parseIatResult(results.getResultString());
+        LogUtils.json(results.getResultString());
+        String sn = null;
+        // 读取json结果中的sn字段,第几句
+        try {
+            JSONObject resultJson = new JSONObject(results.getResultString());
+            sn = resultJson.optString("sn");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        mIatResults.put(sn, text);
+        StringBuffer resultBuffer = new StringBuffer();
+        for (String key : mIatResults.keySet()) {
+            resultBuffer.append(mIatResults.get(key));
+        }
+        sendEt.setText(resultBuffer.toString());
+        loadChat();
+        LogUtils.d(resultBuffer.toString());
+        LogUtils.d(mIatResults);
+    }
+
 }

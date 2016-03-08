@@ -16,7 +16,6 @@ import butterknife.Bind;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.base.BaseFragment;
 import cc.haoduoyu.umaru.event.MessageEvent;
-import cc.haoduoyu.umaru.player.PlayerLib;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 
 /**

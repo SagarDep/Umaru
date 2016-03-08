@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
  */
 public class SettingUtils {
 
+    private static final String FLOAT_VIEW = "floatview";
     private static final String ANIMATION = "animation";
     private static final String ENABLE_CACHE = "enable_cache";
     private static final String ENABLE_GUIDE = "enable_guide";
@@ -30,6 +31,17 @@ public class SettingUtils {
             sInstance = new SettingUtils(context.getApplicationContext());
         }
         return sInstance;
+    }
+
+    public boolean isEnableFloatView() {
+        return mPreferences.getBoolean(FLOAT_VIEW, true);
+    }
+
+    public void setEnableFloatView(boolean enable) {
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putBoolean(FLOAT_VIEW, enable);
+        editor.commit();
+        mPreferences.getBoolean(FLOAT_VIEW, true);
     }
 
     public boolean isEnableAnimations() {

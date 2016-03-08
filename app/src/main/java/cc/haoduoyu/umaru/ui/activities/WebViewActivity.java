@@ -18,10 +18,8 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.base.ToolbarActivity;
-import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.ToastUtils;
 import cc.haoduoyu.umaru.utils.Utils;
 

@@ -1,6 +1,5 @@
 package cc.haoduoyu.umaru.ui.activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -78,6 +77,7 @@ public class SettingActivity extends ToolbarActivity implements ColorChooserDial
 
     public static void startIt(Context context) {
         Intent intent = new Intent(context, SettingActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 }
