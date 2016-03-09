@@ -1,190 +1,166 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <!--使用AppBarLayout可以让你的Toolbar与其他view（比如TabLayout的选项卡）
-    能响应被标记了ScrollingViewBehavior的View的滚动事件-->
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/about_header_height"
-        android:fitsSystemWindows="true"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-        <!--提供了一个可以折叠的Toolbar-->
-        <!--CollapsingToolbarTitleStyle使原有效果字体透明-->
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleTextAppearance="@style/CollapsingToolbarTitleStyle"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <LinearLayout
-                android:id="@+id/header"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/about_header_height"
-                android:background="?colorPrimary"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <cc.haoduoyu.umaru.widgets.CircleImageView
-                    android:id="@+id/u_icon"
-                    android:layout_width="68dp"
-                    android:layout_height="68dp"
-                    android:layout_marginTop="12dp"
-                    android:src="@mipmap/ic_launcher" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center"
-                    android:text="@string/umaru"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/version"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/textSizeX2"
-                    tools:text="Version 1.0.0" />
-            </LinearLayout>
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@android:color/transparent"
-                app:layout_collapseMode="pin" />
-
-        </android.support.design.widget.CollapsingToolbarLayout>
-
-    </android.support.design.widget.AppBarLayout>
-
-    <android.support.v4.widget.NestedScrollView
+    <com.github.ksoichiro.android.observablescrollview.ObservableScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:fillViewport="true">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/cardMarginHorizontal">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:text="@string/introduce"
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/example" />
 
-                android:textColor="@color/md_grey_600" />
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_above="@+id/linearLayout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="30dp"
+                android:src="@mipmap/ic_launcher" />
 
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_about"
-                android:padding="16dp">
+                android:layout_below="@id/image"
+                android:background="@color/true_white"
+                android:orientation="vertical"
+                android:padding="@dimen/cardMarginHorizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:autoLink="web"
-                    android:text="@string/introduce_content"
-                    android:textColor="@color/md_grey_800"
-                    android:textIsSelectable="true"
-                    android:textSize="14sp" />
+                    android:layout_marginBottom="12dp"
+                    android:text="@string/introduce"
 
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginTop="12dp"
-                android:background="@color/md_grey_500" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_marginTop="12dp"
-                android:text="@string/developers"
-                android:textColor="@color/md_grey_600" />
-
-            <RelativeLayout
-                android:id="@+id/developer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_about">
-
-                <cc.haoduoyu.umaru.widgets.CircleImageView
-                    android:id="@+id/avatar_r"
-                    android:layout_width="@dimen/avatar_size"
-                    android:layout_height="@dimen/avatar_size"
-                    android:layout_margin="16dp"
-                    android:src="@drawable/avatar_weibo" />
-
-                <TextView
-                    android:id="@+id/ggg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@id/avatar_r"
-                    android:layout_toEndOf="@id/avatar_r"
-                    android:layout_toRightOf="@id/avatar_r"
-                    android:text="_GGG"
-                    android:textColor="@color/md_grey_800"
-                    tools:ignore="HardcodedText" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/ggg"
-                    android:layout_toEndOf="@id/avatar_r"
-                    android:layout_toRightOf="@id/avatar_r"
-                    android:text="android developer"
                     android:textColor="@color/md_grey_600" />
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_about"
+                    android:padding="16dp">
 
-            </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:autoLink="web"
+                        android:text="@string/introduce_content"
+                        android:textColor="@color/md_grey_800"
+                        android:textIsSelectable="true"
+                        android:textSize="14sp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginTop="12dp"
-                android:background="@color/md_grey_500" />
+                </RelativeLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_marginTop="12dp"
-                android:text="@string/open_source"
-                android:textColor="@color/md_grey_600" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/bg_about"
-                android:padding="16dp">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginTop="12dp"
+                    android:background="@color/md_grey_500" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/open_source_content"
-                    android:textColor="#545454"
-                    android:textSize="@dimen/textSizeX2"
-                    tools:ignore="HardcodedText" />
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/developers"
+                    android:textColor="@color/md_grey_600" />
 
-            </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/developer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_about">
 
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+                    <cc.haoduoyu.umaru.widgets.CircleImageView
+                        android:id="@+id/avatar_r"
+                        android:layout_width="@dimen/avatar_size"
+                        android:layout_height="@dimen/avatar_size"
+                        android:layout_margin="16dp"
+                        android:src="@drawable/avatar_weibo" />
 
-</android.support.design.widget.CoordinatorLayout>
+                    <TextView
+                        android:id="@+id/ggg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@id/avatar_r"
+                        android:layout_toEndOf="@id/avatar_r"
+                        android:layout_toRightOf="@id/avatar_r"
+                        android:text="_GGG"
+                        android:textColor="@color/md_grey_800"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/ggg"
+                        android:layout_toEndOf="@id/avatar_r"
+                        android:layout_toRightOf="@id/avatar_r"
+                        android:text="android developer"
+                        android:textColor="@color/md_grey_600" />
+
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginTop="12dp"
+                    android:background="@color/md_grey_500" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/open_source"
+                    android:textColor="@color/md_grey_600" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/bg_about"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/open_source_content"
+                        android:textColor="#545454"
+                        android:textSize="@dimen/textSizeX2"
+                        tools:ignore="HardcodedText" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+    </com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+</FrameLayout>
+
+

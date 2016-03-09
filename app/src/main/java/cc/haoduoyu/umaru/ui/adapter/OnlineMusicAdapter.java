@@ -1,6 +1,5 @@
 package cc.haoduoyu.umaru.ui.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 
 import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
-import com.thefinestartist.finestwebview.FinestWebView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +22,7 @@ import cc.haoduoyu.umaru.api.MusicFactory;
 import cc.haoduoyu.umaru.event.MessageEvent;
 import cc.haoduoyu.umaru.model.TopArtists;
 import cc.haoduoyu.umaru.model.TopTracks;
+import cc.haoduoyu.umaru.ui.activities.WebViewActivity;
 import cc.haoduoyu.umaru.utils.SettingUtils;
 import de.greenrobot.event.EventBus;
 import retrofit2.Callback;
@@ -78,14 +77,14 @@ public class OnlineMusicAdapter extends RecyclerView.Adapter<OnlineMusicAdapter.
             holder.mCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new FinestWebView.Builder((Activity) mContext).showMenuShareVia(false).stringResCopyLink(R.string.copy_link)
-                            .stringResOpenWith(R.string.open_with).stringResRefresh(R.string.refresh).show(t.getUrl());
+                    WebViewActivity.startIt(mContext, t.getUrl(), null);
                 }
             });
         } else if (type == 1) {
             final TopArtists.ArtistsEntity.ArtistEntity a = mArtistList.get(position);
             int picQuality = Integer.parseInt(SettingUtils.getInstance(mContext).getPicQuality());
-            LogUtils.d(picQuality);
+            if (position == 0)
+                LogUtils.d(picQuality);
             Glide.with(mContext).load(a.getImage().get(picQuality).getText())
                     .into(holder.mImageView);
             holder.mSongName.setText(a.getName());
@@ -93,8 +92,7 @@ public class OnlineMusicAdapter extends RecyclerView.Adapter<OnlineMusicAdapter.
             holder.mCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new FinestWebView.Builder((Activity) mContext).showMenuShareVia(false).stringResCopyLink(R.string.copy_link)
-                            .stringResOpenWith(R.string.open_with).stringResRefresh(R.string.refresh).show(a.getUrl());
+                    WebViewActivity.startIt(mContext, a.getUrl(), null);
                 }
             });
         }

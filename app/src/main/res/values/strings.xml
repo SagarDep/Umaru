@@ -45,8 +45,8 @@
     <string name="introduce">介绍</string>
     <string name="introduce_content">可爱的Umaru机器人，天气、听歌、问路，无论什么问题也难不倒她</string>
     <string name="developers">开发者</string>
-    <string name="open_source">开放源代码</string>
-    <string name="open_source_content">JakeWharton/butterknife\nTemplarian/materialiconlib\ngoogle/volley\ngoogle/gson\nbumptech/glide\ngreenrobot/EventBus\nTheFinestArtist/FinestWebView-Android\npengwei1024/logutils\nsquare/OkHttp\nsquare/Retrofit\nj256/ormlite-android\nfrogermcs/InstaMaterial\nnaman14/Timber\nZhaoKaiQiang/JianDan\nGeeKaven/WavePlayer\ndrakeet/Meizhi\numano/AndroidSlidingUpPanel\nafollestad/material-dialogs\nlecho/hellocharts-android\n讯飞/语音识别</string>
+    <string name="open_source">感谢以下开源项目</string>
+    <string name="open_source_content">JakeWharton/butterknife\nTemplarian/materialiconlib\ngoogle/volley\ngoogle/gson\nbumptech/glide\ngreenrobot/EventBus\npengwei1024/logutils\nsquare/OkHttp\nsquare/Retrofit\nj256/ormlite-android\nfrogermcs/InstaMaterial\nnaman14/Timber\nZhaoKaiQiang/JianDan\nGeeKaven/WavePlayer\ndrakeet/Meizhi\numano/AndroidSlidingUpPanel\nafollestad/material-dialogs\nlecho/hellocharts-android\nksoichiro/Android-ObservableScrollView\n讯飞/语音识别</string>
     <string name="github">https://github.com/bigggge/Umaru</string>
     <string name="donate">donate</string>
     <string name="donate_id">UMARU</string>
@@ -104,6 +104,10 @@
     <string name="chat">聊天</string>
     <string name="denied_permission">"未被允许的权限: "</string>
     <string name="error">error</string>
+    <string name="choose_city">选择城市</string>
+    <string name="insert_city">insertToDB</string>
+    <string name="s_choice">single_choice</string>
+    <string name="version">"Version "</string>
 
 
     <string-array name="welcome_texts">
@@ -135,6 +139,11 @@
         <item>中</item>
         <item>高</item>
         <item>极高</item>
+    </string-array>
+
+    <string-array name="cities">
+        <item>苏州</item>
+        <item>丹阳</item>
     </string-array>
 
 </resources>

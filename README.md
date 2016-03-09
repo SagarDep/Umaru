@@ -15,7 +15,6 @@ Thanks
 [google/gson](https://github.com/google/gson)
 [bumptech/glide](https://github.com/bumptech/glide)
 [greenrobot/EventBus](https://github.com/greenrobot/EventBus)
-[TheFinestArtist/FinestWebView-Android](https://github.com/TheFinestArtist/FinestWebView-Android)
 [pengwei1024/logutils](https://github.com/pengwei1024/LogUtils)
 [square/OkHttp](http://square.github.io/okhttp/)
 [square/Retrofit](http://square.github.io/retrofit/)
@@ -28,6 +27,7 @@ Thanks
 [umano/AndroidSlidingUpPanel](https://github.com/umano/AndroidSlidingUpPanel)
 [afollestad/material-dialogs](https://github.com/afollestad/material-dialogs)
 [lecho/hellocharts-android](https://github.com/lecho/hellocharts-android)
+[ksoichiro/Android-ObservableScrollView](https://github.com/ksoichiro/Android-ObservableScrollView)
 [讯飞/语音识别](http://www.xfyun.cn/services/voicedictation)
 
 天气背景图由[面条](https://www.zhihu.com/people/lsxiao)制作，创意来自[dribbble](https://dribbble.com/shots/2249390-Material-Weather-App-Concept-Dark/attachments/420404)

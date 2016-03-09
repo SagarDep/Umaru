@@ -14,6 +14,9 @@ import android.content.SharedPreferences.Editor;
 
 import java.util.Map;
 
+import cc.haoduoyu.umaru.R;
+import cc.haoduoyu.umaru.model.Weather;
+
 
 /**
  * Created by XP on 2016/1/9.
@@ -71,5 +74,12 @@ public class PreferencesUtils {
     public static Map<String, ?> getAll(Context context) {
         return context.getSharedPreferences(SHARED_PREFERANCE_NAME,
                 Activity.MODE_PRIVATE).getAll();
+    }
+
+    public static void saveToPreference(Context context, Weather.HeWeather heWeather) {
+        PreferencesUtils.setString(context, context.getString(R.string.city), heWeather.getBasic().getCity());
+        PreferencesUtils.setString(context, context.getString(R.string.nowtxt), heWeather.getNow().getCond().getTxt());
+        PreferencesUtils.setString(context, context.getString(R.string.nowtmp), heWeather.getNow().getTmp());
+        PreferencesUtils.setString(context, context.getString(R.string.sug), heWeather.getSuggestion().getComf().getTxt());
     }
 }

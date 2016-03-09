@@ -81,7 +81,7 @@ public class CityDao {
     /**
      * 查询所有记录
      */
-    private List<City> queryAll() {
+    public List<City> queryAll() {
         List<City> cities = null;
         try {
             cities = cityDao.queryForAll();

@@ -6,6 +6,7 @@ package cc.haoduoyu.umaru;
 public class Constants {
 
     public static boolean isDay = true;
+    public static final String PIC_URL = "http://7xq3d5.com1.z0.glb.clouddn.com/wall-";
     public static final String WEATHER_PIC_DAY = "http://7xq3d5.com1.z0.glb.clouddn.com/day.png";
     public static final String WEATHER_PIC_NIGHT = "http://7xq3d5.com1.z0.glb.clouddn.com/night.png";
     public static final int VOLLEY_TIMEOUT = 100000;

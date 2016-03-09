@@ -2,18 +2,18 @@ package cc.haoduoyu.umaru.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ImageView;
 
-import com.afollestad.materialdialogs.color.CircleView;
 import com.apkfuns.logutils.LogUtils;
+import com.bumptech.glide.Glide;
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
+import com.github.ksoichiro.android.observablescrollview.ScrollState;
+import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
+import com.nineoldandroids.view.ViewHelper;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -24,71 +24,57 @@ import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.base.BaseActivity;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.SettingUtils;
+import cc.haoduoyu.umaru.utils.ToastUtils;
+import cc.haoduoyu.umaru.utils.Utils;
 
 /**
- * scroll: 所有想滚动出屏幕的view都需要设置这个flag- 没有设置这个flag的view将被固定在屏幕顶部。
- * enterAlways: 这个flag让任意向下的滚动都会导致该view变为可见，启用快速“返回模式”。
- * enterAlwaysCollapsed: 顾名思义，这个flag定义的是何时进入（已经消失之后何时再次显示）。
- * 假设你定义了一个最小高度（minHeight）同时enterAlways也定义了，那么view将在到达这个最小高度的时候开始显示，
- * 并且从这个时候开始慢慢展开，当滚动到顶部的时候展开完。
- * exitUntilCollapsed: 同样顾名思义，这个flag时定义何时退出，
- * 当你定义了一个minHeight，这个view将在滚动到达这个最小高度的时候消失。
+ * https://github.com/ksoichiro/Android-ObservableScrollView
  * Created by XP on 2016/2/3.
  */
-public class AboutActivity extends BaseActivity {
+public class AboutActivity extends BaseActivity implements ObservableScrollViewCallbacks {
 
-    @Bind(R.id.header)
-    LinearLayout header;
     @Bind(R.id.toolbar)
-    Toolbar mToolbar;
-    @Bind(R.id.appbar)
-    AppBarLayout mAppBar;
-    @Bind(R.id.version)
-    TextView mVersionTextView;
-    @Bind(R.id.collapsing_toolbar)
-    CollapsingToolbarLayout mCollapsingToolbarLayout;
+    Toolbar mToolbarView;
+    @Bind(R.id.image)
+    ImageView mImageView;
+    @Bind(R.id.scroll)
+    ObservableScrollView mScrollView;
+
+    private int mParallaxImageHeight;
+
+    public static void startIt(Context context) {
+        Intent intent = new Intent(context, AboutActivity.class);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         ButterKnife.bind(this);
-        setVersionName();
-        mCollapsingToolbarLayout.setTitle(getString(R.string.about));
 
-        setSupportActionBar(mToolbar);
+        setSupportActionBar(mToolbarView);
+        mToolbarView.setBackgroundColor(ScrollUtils.getColorWithAlpha(0, getResources().getColor(R.color.colorPrimary)));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mScrollView.setScrollViewCallbacks(this);
+        mParallaxImageHeight = Utils.dpToPx(280);
+        Glide.with(this).load(Constants.PIC_URL + (int) (Math.random() * 21 + 1) + ".jpg").crossFade().into(mImageView);
 
-        setColorPrimary();
-        header.setBackgroundColor(PreferencesUtils.getInteger(this, getString(R.string.color_primary), R.color.colorPrimary));
+        if (SettingUtils.getInstance(this).isEnableAnimations())
+            startToolbarAnimation();
+
     }
 
-
-    private void setVersionName() {
-        mVersionTextView.setText("Version " + BuildConfig.VERSION_NAME);
-    }
-
-    protected void setColorPrimary() {
-        int color = PreferencesUtils.getInteger(this, getString(R.string.color_primary), R.color.colorPrimary);
-        mAppBar.setBackgroundColor(color);
-        mCollapsingToolbarLayout.setContentScrimColor(color);
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(color));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(CircleView.shiftColorDown(color));
-            getWindow().setNavigationBarColor(color);
-        }
-    }
-
-    @OnClick(R.id.u_icon)
-    void crash() {
-        throw new RuntimeException("CrashHandler Test");
-    }
-
-    @OnClick(R.id.version)
-    void show() {
+    @OnClick(R.id.icon)
+    void version() {
+        ToastUtils.showToast(getString(R.string.version) + BuildConfig.VERSION_NAME + "\n" + PreferencesUtils.getAll(this));
         LogUtils.d("a:" + SettingUtils.getInstance(this).isEnableAnimations());
         LogUtils.d(PreferencesUtils.getAll(this));
+    }
+
+    @OnClick(R.id.image)
+    void show() {
+        Glide.with(this).load(Constants.PIC_URL + (int) (Math.random() * 21 + 1) + ".jpg").crossFade().into(mImageView);
     }
 
     @OnClick(R.id.developer)
@@ -96,6 +82,38 @@ public class AboutActivity extends BaseActivity {
         WebViewActivity.startIt(this, Constants.HAO_DUO_YU, null);
     }
 
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        onScrollChanged(mScrollView.getCurrentScrollY(), false, false);
+    }
+
+    @Override
+    public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
+        int baseColor = PreferencesUtils.getInteger(this, getString(R.string.color_primary), R.color.colorPrimary);
+        float alpha = Math.min(1, (float) scrollY / mParallaxImageHeight);
+        mToolbarView.setBackgroundColor(ScrollUtils.getColorWithAlpha(alpha, baseColor));
+        ViewHelper.setTranslationY(mImageView, scrollY / 2);
+        LogUtils.d("scrollY: " + scrollY + " firstScroll: " + firstScroll + " dragging: " + dragging);
+    }
+
+    @Override
+    public void onDownMotionEvent() {
+    }
+
+    @Override
+    public void onUpOrCancelMotionEvent(ScrollState scrollState) {
+    }
+
+    protected void startToolbarAnimation() {
+        int size = Utils.dpToPx(81);
+        mToolbarView.setTranslationY(-size);
+        mToolbarView.animate()
+                .translationY(0)
+                .setDuration(500)
+                .setStartDelay(300);
+    }
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
@@ -107,10 +125,5 @@ public class AboutActivity extends BaseActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public static void startIt(Context context) {
-        Intent intent = new Intent(context, AboutActivity.class);
-        context.startActivity(intent);
     }
 }

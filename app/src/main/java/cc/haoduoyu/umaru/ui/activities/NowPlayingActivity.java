@@ -23,7 +23,6 @@ import com.android.volley.Response;
 import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-import com.thefinestartist.finestwebview.FinestWebView;
 
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
 
@@ -114,7 +113,7 @@ public class NowPlayingActivity extends ToolbarActivity {
 
         updateShuffle();
         setAppBarTransparent();
-        loadArtistPic(song);
+        loadArtistInfoWithVolley(song);
 
         fab.setImageDrawable(playPauseDrawable);
         if (PlayerController.isPlaying()) {
@@ -143,16 +142,6 @@ public class NowPlayingActivity extends ToolbarActivity {
             songArtistAlbum.setText(song.getArtistName() + " | " + song.getAlbumName());
             songDuration.setText(Utils.durationToString(song.getDuration()));
             seekBar.setMax((int) song.getDuration());
-        }
-    }
-
-    private void loadArtistPic(Song song) {
-        if (Utils.getSongPic(song) == null && song != null) {
-            loadArtistInfoWithVolley(song);//从网络加载图片
-            LogUtils.d("load from web" + song);
-        } else {
-            albumArt.setImageBitmap(Utils.getSongPic(song));
-            LogUtils.d("load from local" + song);
         }
     }
 
@@ -330,11 +319,8 @@ public class NowPlayingActivity extends ToolbarActivity {
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog dialog, DialogAction which) {
-                        new FinestWebView.Builder(NowPlayingActivity.this)
-                                .showMenuShareVia(false).stringResCopyLink(R.string.copy_link)
-                                .stringResOpenWith(R.string.open_with).stringResRefresh(R.string.refresh)
-                                .show(getString(R.string.singer_similar_url)
-                                        + PlayerController.getNowPlaying().getArtistName() + "/+similar");
+                        WebViewActivity.startIt(NowPlayingActivity.this, getString(R.string.singer_similar_url)
+                                + PlayerController.getNowPlaying().getArtistName() + "/+similar", null);
                     }
                 })
                 .show();
@@ -397,7 +383,7 @@ public class NowPlayingActivity extends ToolbarActivity {
                 songDuration.setText(Utils.durationToString(PlayerController.getDuration()));
                 seekBar.setMax((int) PlayerController.getDuration());
                 seekBar.setProgress((int) PlayerController.getCurrentPosition());
-                loadArtistPic(song);
+                loadArtistInfoWithVolley(song);
                 updatePlayPauseFloatingButton();
             }
         }
@@ -429,7 +415,7 @@ public class NowPlayingActivity extends ToolbarActivity {
     }
 
 
-    private void loadArtistInfoWithVolley(Song song) {
+    private void loadArtistInfoWithVolley(final Song song) {
         String artistName = null;
         try {
             if (!TextUtils.isEmpty(song.getArtistName()))
@@ -441,9 +427,15 @@ public class NowPlayingActivity extends ToolbarActivity {
                 public void onResponse(ArtistInfo response) {
 
                     summary = response.getArtist().getBio().getSummary();
-                    Glide.with(NowPlayingActivity.this)
-                            .load(response.getArtist().getImage().get(3).getUrl())
-                            .placeholder(R.mipmap.default_artwork).crossFade().into(albumArt);
+                    if (Utils.getSongPic(song) == null && song != null) {
+                        Glide.with(NowPlayingActivity.this)
+                                .load(response.getArtist().getImage().get(3).getUrl())
+                                .placeholder(R.mipmap.default_artwork).crossFade().into(albumArt);
+                        LogUtils.d(song.getSongTitle() + " load pic from last_fm");
+                    } else {
+                        albumArt.setImageBitmap(Utils.getSongPic(song));
+                        LogUtils.d(song.getSongTitle() + " load pic from local");
+                    }
                 }
             }));
 //            }).setRetryPolicy(new DefaultRetryPolicy(Constants.VOLLEY_TIMEOUT,
