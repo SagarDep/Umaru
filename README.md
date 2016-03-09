@@ -1,10 +1,4 @@
 # Umaru
-<img src="http://7xq3d5.com1.z0.glb.clouddn.com/Screenshot_20160305-203718%5B1%5D.png" alt="ss" title="screenshot" width="324" height="576" />
-<img src="http://7xq3d5.com1.z0.glb.clouddn.com/Screenshot_20160204-192840%5B1%5D.png" alt="ss" title="screenshot" width="324" height="576" />
-<img src="http://7xq3d5.com1.z0.glb.clouddn.com/Screenshot_20160204-192656%5B1%5D.png" alt="ss" title="screenshot" width="324" height="576" />
-<img src="http://7xq3d5.com1.z0.glb.clouddn.com/Screenshot_20160204-192849%5B1%5D.png" alt="ss" title="screenshot" width="324" height="576" />
-<img src="http://7xq3d5.com1.z0.glb.clouddn.com/Screenshot_20160204-192923%5B1%5D.png" alt="ss" title="screenshot" width="324" height="576" />
-<img src="http://7xq3d5.com1.z0.glb.clouddn.com/Screenshot_20160305-203707%5B1%5D.png" alt="ss" title="screenshot" width="324" height="576" />
 
 Thanks
 感谢以下开源项目的帮助
@@ -31,3 +25,13 @@ Thanks
 [讯飞/语音识别](http://www.xfyun.cn/services/voicedictation)
 
 天气背景图由[面条](https://www.zhihu.com/people/lsxiao)制作，创意来自[dribbble](https://dribbble.com/shots/2249390-Material-Weather-App-Concept-Dark/attachments/420404)
+
+
+<img src="http://7xq3d5.com1.z0.glb.clouddn.com/Screenshot_20160305-203718%5B1%5D.png" alt="ss" title="screenshot" width="216" height="384" />
+<img src="http://7xq3d5.com1.z0.glb.clouddn.com/Screenshot_20160204-192656%5B1%5D.png" alt="ss" title="screenshot" width="216" height="384" />
+<img src="http://7xq3d5.com1.z0.glb.clouddn.com/Screenshot_20160204-192849%5B1%5D.png" alt="ss" title="screenshot" width="216" height="384" />
+<img src="http://7xq3d5.com1.z0.glb.clouddn.com/Screenshot_20160309-135458%5B1%5D.png" alt="ss" title="screenshot" width="216" height="384" />
+<img src="http://7xq3d5.com1.z0.glb.clouddn.com/Screenshot_20160309-135542%5B1%5D.png" alt="ss" title="screenshot" width="216" height="384" />
+<img src="http://7xq3d5.com1.z0.glb.clouddn.com/Screenshot_20160309-135605%5B1%5D.png" alt="ss" title="screenshot" width="216" height="384" />
+
+
