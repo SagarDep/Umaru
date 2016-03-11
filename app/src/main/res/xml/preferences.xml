@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="配置">
+    <PreferenceCategory android:title="外观">
 
         <Preference
             android:key="color_primary"
@@ -16,9 +16,9 @@
 
         <SwitchPreference
             android:defaultValue="true"
-            android:key="shake"
-            android:summary="开启或关闭首页摇一摇进入二维码扫描"
-            android:title="摇一摇" />
+            android:key="animation"
+            android:summary="开启或关闭动画"
+            android:title="动画" />
 
         <SwitchPreference
             android:defaultValue="true"
@@ -26,11 +26,14 @@
             android:summary="开启或关闭桌面悬浮窗"
             android:title="悬浮窗" />
 
+    </PreferenceCategory>
+    <PreferenceCategory android:title="配置">
+
         <SwitchPreference
             android:defaultValue="true"
-            android:key="animation"
-            android:summary="开启或关闭动画"
-            android:title="动画" />
+            android:key="shake"
+            android:summary="开启或关闭首页摇一摇进入二维码扫描"
+            android:title="摇一摇" />
 
         <SwitchPreference
             android:defaultValue="true"
@@ -102,6 +105,10 @@
             android:key="github"
             android:summary="查看Github上的源代码"
             android:title="开放源代码" />
+
+        <Preference
+            android:key="update"
+            android:title="检查更新" />
 
         <!--<Preference-->
         <!--android:key="donate"-->

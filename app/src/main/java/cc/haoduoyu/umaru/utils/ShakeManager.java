@@ -49,12 +49,12 @@ public class ShakeManager {
 
         @Override
         public void onSensorChanged(SensorEvent event) {
-            int sensorType = event.sensor.getType();
+//            int sensorType = event.sensor.getType();
             //values[0]:X轴，values[1]：Y轴，values[2]：Z轴
             float[] values = event.values;
-            LogUtils.d(sensorType);
+//            LogUtils.d(sensorType);
             float force = Math.abs(values[0]) + Math.abs(values[1]) + Math.abs(values[2]);
-            LogUtils.d("sensor x values[0] = " + values[0] + " sensor y values[1] = " + values[1] + " sensor  values[2] = " + values[2]);
+//            LogUtils.d("sensor x values[0] = " + values[0] + " sensor y values[1] = " + values[1] + " sensor  values[2] = " + values[2]);
             if (iSensor != null)
                 iSensor.onSensorChange(force);
         }

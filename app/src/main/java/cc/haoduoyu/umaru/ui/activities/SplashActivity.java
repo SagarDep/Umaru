@@ -97,6 +97,7 @@ public class SplashActivity extends BaseActivity {
             //在只有某些权限需要处理时防止NullPointerException，因为这些权限已经被允许不在permissions中
             perms.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
             perms.put(Manifest.permission.RECORD_AUDIO, PackageManager.PERMISSION_GRANTED);
+//            perms.put(Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
 
             for (int i = 0; i < permissions.length; i++)
                 perms.put(permissions[i], grantResults[i]);
@@ -106,6 +107,8 @@ public class SplashActivity extends BaseActivity {
             // 检查
             if (perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                     && perms.get(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
+//                    && perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+//                    && perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 //Granted
                 MainActivity.startIt(0, SplashActivity.this);
                 finish();

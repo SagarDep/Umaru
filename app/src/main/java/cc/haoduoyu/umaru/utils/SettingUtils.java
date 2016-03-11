@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.util.Map;
+
 /**
  * 设置页工具类
  * Created by XP on 2016/2/5.
@@ -74,6 +76,10 @@ public class SettingUtils {
 
     public String getPicQuality() {
         return mPreferences.getString(PIC, "2");
+    }
+
+    public static Map<String, ?> getAll() {
+        return mPreferences.getAll();
     }
 
 }

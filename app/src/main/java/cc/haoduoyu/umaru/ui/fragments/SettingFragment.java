@@ -16,6 +16,9 @@ import android.widget.EditText;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
+import com.github.javiersantos.appupdater.AppUpdater;
+import com.github.javiersantos.appupdater.enums.Display;
+import com.github.javiersantos.appupdater.enums.UpdateFrom;
 
 import cc.haoduoyu.umaru.BuildConfig;
 import cc.haoduoyu.umaru.R;
@@ -52,6 +55,7 @@ public class SettingFragment extends PreferenceFragment {
     private static final String ABOUT = "about";
     private static final String GITHUB = "github";
     private static final String DONATE = "donate";
+    private static final String UPDATE = "update";
 
 //    private static final int REQUEST_SELECT_PICTURE = 1;
 
@@ -64,6 +68,7 @@ public class SettingFragment extends PreferenceFragment {
     Preference crash;
     Preference equalizer;
     Preference about, github, donate;
+    Preference update;
 
     ClipboardManager clipboardManager;
     EditText accountEt, passwordEt;
@@ -92,6 +97,7 @@ public class SettingFragment extends PreferenceFragment {
         about = findPreference(ABOUT);
         github = findPreference(GITHUB);
         donate = findPreference(DONATE);
+        update = findPreference(UPDATE);
 
         if (!TextUtils.isEmpty(PreferencesUtils.getString(getActivity(), getString(R.string.account)))) {
             account.setSummary(getString(R.string.now_bind_account) + PreferencesUtils.getString(getActivity(), getString(R.string.account)));
@@ -299,6 +305,23 @@ public class SettingFragment extends PreferenceFragment {
                 }
             });
         }
+
+        if (update != null)
+            update.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    new AppUpdater(getActivity())
+                            .setUpdateFrom(UpdateFrom.GITHUB)
+                            .setGitHubUserAndRepo(getString(R.string.bigggge), getString(R.string.umaru))
+//                            .setGitHubUserAndRepo("javiersantos", "AppUpdater")
+//                            .setUpdateFrom(UpdateFrom.XML)
+//                            .setUpdateXML("https://raw.githubusercontent.com/javiersantos/AppUpdater/master/app/update.xml")
+                            .setDisplay(Display.DIALOG)
+                            .showAppUpdated(true)
+                            .start();
+                    return true;
+                }
+            });
     }
 
 

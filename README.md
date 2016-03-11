@@ -26,6 +26,7 @@
 [ksoichiro/Android-ObservableScrollView](https://github.com/ksoichiro/Android-ObservableScrollView)
 [讯飞/语音识别](http://www.xfyun.cn/services/voicedictation)
 
+
 天气背景图由[面条](https://www.zhihu.com/people/lsxiao)制作，创意来自[dribbble](https://dribbble.com/shots/2249390-Material-Weather-App-Concept-Dark/attachments/420404)
 
 ### Screenshots
@@ -45,4 +46,4 @@
 * RecyclerView实现瀑布流
 * MediaPlayer实现音乐播放器
 * EventBus的简单使用
-* 语音识别，悬浮窗，摇一摇，二维码...
+* 语音识别，悬浮窗，摇一摇，二维码，自动更新...

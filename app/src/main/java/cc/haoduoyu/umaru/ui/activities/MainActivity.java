@@ -16,11 +16,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.OvershootInterpolator;
-import android.widget.CompoundButton;
-import android.widget.Switch;
-
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +35,6 @@ import cc.haoduoyu.umaru.utils.AppManager;
 import cc.haoduoyu.umaru.utils.SettingUtils;
 import cc.haoduoyu.umaru.utils.ShakeManager;
 import cc.haoduoyu.umaru.utils.SnackbarUtils;
-import cc.haoduoyu.umaru.utils.ToastUtils;
 import cc.haoduoyu.umaru.utils.Utils;
 import cc.haoduoyu.umaru.widgets.FloatViewService;
 import de.greenrobot.event.EventBus;
@@ -233,6 +227,9 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
             case R.id.action_settings:
                 SettingActivity.startIt(this);
                 break;
+            case R.id.action_scan:
+//                QRCodeScanActivity.startIt(this);
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -317,7 +314,7 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     @Override
     public void onSensorChange(float force) {
         if (force > 60) {
-            ToastUtils.showToast("摇一摇" + force);
+//            QRCodeScanActivity.startIt(this);
             ShakeManager.getInstance(MainActivity.this).cancel();
         }
     }

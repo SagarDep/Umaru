@@ -4,11 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
+import com.github.javiersantos.appupdater.AppUpdaterUtils;
+import com.github.javiersantos.appupdater.enums.AppUpdaterError;
+import com.github.javiersantos.appupdater.enums.UpdateFrom;
+import com.github.javiersantos.appupdater.objects.Update;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
@@ -24,7 +30,6 @@ import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.base.BaseActivity;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.SettingUtils;
-import cc.haoduoyu.umaru.utils.ToastUtils;
 import cc.haoduoyu.umaru.utils.Utils;
 
 /**
@@ -62,14 +67,16 @@ public class AboutActivity extends BaseActivity implements ObservableScrollViewC
 
         if (SettingUtils.getInstance(this).isEnableAnimations())
             startToolbarAnimation();
-
     }
 
     @OnClick(R.id.icon)
     void version() {
-        ToastUtils.showToast(getString(R.string.version) + BuildConfig.VERSION_NAME + "\n" + PreferencesUtils.getAll(this));
-        LogUtils.d("a:" + SettingUtils.getInstance(this).isEnableAnimations());
+        Toast.makeText(this, "      " + getString(R.string.version)
+                + BuildConfig.VERSION_NAME
+                + "\n\n" + PreferencesUtils.getAll(this)
+                + "\n\n" + SettingUtils.getAll(), Toast.LENGTH_LONG).show();
         LogUtils.d(PreferencesUtils.getAll(this));
+        LogUtils.d(SettingUtils.getAll());
     }
 
     @OnClick(R.id.image)
