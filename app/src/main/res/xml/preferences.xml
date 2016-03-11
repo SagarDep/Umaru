@@ -16,6 +16,12 @@
 
         <SwitchPreference
             android:defaultValue="true"
+            android:key="shake"
+            android:summary="开启或关闭首页摇一摇进入二维码扫描"
+            android:title="摇一摇" />
+
+        <SwitchPreference
+            android:defaultValue="true"
             android:key="floatview"
             android:summary="开启或关闭桌面悬浮窗"
             android:title="悬浮窗" />
@@ -50,9 +56,9 @@
             android:title="图片质量" />
 
         <!--<Preference-->
-            <!--android:key="clear"-->
-            <!--android:summary="进入应用设置界面"-->
-            <!--android:title="应用管理" />-->
+        <!--android:key="clear"-->
+        <!--android:summary="进入应用设置界面"-->
+        <!--android:title="应用管理" />-->
 
         <Preference
             android:key="account"
@@ -78,10 +84,10 @@
 
     <!--<PreferenceCategory android:title="媒体">-->
 
-        <!--<Preference-->
-            <!--android:key="equalizer"-->
-            <!--android:summary="用于修饰音乐效果"-->
-            <!--android:title="均衡器" />-->
+    <!--<Preference-->
+    <!--android:key="equalizer"-->
+    <!--android:summary="用于修饰音乐效果"-->
+    <!--android:title="均衡器" />-->
 
     <!--</PreferenceCategory>-->
 
@@ -98,9 +104,9 @@
             android:title="开放源代码" />
 
         <!--<Preference-->
-            <!--android:key="donate"-->
-            <!--android:summary="如果你喜欢这个项目，可以在这里打赏我"-->
-            <!--android:title="捐赠" />-->
+        <!--android:key="donate"-->
+        <!--android:summary="如果你喜欢这个项目，可以在这里打赏我"-->
+        <!--android:title="捐赠" />-->
 
     </PreferenceCategory>
 

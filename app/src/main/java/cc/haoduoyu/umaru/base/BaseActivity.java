@@ -4,11 +4,20 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.Request;
 
 import cc.haoduoyu.umaru.R;
+import cc.haoduoyu.umaru.Umaru;
+import cc.haoduoyu.umaru.ui.activities.ChatActivity;
 import cc.haoduoyu.umaru.utils.AppManager;
+import cc.haoduoyu.umaru.utils.SettingUtils;
+import cc.haoduoyu.umaru.utils.ShakeManager;
+import cc.haoduoyu.umaru.utils.ToastUtils;
 import cc.haoduoyu.umaru.utils.volleyUtils.RequestManager;
 
 /**
@@ -20,7 +29,6 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppManager.getAppManager().addActivity(this);
-
     }
 
     @Override
@@ -68,4 +76,6 @@ public class BaseActivity extends AppCompatActivity {
     protected void executeRequest(Request<?> request) {
         RequestManager.addRequest(request, this);
     }
+
+
 }

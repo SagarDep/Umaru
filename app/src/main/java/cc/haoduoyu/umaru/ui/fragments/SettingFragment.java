@@ -38,6 +38,7 @@ public class SettingFragment extends PreferenceFragment {
     private static final String COLOR_PRIMARY = "color_primary";
     private static final String COLOR_ACCENT = "color_accent";
     private static final String AVATAR = "avatar";
+    private static final String SHAKE = "shake";
     private static final String FLOAT_VIEW = "floatview";
     private static final String ANIMATION = "animation";
     private static final String ENABLE_CACHE = "enable_cache";
@@ -56,7 +57,7 @@ public class SettingFragment extends PreferenceFragment {
 
     Preference colorPrimary, colorAccent;
     Preference avatar;
-    SwitchPreference floatView, animation, enableCache, enableGuide;
+    SwitchPreference shake, floatView, animation, enableCache, enableGuide;
     ListPreference cache, pic;
     Preference clear;
     Preference account;
@@ -77,6 +78,7 @@ public class SettingFragment extends PreferenceFragment {
         colorPrimary = findPreference(COLOR_PRIMARY);
         colorAccent = findPreference(COLOR_ACCENT);
         avatar = findPreference(AVATAR);
+        shake = (SwitchPreference) findPreference(SHAKE);
         floatView = (SwitchPreference) findPreference(FLOAT_VIEW);
         animation = (SwitchPreference) findPreference(ANIMATION);
         enableCache = (SwitchPreference) findPreference(ENABLE_CACHE);

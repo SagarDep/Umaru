@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
  */
 public class SettingUtils {
 
+    private static final String SHAKE = "shake";
     private static final String FLOAT_VIEW = "floatview";
     private static final String ANIMATION = "animation";
     private static final String ENABLE_CACHE = "enable_cache";
@@ -31,6 +32,10 @@ public class SettingUtils {
             sInstance = new SettingUtils(context.getApplicationContext());
         }
         return sInstance;
+    }
+
+    public boolean isEnableShake() {
+        return mPreferences.getBoolean(SHAKE, true);
     }
 
     public boolean isEnableFloatView() {

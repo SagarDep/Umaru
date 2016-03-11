@@ -1,6 +1,8 @@
 # Umaru
 
-Thanks
+大小：4.95 MB
+
+### Thanks
 感谢以下开源项目的帮助
 
 [JakeWharton/butterknife](https://github.com/JakeWharton/butterknife)
@@ -26,6 +28,7 @@ Thanks
 
 天气背景图由[面条](https://www.zhihu.com/people/lsxiao)制作，创意来自[dribbble](https://dribbble.com/shots/2249390-Material-Weather-App-Concept-Dark/attachments/420404)
 
+### Screenshots
 
 <img src="http://7xq3d5.com1.z0.glb.clouddn.com/Screenshot_20160305-203718%5B1%5D.png" alt="ss" title="screenshot" width="216" height="384" />
 <img src="http://7xq3d5.com1.z0.glb.clouddn.com/Screenshot_20160204-192656%5B1%5D.png" alt="ss" title="screenshot" width="216" height="384" />
@@ -34,4 +37,12 @@ Thanks
 <img src="http://7xq3d5.com1.z0.glb.clouddn.com/Screenshot_20160309-135542%5B1%5D.png" alt="ss" title="screenshot" width="216" height="384" />
 <img src="http://7xq3d5.com1.z0.glb.clouddn.com/Screenshot_20160309-135605%5B1%5D.png" alt="ss" title="screenshot" width="216" height="384" />
 
+### 知识点
 
+* Material Design风格及动画的使用
+* 使用Retrofit2进行网络请求和缓存
+* Gson和Retrofit或Volley的搭配使用
+* RecyclerView实现瀑布流
+* MediaPlayer实现音乐播放器
+* EventBus的简单使用
+* 语音识别，悬浮窗，摇一摇，二维码...

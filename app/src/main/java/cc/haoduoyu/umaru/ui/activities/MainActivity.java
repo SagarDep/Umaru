@@ -16,6 +16,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.OvershootInterpolator;
+import android.widget.CompoundButton;
+import android.widget.Switch;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,12 +38,14 @@ import cc.haoduoyu.umaru.ui.fragments.MainFragment;
 import cc.haoduoyu.umaru.ui.fragments.MusicFragment;
 import cc.haoduoyu.umaru.utils.AppManager;
 import cc.haoduoyu.umaru.utils.SettingUtils;
+import cc.haoduoyu.umaru.utils.ShakeManager;
 import cc.haoduoyu.umaru.utils.SnackbarUtils;
+import cc.haoduoyu.umaru.utils.ToastUtils;
 import cc.haoduoyu.umaru.utils.Utils;
 import cc.haoduoyu.umaru.widgets.FloatViewService;
 import de.greenrobot.event.EventBus;
 
-public class MainActivity extends ToolbarActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends ToolbarActivity implements NavigationView.OnNavigationItemSelectedListener, ShakeManager.ISensor {
 
     @Bind(R.id.drawer_layout)
     DrawerLayout drawer;
@@ -140,6 +147,13 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
         if (event.message.equals(MessageEvent.SHOW_OR_HIDE_FLOATVIEW)) {
             updateFloatView();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (SettingUtils.getInstance(this).isEnableShake())
+            ShakeManager.getInstance(MainActivity.this).startShakeListener(this);
     }
 
     private void updateFloatView() {
@@ -297,6 +311,14 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
             NowPlayingActivity.startIt(PlayerLib.getSongs().get(0), this);
         } else {
             SnackbarUtils.showShort(fab, getString(R.string.fab_no_music));
+        }
+    }
+
+    @Override
+    public void onSensorChange(float force) {
+        if (force > 60) {
+            ToastUtils.showToast("摇一摇" + force);
+            ShakeManager.getInstance(MainActivity.this).cancel();
         }
     }
 }
