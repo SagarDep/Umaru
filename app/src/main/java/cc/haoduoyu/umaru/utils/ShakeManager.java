@@ -1,14 +1,11 @@
 package cc.haoduoyu.umaru.utils;
 
 import android.content.Context;
-import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 import com.apkfuns.logutils.LogUtils;
-
-import java.util.List;
 
 /**
  * 摇一摇管理器

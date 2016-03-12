@@ -26,6 +26,7 @@ import com.apkfuns.logutils.LogUtils;
 
 import java.io.IOException;
 
+import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.model.Song;
 
 /**
@@ -266,4 +267,18 @@ public class Utils {
         }
         return null;
     }
+
+
+    public static void browser(Context context, String url) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        Uri uri = Uri.parse(url);
+        intent.setData(uri);
+        if (intent.resolveActivity(context.getPackageManager()) != null) {
+            context.startActivity(intent);
+        } else {
+            ToastUtils.showToast(context.getString(R.string.open_failed));
+        }
+    }
+
 }

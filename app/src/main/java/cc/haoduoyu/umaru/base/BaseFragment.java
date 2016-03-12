@@ -11,7 +11,7 @@ import com.android.volley.Request;
 import com.apkfuns.logutils.LogUtils;
 
 import butterknife.ButterKnife;
-import cc.haoduoyu.umaru.utils.volleyUtils.RequestManager;
+import cc.haoduoyu.umaru.utils.volley.RequestManager;
 import de.greenrobot.event.EventBus;
 
 /**

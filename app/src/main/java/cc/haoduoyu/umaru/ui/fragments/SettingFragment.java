@@ -311,11 +311,11 @@ public class SettingFragment extends PreferenceFragment {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     new AppUpdater(getActivity())
-                            .setUpdateFrom(UpdateFrom.GITHUB)
-                            .setGitHubUserAndRepo(getString(R.string.bigggge), getString(R.string.umaru))
+//                            .setUpdateFrom(UpdateFrom.GITHUB)
+//                            .setGitHubUserAndRepo(getString(R.string.bigggge), getString(R.string.umaru))
 //                            .setGitHubUserAndRepo("javiersantos", "AppUpdater")
-//                            .setUpdateFrom(UpdateFrom.XML)
-//                            .setUpdateXML("https://raw.githubusercontent.com/javiersantos/AppUpdater/master/app/update.xml")
+                            .setUpdateFrom(UpdateFrom.XML)
+                            .setUpdateXML("https://raw.githubusercontent.com/javiersantos/AppUpdater/master/app/update.xml")
                             .setDisplay(Display.DIALOG)
                             .showAppUpdated(true)
                             .start();

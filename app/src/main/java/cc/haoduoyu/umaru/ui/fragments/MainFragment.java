@@ -1,6 +1,5 @@
 package cc.haoduoyu.umaru.ui.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -38,7 +37,7 @@ import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.SettingUtils;
 import cc.haoduoyu.umaru.utils.SnackbarUtils;
 import cc.haoduoyu.umaru.utils.Utils;
-import cc.haoduoyu.umaru.utils.volleyUtils.GsonRequest;
+import cc.haoduoyu.umaru.utils.volley.GsonRequest;
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Line;

@@ -41,7 +41,7 @@ import cc.haoduoyu.umaru.player.Player;
 import cc.haoduoyu.umaru.player.PlayerController;
 import cc.haoduoyu.umaru.utils.ShareUtils;
 import cc.haoduoyu.umaru.utils.Utils;
-import cc.haoduoyu.umaru.utils.volleyUtils.GsonRequest;
+import cc.haoduoyu.umaru.utils.volley.GsonRequest;
 import cc.haoduoyu.umaru.widgets.PlayPauseDrawable;
 import retrofit2.Callback;
 

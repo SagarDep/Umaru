@@ -2,8 +2,6 @@ package cc.haoduoyu.umaru.ui.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -50,8 +48,8 @@ import cc.haoduoyu.umaru.ui.activities.WebViewActivity;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.ToastUtils;
 import cc.haoduoyu.umaru.utils.Utils;
-import cc.haoduoyu.umaru.utils.volleyUtils.GsonRequest;
-import cc.haoduoyu.umaru.utils.volleyUtils.RequestManager;
+import cc.haoduoyu.umaru.utils.volley.GsonRequest;
+import cc.haoduoyu.umaru.utils.volley.RequestManager;
 
 /**
  * Created by XP on 2016/1/20.
@@ -89,11 +87,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             holder.mTextViewUrl.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    WebViewActivity.startIt(mContext, mChat.get(position).getUrl(), null);
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse(mChat.get(position).getUrl()));
-                    mContext.startActivity(intent);
+                    Utils.browser(mContext, mChat.get(position).getUrl());
 
                 }
             });

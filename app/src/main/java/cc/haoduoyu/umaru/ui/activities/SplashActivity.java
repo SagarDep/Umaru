@@ -35,9 +35,9 @@ public class SplashActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
         ImageView imageView = (ImageView) findViewById(R.id.splash);
 
-        ScaleAnimation animation = new ScaleAnimation(1.0f, 1.2f, 1.0f, 1.2f,
-                Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f);
-        animation.setDuration(1288);
+        ScaleAnimation animation = new ScaleAnimation(1.0f, 1.13f, 1.0f, 1.13f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        animation.setDuration(2888);
         animation.setFillAfter(true);//不写动画会恢复原位置
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -72,6 +72,7 @@ public class SplashActivity extends BaseActivity {
         //需要添加的权限
         addPermission(permissionsList, Manifest.permission.READ_EXTERNAL_STORAGE);
         addPermission(permissionsList, Manifest.permission.RECORD_AUDIO);
+        addPermission(permissionsList, Manifest.permission.CAMERA);
         LogUtils.d(getString(R.string.denied_permission) + permissionsList);
         if (permissionsList.size() > 0) {
             ActivityCompat.requestPermissions(this, permissionsList.toArray(new String[permissionsList.size()]),
@@ -97,7 +98,7 @@ public class SplashActivity extends BaseActivity {
             //在只有某些权限需要处理时防止NullPointerException，因为这些权限已经被允许不在permissions中
             perms.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
             perms.put(Manifest.permission.RECORD_AUDIO, PackageManager.PERMISSION_GRANTED);
-//            perms.put(Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
+            perms.put(Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
 
             for (int i = 0; i < permissions.length; i++)
                 perms.put(permissions[i], grantResults[i]);
@@ -106,8 +107,8 @@ public class SplashActivity extends BaseActivity {
             LogUtils.d("perms: " + perms);
             // 检查
             if (perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                    && perms.get(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
-//                    && perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    && perms.get(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
+                    && perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
 //                    && perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 //Granted
                 MainActivity.startIt(0, SplashActivity.this);

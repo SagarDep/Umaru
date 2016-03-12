@@ -1,4 +1,4 @@
-package cc.haoduoyu.umaru.utils.volleyUtils;
+package cc.haoduoyu.umaru.utils.volley;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;

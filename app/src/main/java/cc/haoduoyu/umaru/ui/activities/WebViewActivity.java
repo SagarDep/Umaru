@@ -3,7 +3,6 @@ package cc.haoduoyu.umaru.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -20,7 +19,6 @@ import android.widget.ProgressBar;
 import butterknife.Bind;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.base.ToolbarActivity;
-import cc.haoduoyu.umaru.utils.ToastUtils;
 import cc.haoduoyu.umaru.utils.Utils;
 
 /**
@@ -130,15 +128,7 @@ public class WebViewActivity extends ToolbarActivity {
                 Utils.copyToClipBoard(this, mWebView.getUrl(), getString(R.string.copy_done));
                 return true;
             case R.id.open_url:
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_VIEW);
-                Uri uri = Uri.parse(mUrl);
-                intent.setData(uri);
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent);
-                } else {
-                    ToastUtils.showToast(getString(R.string.open_failed));
-                }
+                Utils.browser(this, mUrl);
                 return true;
             case R.id.clean_cache:
                 CookieSyncManager.createInstance(this);

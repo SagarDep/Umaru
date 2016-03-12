@@ -25,6 +25,7 @@
 [lecho/hellocharts-android](https://github.com/lecho/hellocharts-android)
 [ksoichiro/Android-ObservableScrollView](https://github.com/ksoichiro/Android-ObservableScrollView)
 [讯飞/语音识别](http://www.xfyun.cn/services/voicedictation)
+[SkillCollege/ZBarScanProj](https://github.com/SkillCollege/ZBarScanProj)
 
 
 天气背景图由[面条](https://www.zhihu.com/people/lsxiao)制作，创意来自[dribbble](https://dribbble.com/shots/2249390-Material-Weather-App-Concept-Dark/attachments/420404)

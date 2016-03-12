@@ -17,6 +17,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.OvershootInterpolator;
 
+import com.apkfuns.logutils.LogUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,6 +38,7 @@ import cc.haoduoyu.umaru.utils.SettingUtils;
 import cc.haoduoyu.umaru.utils.ShakeManager;
 import cc.haoduoyu.umaru.utils.SnackbarUtils;
 import cc.haoduoyu.umaru.utils.Utils;
+import cc.haoduoyu.umaru.utils.zbar.CaptureActivity;
 import cc.haoduoyu.umaru.widgets.FloatViewService;
 import de.greenrobot.event.EventBus;
 
@@ -146,8 +149,12 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     @Override
     protected void onResume() {
         super.onResume();
+        LogUtils.d("isEnableShake: " + SettingUtils.getInstance(this).isEnableShake());
         if (SettingUtils.getInstance(this).isEnableShake())
-            ShakeManager.getInstance(MainActivity.this).startShakeListener(this);
+            ShakeManager.getInstance(this).startShakeListener(this);
+        else
+            ShakeManager.getInstance(this).cancel();
+
     }
 
     private void updateFloatView() {
@@ -228,7 +235,7 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
                 SettingActivity.startIt(this);
                 break;
             case R.id.action_scan:
-//                QRCodeScanActivity.startIt(this);
+                startActivity(new Intent(this, CaptureActivity.class));
                 break;
         }
 
@@ -314,8 +321,9 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     @Override
     public void onSensorChange(float force) {
         if (force > 60) {
-//            QRCodeScanActivity.startIt(this);
-            ShakeManager.getInstance(MainActivity.this).cancel();
+            LogUtils.d("force: " + force);
+            ShakeManager.getInstance(this).cancel();
+            startActivity(new Intent(this, CaptureActivity.class));
         }
     }
 }
