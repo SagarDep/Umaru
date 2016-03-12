@@ -50,6 +50,7 @@ import cc.haoduoyu.umaru.utils.ToastUtils;
 import cc.haoduoyu.umaru.utils.Utils;
 import cc.haoduoyu.umaru.utils.volley.GsonRequest;
 import cc.haoduoyu.umaru.utils.volley.RequestManager;
+import cc.haoduoyu.umaru.utils.zbar.CaptureActivity;
 
 /**
  * Created by XP on 2016/1/20.
@@ -210,6 +211,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
             } else
                 ToastUtils.showToast(mContext.getString(R.string.account_not_bind));
+        } else if (text.contains("二维码") || text.contains("条码") || text.contains("扫一扫")) {
+            mChat.add(new Chat(Chat.RECEIVE, "正在打开..."));
+            notifyDataSetChanged();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    CaptureActivity.startIt(mContext);
+                }
+            }, 1255);
+
         } else
             loadWithTuling(text);
     }
@@ -329,7 +340,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                 notifyDataSetChanged();
                 if (mContext instanceof ChatActivity) {
                     RecyclerView recyclerView = ((ChatActivity) mContext).getRecyclerView();
-                    recyclerView.smoothScrollToPosition(getItemCount() - 1);
+//                    recyclerView.smoothScrollToPosition(getItemCount() - 1);
                 }
                 LogUtils.d(response);
             }

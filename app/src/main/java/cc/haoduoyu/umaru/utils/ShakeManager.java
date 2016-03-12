@@ -5,8 +5,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-import com.apkfuns.logutils.LogUtils;
-
 /**
  * 摇一摇管理器
  * Created by XP on 2016/3/11.
@@ -16,6 +14,11 @@ public class ShakeManager {
     private static ShakeManager instance;
     private Context mContext;
     private Sensor mSensor;
+    /**
+     * 传感器检测变化的时间间隔
+     */
+    private static final int UPTATE_INTERVAL_TIME = 100;
+    private long mLastUpdateTime;
 
     private ShakeManager(Context context) {
         mContext = context;
@@ -46,10 +49,18 @@ public class ShakeManager {
 
         @Override
         public void onSensorChanged(SensorEvent event) {
+            //现在检测时间
+            long currentUpdateTime = System.currentTimeMillis();
+            //两次检测的时间间隔
+            long timeInterval = currentUpdateTime - mLastUpdateTime;
+            if (timeInterval < UPTATE_INTERVAL_TIME) {
+                return;
+            }
+            //现在的时间变成last时间
+            mLastUpdateTime = currentUpdateTime;
 //            int sensorType = event.sensor.getType();
             //values[0]:X轴，values[1]：Y轴，values[2]：Z轴
             float[] values = event.values;
-//            LogUtils.d(sensorType);
             float force = Math.abs(values[0]) + Math.abs(values[1]) + Math.abs(values[2]);
 //            LogUtils.d("sensor x values[0] = " + values[0] + " sensor y values[1] = " + values[1] + " sensor  values[2] = " + values[2]);
             if (iSensor != null)

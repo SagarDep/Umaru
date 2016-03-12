@@ -152,9 +152,20 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
         LogUtils.d("isEnableShake: " + SettingUtils.getInstance(this).isEnableShake());
         if (SettingUtils.getInstance(this).isEnableShake())
             ShakeManager.getInstance(this).startShakeListener(this);
-        else
-            ShakeManager.getInstance(this).cancel();
+//        else
+//            ShakeManager.getInstance(this).cancel();
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ShakeManager.getInstance(this).cancel();
+    }
+
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
     private void updateFloatView() {
@@ -188,12 +199,6 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
         if (mFloatViewService != null) {
             mFloatViewService.hideFloat();
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        EventBus.getDefault().unregister(this);
-        super.onDestroy();
     }
 
     /**
@@ -235,7 +240,7 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
                 SettingActivity.startIt(this);
                 break;
             case R.id.action_scan:
-                startActivity(new Intent(this, CaptureActivity.class));
+                CaptureActivity.startIt(this);
                 break;
         }
 
@@ -320,10 +325,9 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
 
     @Override
     public void onSensorChange(float force) {
-        if (force > 60) {
+        if (force > 50) {
             LogUtils.d("force: " + force);
-            ShakeManager.getInstance(this).cancel();
-            startActivity(new Intent(this, CaptureActivity.class));
+            CaptureActivity.startIt(this);
         }
     }
 }

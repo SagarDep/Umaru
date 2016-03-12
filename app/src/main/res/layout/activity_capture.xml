@@ -39,6 +39,16 @@
                 android:src="@drawable/scan_line" />
         </RelativeLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/capture_crop_view"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/capture_hint"
+            android:textColor="@color/md_grey_500"
+            android:textSize="@dimen/textSizeX3" />
+
         <ImageView
             android:id="@+id/capture_mask_bottom"
             android:layout_width="match_parent"
@@ -84,12 +94,10 @@
         android:id="@+id/capture_scan_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/capture_restart_scan"
-        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
         android:gravity="center"
-        android:text="Scanning..."
         android:textColor="@android:color/white"
-        android:textSize="14sp"
-        android:visibility="gone" />
+        android:textSize="@dimen/textSizeX3" />
 
 </RelativeLayout>

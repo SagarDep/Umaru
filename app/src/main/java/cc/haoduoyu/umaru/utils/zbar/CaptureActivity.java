@@ -1,6 +1,8 @@
 package cc.haoduoyu.umaru.utils.zbar;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Rect;
 import android.hardware.Camera;
@@ -48,6 +50,12 @@ public class CaptureActivity extends Activity {
     private boolean barcodeScanned = false;
     private boolean previewing = true;
 
+    public static void startIt(Context context) {
+        Intent intent = new Intent(context, CaptureActivity.class);
+        LogUtils.d("startIt()");
+        context.startActivity(intent);
+    }
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture);
@@ -77,7 +85,7 @@ public class CaptureActivity extends Activity {
             public void onClick(View v) {
                 if (barcodeScanned) {
                     barcodeScanned = false;
-                    scanResult.setText("Scanning...");
+                    scanResult.setText("");
                     mCamera.setPreviewCallback(previewCb);
                     mCamera.startPreview();
                     previewing = true;
@@ -103,7 +111,7 @@ public class CaptureActivity extends Activity {
         LogUtils.d("initViews()");
         TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT,
                 0.85f);
-        animation.setDuration(3000);
+        animation.setDuration(2000);
         animation.setRepeatCount(-1);
         animation.setRepeatMode(Animation.REVERSE);
         scanLine.startAnimation(animation);
@@ -155,8 +163,9 @@ public class CaptureActivity extends Activity {
 //                previewing = false;
 //                mCamera.setPreviewCallback(null);
                 mCamera.stopPreview();
-                scanResult.setText("barcode result " + result);
-                Utils.browser(CaptureActivity.this, result);
+                if (!Utils.browser(CaptureActivity.this, result)) {
+                    scanResult.setText(getString(R.string.scan_result) + result);
+                }
 //                barcodeScanned = true;
             }
         }

@@ -104,7 +104,7 @@ public final class CameraConfigurationManager {
 			return;
 		}
 
-		Log.i(TAG, "Initial camera parameters: " + parameters.flatten());
+//		Log.i(TAG, "Initial camera parameters: " + parameters.flatten());
 
 		if (safeMode) {
 			Log.w(TAG, "In camera config safe mode -- most settings will not be honored");

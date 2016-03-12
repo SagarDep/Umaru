@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -40,6 +39,7 @@ import cc.haoduoyu.umaru.event.MessageEvent;
 import cc.haoduoyu.umaru.ui.adapter.ChatAdapter;
 import cc.haoduoyu.umaru.utils.JsonParser;
 import cc.haoduoyu.umaru.utils.SettingUtils;
+import cc.haoduoyu.umaru.widgets.GLayoutManager;
 import cc.haoduoyu.umaru.widgets.RevealBackgroundView;
 import cc.haoduoyu.umaru.widgets.SendButton;
 
@@ -104,7 +104,7 @@ public class ChatActivity extends ToolbarActivity implements SendButton.OnSendCl
         mAppBar.setBackgroundColor(Color.TRANSPARENT);
         mAdapter = new ChatAdapter(this);
         mAdapter.loadRandomWelcomeTexts();
-        mRecyclerview.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerview.setLayoutManager(new GLayoutManager(this));
         mRecyclerview.setAdapter(mAdapter);
 
         //当一个视图树将要绘制时调用这个回调函数

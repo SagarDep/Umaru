@@ -137,7 +137,6 @@ public class OnlineMusicAdapter extends RecyclerView.Adapter<OnlineMusicAdapter.
         MusicFactory.getMusicService().getTopTracks(page, limit).enqueue(new Callback<TopTracks>() {
             @Override
             public void onResponse(Response<TopTracks> response) {
-
                 if (page == 1) mTrackList.clear();
                 if (response.body() != null)
                     mTrackList.addAll(response.body().getTracks().getTrack());
@@ -159,7 +158,6 @@ public class OnlineMusicAdapter extends RecyclerView.Adapter<OnlineMusicAdapter.
         MusicFactory.getMusicService().getTopArtists(page, limit).enqueue(new Callback<TopArtists>() {
             @Override
             public void onResponse(Response<TopArtists> response) {
-
                 if (page == 1) mArtistList.clear();
                 if (response.body() != null)
                     mArtistList.addAll(response.body().getArtists().getArtist());

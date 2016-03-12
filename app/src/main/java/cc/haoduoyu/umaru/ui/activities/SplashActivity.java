@@ -37,7 +37,7 @@ public class SplashActivity extends BaseActivity {
 
         ScaleAnimation animation = new ScaleAnimation(1.0f, 1.13f, 1.0f, 1.13f,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        animation.setDuration(2888);
+        animation.setDuration(1388);
         animation.setFillAfter(true);//不写动画会恢复原位置
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
