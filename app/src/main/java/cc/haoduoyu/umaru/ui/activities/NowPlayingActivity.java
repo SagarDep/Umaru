@@ -340,7 +340,7 @@ public class NowPlayingActivity extends ToolbarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.music, menu);
+        getMenuInflater().inflate(R.menu.menu_music, menu);
         return true;
     }
 

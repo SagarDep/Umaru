@@ -3,6 +3,7 @@ package cc.haoduoyu.umaru.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -23,6 +24,12 @@ import cc.haoduoyu.umaru.utils.Utils;
 
 /**
  * WebView
+ * http://developer.android.com/guide/webapps/webview.html
+ * <p/>
+ * ！That's it. Now all links the user clicks load in your WebView.！
+ * ！The WebView now automatically syncs cookies as necessary.
+ * You no longer need to create or use the CookieSyncManager.！
+ * <p/>
  * fitsSystemWindows会导致toolbar颜色异常
  * Created by XP on 2016/3/4.
  */
@@ -79,7 +86,7 @@ public class WebViewActivity extends ToolbarActivity {
         //设置布局方式(单列显示)
 //        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         mWebView.setWebChromeClient(new ChromeClient());
-        mWebView.setWebViewClient(new Client());
+        mWebView.setWebViewClient(new WebViewClient());
 
         mWebView.loadUrl(mUrl);
 
@@ -89,6 +96,10 @@ public class WebViewActivity extends ToolbarActivity {
 
     private void refresh() {
         mWebView.reload();
+    }
+
+    private void goForward() {
+        mWebView.goForward();
     }
 
 
@@ -123,20 +134,23 @@ public class WebViewActivity extends ToolbarActivity {
         switch (id) {
             case R.id.refresh:
                 refresh();
-                return true;
+                break;
+            case R.id.goforward:
+                goForward();
+                break;
             case R.id.copy_url:
                 Utils.copyToClipBoard(this, mWebView.getUrl(), getString(R.string.copy_done));
-                return true;
+                break;
             case R.id.open_url:
                 Utils.browser(this, mUrl);
-                return true;
+                break;
             case R.id.clean_cache:
                 CookieSyncManager.createInstance(this);
                 CookieSyncManager.getInstance().startSync();
                 CookieManager.getInstance().removeSessionCookie();
                 mWebView.clearCache(true);
                 mWebView.clearHistory();
-                return true;
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -178,6 +192,8 @@ public class WebViewActivity extends ToolbarActivity {
                     mProgressbar.setProgress(newProgress);
                 }
             }
+            //显示网页标题,onReceivedTitle对goBack()无效
+            setTitle(view.getTitle());
         }
 
         @Override
@@ -187,21 +203,22 @@ public class WebViewActivity extends ToolbarActivity {
         }
     }
 
-    private class Client extends WebViewClient {
+    /**
+     * 使用外部浏览器打开
+     * http://developer.android.com/guide/webapps/webview.html
+     */
+    private class Client2 extends WebViewClient {
 
-        //重写此方法返回true表明点击网页里面的链接还是在当前的WebView里跳转，不跳到浏览器那边
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (url != null) view.loadUrl(url);
+            if (Uri.parse(url).getHost().equals("www.example.com")) {
+                // This is my web site, so do not override; let my WebView load the page
+                return false;
+            }
+            // Otherwise, the link is not for a page on my site, so launch another Activity that handles URLs
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(intent);
             return true;
         }
-
-//        @Override
-//        public void onPageFinished(WebView view, String url) {
-//            super.onPageFinished(view, url);
-//            String username = PreferencesUtils.getString(WebViewActivity.this, getString(R.string.account));
-//            String password = PreferencesUtils.getString(WebViewActivity.this, getString(R.string.password));
-//            view.loadUrl("javascript:document.getElementById('IDToken1').value = '" + username + "';document.getElementById('IDToken9').value='" + password + "';");
-//        }
     }
 
 

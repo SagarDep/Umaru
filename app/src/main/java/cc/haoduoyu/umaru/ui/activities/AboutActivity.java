@@ -4,17 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
-import com.github.javiersantos.appupdater.AppUpdaterUtils;
-import com.github.javiersantos.appupdater.enums.AppUpdaterError;
-import com.github.javiersantos.appupdater.enums.UpdateFrom;
-import com.github.javiersantos.appupdater.objects.Update;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
@@ -71,7 +66,7 @@ public class AboutActivity extends BaseActivity implements ObservableScrollViewC
 
     @OnClick(R.id.icon)
     void version() {
-        Toast.makeText(this, "      " + getString(R.string.version)
+        Toast.makeText(this, getString(R.string.version)
                 + BuildConfig.VERSION_NAME
                 + "\n\n" + PreferencesUtils.getAll(this)
                 + "\n\n" + SettingUtils.getAll(), Toast.LENGTH_LONG).show();
@@ -87,6 +82,11 @@ public class AboutActivity extends BaseActivity implements ObservableScrollViewC
     @OnClick(R.id.developer)
     void develop() {
         WebViewActivity.startIt(this, Constants.HAO_DUO_YU, null);
+    }
+
+    @OnClick(R.id.crash)
+    void crash() {
+        throw new RuntimeException("crash crash crash crash crash");
     }
 
 

@@ -30,8 +30,9 @@ public class CrashHandler implements UncaughtExceptionHandler {
     private static final String TAG = "CrashHandler";
     private static final boolean DEBUG = true;
 
-    public static final String PATH = Environment.getExternalStorageDirectory().getPath() + File.separator + "crash_log";
-    private static final String FILE_NAME = "crash";
+    public static final String PATH = Environment.getExternalStorageDirectory().getPath()
+            + File.separator + "Umaru" + File.separator + "crash_log" + File.separator;
+    private static final String FILE_NAME = "crash_";
     private static final String FILE_NAME_SUFFIX = ".log";
 
     private static CrashHandler sInstance = new CrashHandler();
@@ -91,6 +92,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
         File dir = new File(PATH);
         if (!dir.exists()) {
             dir.mkdirs();
+
         }
         long current = System.currentTimeMillis();
         String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(current));
@@ -137,7 +139,6 @@ public class CrashHandler implements UncaughtExceptionHandler {
     }
 
     private void uploadExceptionToServer() {
-        //TODO Upload Exception Message To Your Web Server
     }
 
 }

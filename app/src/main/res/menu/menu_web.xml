@@ -7,17 +7,31 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/copy_url"
-        android:title="@string/copy_link"
+        android:id="@+id/goforward"
+        android:title="@string/goforward"
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/open_url"
-        android:title="@string/open_with"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/clean_cache"
-        android:title="@string/clean_web_cache"
-        app:showAsAction="never" />
+        android:id="@+id/more"
+        android:title="@string/advanced"
+        app:showAsAction="never">
+        <group>
+            <menu>
+                <item
+                    android:id="@+id/copy_url"
+                    android:title="@string/copy_link"
+                    app:showAsAction="never" />
+
+                <item
+                    android:id="@+id/open_url"
+                    android:title="@string/open_with"
+                    app:showAsAction="never" />
+                <item
+                    android:id="@+id/clean_cache"
+                    android:title="@string/clean_web_cache"
+                    app:showAsAction="never" />
+            </menu>
+        </group>
+    </item>
 
 </menu>

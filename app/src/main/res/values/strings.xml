@@ -39,7 +39,7 @@
     <string name="chart_artists">艺人榜</string>
     <string name="fab_no_music">音乐库空空如也，去其他地方先下点音乐吧</string>
     <string name="request_permission">权限申请</string>
-    <string name="permission_content">在设置-应用-Umaru-权限中开启权限，以正常使用Umaru，这些权限都是必要的。</string>
+    <string name="permission_content">在设置-应用-Umaru-权限中开启权限，以正常使用Umaru，这些权限都是必要的。\n\n权限列表：\nREAD_EXTERNAL_STORAGE 权限用于读取本地音乐库\nRECORD_AUDIO 权限用于语音聊天\nCAMERA 权限用于扫描二维码</string>
     <string name="go_setting">去设置</string>
     <string name="cancel">取消</string>
     <string name="introduce">介绍</string>
@@ -112,6 +112,11 @@
     <string name="bigggge">bigggge</string>
     <string name="capture_hint">将二维码放入框内，即可自动扫描</string>
     <string name="scan_result">扫描结果</string>
+    <string name="goforward">前进</string>
+    <string name="advanced">高级</string>
+    <string name="thanks">感谢</string>
+    <string name="thanks_api">接口</string>
+    <string name="apis">图灵机器人\n和风天气\nLast.fm</string>
 
 
     <string-array name="welcome_texts">
