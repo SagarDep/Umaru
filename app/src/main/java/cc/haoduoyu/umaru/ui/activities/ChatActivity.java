@@ -97,11 +97,11 @@ public class ChatActivity extends ToolbarActivity implements SendButton.OnSendCl
         initXf();
 
         //仅仅为了解决键盘bug
-        //http://stackoverflow.com/questions/19897422/keyboard-hiding-edittext-when-androidwindowtranslucentstatus-true
-//        SystemBarTintManager tintManager = new SystemBarTintManager(this);
-//        tintManager.setStatusBarTintEnabled(true);
-//        int color = PreferencesUtils.getInteger(this, getString(R.string.color_primary), R.color.colorPrimary);
-//        tintManager.setTintColor(color);
+//        http://stackoverflow.com/questions/19897422/keyboard-hiding-edittext-when-androidwindowtranslucentstatus-true
+        SystemBarTintManager tintManager = new SystemBarTintManager(this);
+        tintManager.setStatusBarTintEnabled(true);
+        int color = PreferencesUtils.getInteger(this, getString(R.string.color_primary), R.color.colorPrimary);
+        tintManager.setTintColor(color);
 
         //动画开关
         if (SettingUtils.getInstance(this).isEnableAnimations() && getIntent().getIntArrayExtra(ARG_REVEAL_START_LOCATION) != null)
