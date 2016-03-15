@@ -40,8 +40,7 @@ public class BaseActivity extends AppCompatActivity {
 
     public void replaceFragmentWithSelected(Fragment fragment) {
 
-        FragmentTransaction fragmentTransaction = this
-                .getSupportFragmentManager().beginTransaction();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frame_content, fragment);
 //        fragmentTransaction.addToBackStack(null);//带返回栈
         fragmentTransaction.commit();

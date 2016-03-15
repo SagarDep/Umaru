@@ -146,6 +146,13 @@ public class NowPlayingActivity extends ToolbarActivity {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        new Thread(observer).start();
+        registerReceiver(updateNowPlayingReceiver, new IntentFilter(Player.UPDATE_SONG_INFO));
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         observer.stop();
@@ -155,10 +162,8 @@ public class NowPlayingActivity extends ToolbarActivity {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        new Thread(observer).start();
-        registerReceiver(updateNowPlayingReceiver, new IntentFilter(Player.UPDATE_SONG_INFO));
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     class SeekBarChangeListener implements SeekBar.OnSeekBarChangeListener {

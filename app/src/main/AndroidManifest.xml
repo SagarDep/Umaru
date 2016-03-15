@@ -57,7 +57,7 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.TransparentActivity"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+          />
         <activity
             android:name=".ui.activities.AboutActivity"
             android:label="@string/about"
@@ -97,7 +97,7 @@
         <receiver
             android:name=".player.PlayerController$UpdateSongReceiver"
             android:exported="false">
-            <intent-filter android:priority="9">
+            <intent-filter android:priority="99">
                 <action android:name="cc.haoduoyu.umaru.player.UPDATE_SONG_INFO" />
             </intent-filter>
         </receiver>

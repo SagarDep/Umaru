@@ -31,6 +31,7 @@ import cc.haoduoyu.umaru.base.ToolbarActivity;
 import cc.haoduoyu.umaru.event.MessageEvent;
 import cc.haoduoyu.umaru.player.PlayerController;
 import cc.haoduoyu.umaru.player.PlayerLib;
+import cc.haoduoyu.umaru.ui.fragments.LocalMusicFragment;
 import cc.haoduoyu.umaru.ui.fragments.MainFragment;
 import cc.haoduoyu.umaru.ui.fragments.MusicFragment;
 import cc.haoduoyu.umaru.utils.AppManager;
@@ -98,7 +99,7 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     }
 
     private void initService() {
-        //启动播放器服务
+        //启动播放器服务,
         PlayerController.startService(this);
         //启动悬浮窗服务
         Intent intent = new Intent(this, FloatViewService.class);
@@ -174,12 +175,11 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
 
     @Override
     protected void onDestroy() {
-        stop();
+        destroy();
         super.onDestroy();
     }
 
-    private void stop() {
-        stopService(new Intent(this, FloatViewService.class));
+    private void destroy() {
         unbindService(mServiceConnection);
         EventBus.getDefault().unregister(this);
     }
@@ -315,7 +315,6 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
             @Override
             public void run() {
                 exit();
-
 //                final Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
 //                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //                startActivity(intent);
@@ -324,13 +323,19 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     }
 
     private void exit() {
-        stop();
+        destroy();
+        stopService(new Intent(this, FloatViewService.class));
         PlayerController.stop();
         AppManager.getAppManager().finishAllActivityAndExit(this);
         System.exit(0);//完全退出application主题才会生效
     }
 
-
+    /**
+     * 缓存fragment
+     *
+     * @param fragmentName
+     * @return
+     */
     private BaseFragment getFragment(String fragmentName) {
         BaseFragment baseFragment = mBaseFragmentByName.get(fragmentName);
         if (mBaseFragmentByName.get(fragmentName) == null) {

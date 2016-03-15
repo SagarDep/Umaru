@@ -23,7 +23,7 @@ import cc.haoduoyu.umaru.ui.activities.NowPlayingActivity;
 
 
 /**
- * Service播放器，接受命令并控制MediaPlayer
+ * Service播放器，广播接受命令并控制MediaPlayer
  * Created by XP on 16/1/23.
  */
 public class PlayerService extends Service {
@@ -65,21 +65,28 @@ public class PlayerService extends Service {
         super.onCreate();
         LogUtils.i("onCreate()");
         instance = this;
-
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (player == null) {
             player = new Player(this);
         }
 
-        if (PlayerController.getNowPlaying() != null)
-            startForeground(NOTIFICATION_ID, getNotification());
+//        if (PlayerController.getNowPlaying() != null) {//导致音乐被清空
+//            LogUtils.d("startForeground");
+//        }
+
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return super.onStartCommand(intent, flags, startId);
     }
 
     /**
      * 更新Notification
      */
-    public void notifyNowPlaying() {
+    public void notifyNowPlayingNotification() {
         notificationManager.notify(NOTIFICATION_ID, getNotification());
+        LogUtils.d("notifyNowPlayingNotification");
     }
 
     /**
@@ -145,7 +152,6 @@ public class PlayerService extends Service {
         } else {
             notification.setContentTitle("").setContentText("").setSubText("");
         }
-
         return notification.build();
     }
 
@@ -161,6 +167,10 @@ public class PlayerService extends Service {
             }
             switch (intent.getAction()) {
                 case ACTION_BEGIN:
+                    //前台Service
+                    instance.startForeground(NOTIFICATION_ID, instance.getNotification());
+                    //不写这句的话，最近任务列表清除Service会onCreate()，音乐停止；
+                    //写的话，最近任务列表清除Service不会onCreate()音乐正常；
                     instance.player.begin();
                     break;
                 case ACTION_SET_QUEUE:

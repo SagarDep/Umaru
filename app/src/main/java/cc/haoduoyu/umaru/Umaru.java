@@ -8,6 +8,7 @@ import com.apkfuns.logutils.LogUtils;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
 
+import cc.haoduoyu.umaru.player.PlayerController;
 import cc.haoduoyu.umaru.utils.CrashHandler;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 

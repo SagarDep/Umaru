@@ -10,6 +10,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
 import android.media.MediaMetadataRetriever;
@@ -20,6 +21,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.text.format.Time;
+import android.view.Display;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.apkfuns.logutils.LogUtils;
@@ -32,6 +35,33 @@ import cc.haoduoyu.umaru.model.Song;
  * 一般工具类
  */
 public class Utils {
+
+    private static int screenWidth = 0;
+    private static int screenHeight = 0;
+
+    public static int getScreenHeight(Context c) {
+        if (screenHeight == 0) {
+            WindowManager wm = (WindowManager) c.getSystemService(Context.WINDOW_SERVICE);
+            Display display = wm.getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            screenHeight = size.y;
+        }
+
+        return screenHeight;
+    }
+
+    public static int getScreenWidth(Context c) {
+        if (screenWidth == 0) {
+            WindowManager wm = (WindowManager) c.getSystemService(Context.WINDOW_SERVICE);
+            Display display = wm.getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            screenWidth = size.x;
+        }
+
+        return screenWidth;
+    }
 
     public static int dpToPx(int dp) {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);

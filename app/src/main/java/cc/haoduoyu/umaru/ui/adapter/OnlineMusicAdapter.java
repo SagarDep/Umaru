@@ -114,7 +114,6 @@ public class OnlineMusicAdapter extends RecyclerView.Adapter<OnlineMusicAdapter.
     }
 
     public void loadFirst(int type) {
-
         page = 1;
         if (type == 0) {
             loadTracks();

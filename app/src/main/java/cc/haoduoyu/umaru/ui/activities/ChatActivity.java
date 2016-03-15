@@ -24,6 +24,7 @@ import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,6 +46,7 @@ import cc.haoduoyu.umaru.widgets.RevealBackgroundView;
 import cc.haoduoyu.umaru.widgets.SendButton;
 
 /**
+ * 聊天页
  * Created by XP on 2016/1/12.
  */
 public class ChatActivity extends ToolbarActivity implements SendButton.OnSendClickListener, RevealBackgroundView.OnStateChangeListener {
@@ -93,6 +95,13 @@ public class ChatActivity extends ToolbarActivity implements SendButton.OnSendCl
         super.onCreate(savedInstanceState);
         initViews();
         initXf();
+
+        //仅仅为了解决键盘bug
+        //http://stackoverflow.com/questions/19897422/keyboard-hiding-edittext-when-androidwindowtranslucentstatus-true
+//        SystemBarTintManager tintManager = new SystemBarTintManager(this);
+//        tintManager.setStatusBarTintEnabled(true);
+//        int color = PreferencesUtils.getInteger(this, getString(R.string.color_primary), R.color.colorPrimary);
+//        tintManager.setTintColor(color);
 
         //动画开关
         if (SettingUtils.getInstance(this).isEnableAnimations() && getIntent().getIntArrayExtra(ARG_REVEAL_START_LOCATION) != null)
@@ -155,7 +164,7 @@ public class ChatActivity extends ToolbarActivity implements SendButton.OnSendCl
     }
 
     private void loadChat() {
-        hideKeyboard();
+//        hideKeyboard();
         mAdapter.loadChat(sendEt.getText().toString().replace("\n", "").replace(" ", ""));
         mRecyclerview.smoothScrollToPosition(mAdapter.getItemCount() - 1);
         sendBtn.setCurrentState(SendButton.STATE_DONE);

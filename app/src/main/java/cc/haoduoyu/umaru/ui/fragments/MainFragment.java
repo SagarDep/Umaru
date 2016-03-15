@@ -1,6 +1,7 @@
 package cc.haoduoyu.umaru.ui.fragments;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -18,6 +19,7 @@ import com.android.volley.Response;
 import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,6 +95,22 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
         }
 
     }
+
+//    @Override
+//    public void onDetach() {
+//        super.onDetach();
+//
+//        try {
+//            Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
+//            childFragmentManager.setAccessible(true);
+//            childFragmentManager.set(this, null);
+//
+//        } catch (NoSuchFieldException e) {
+//            throw new RuntimeException(e);
+//        } catch (IllegalAccessException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
 
     @Override

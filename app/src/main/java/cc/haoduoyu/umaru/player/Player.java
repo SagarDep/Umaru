@@ -79,6 +79,7 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
      * 播放前准备
      */
     public void begin() {
+        LogUtils.d("begin");
         mediaPlayer.stop();
         mediaPlayer.reset();
 
@@ -97,6 +98,7 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
      * 播放
      */
     public void play() {
+        LogUtils.d("play");
         if (!isPlaying()) {
             mediaPlayer.start();
         }
@@ -106,6 +108,7 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
      * 暂停
      */
     public void pause() {
+        LogUtils.d("pause");
         mediaPlayer.pause();
     }
 
@@ -113,6 +116,7 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
      * 播放和暂停切换
      */
     public void togglePlay() {
+        LogUtils.d("togglePlay");
         if (isPlaying()) {
             pause();
         } else {
@@ -126,6 +130,7 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
      * 上一首
      */
     public void previous() {
+        LogUtils.d("previous");
         if (queuePosition - 1 < 0) {
             queuePosition = queue.size() - 1;
         } else {
@@ -138,6 +143,7 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
      * 下一首
      */
     public void next() {
+        LogUtils.d("next");
         if (state == SHUFFLE) {//随机
             if (shuffleQueuePosition + 1 < shuffleQueue.size()) {
                 shuffleQueuePosition++;
@@ -225,6 +231,7 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
      * 结束时清除资源
      */
     public void finish() {
+        LogUtils.d("finish");
         mediaPlayer.stop();
         mediaPlayer.release();
         mediaPlayer = null;
@@ -282,7 +289,7 @@ public class Player implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCom
      */
     private void updateNowPlaying(String action) {
 
-        PlayerService.getInstance().notifyNowPlaying();
+        PlayerService.getInstance().notifyNowPlayingNotification();
 
         Intent intent = new Intent();
         intent.setAction(UPDATE_SONG_INFO);
