@@ -23,8 +23,8 @@
         android:layout_centerVertical="true"
         android:background="@drawable/circle_text"
         android:gravity="center"
-        android:textSize="@dimen/textSizeX3"
         android:textColor="@color/white"
+        android:textSize="@dimen/textSizeX3"
         tools:text="L" />
 
 
@@ -48,8 +48,9 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/song_margin"
         android:singleLine="true"
+        android:textColor="@color/md_grey_600"
         android:textSize="@dimen/textSizeX2"
-        tools:text="ALI" />
+        tools:text="GGG" />
 
     <TextView
         android:id="@+id/song_duration"
@@ -57,8 +58,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:textColor="@color/md_grey_600"
         android:textSize="@dimen/textSizeX2"
-        tools:text="04:52" />
+        tools:text="03:38" />
 
 
 </RelativeLayout>

@@ -31,7 +31,6 @@ import cc.haoduoyu.umaru.base.ToolbarActivity;
 import cc.haoduoyu.umaru.event.MessageEvent;
 import cc.haoduoyu.umaru.player.PlayerController;
 import cc.haoduoyu.umaru.player.PlayerLib;
-import cc.haoduoyu.umaru.ui.fragments.LocalMusicFragment;
 import cc.haoduoyu.umaru.ui.fragments.MainFragment;
 import cc.haoduoyu.umaru.ui.fragments.MusicFragment;
 import cc.haoduoyu.umaru.utils.AppManager;
@@ -236,9 +235,8 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        } else
             super.onBackPressed();
-        }
     }
 
     @Override
@@ -353,18 +351,23 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     @OnClick(R.id.fab)
     public void onStartIt() {
         if (getString(R.string.umaru).equals(mToolbar.getTitle())) {
+
             int[] startingLocation = new int[2];
             fab.getLocationOnScreen(startingLocation);
             startingLocation[0] += fab.getWidth() / 2;
             ChatActivity.startIt(startingLocation, this);
+
             if (SettingUtils.getInstance(this).isEnableAnimations())
                 overridePendingTransition(0, 0);
+
         } else if (PlayerController.getNowPlaying() != null) {
             NowPlayingActivity.startIt(PlayerController.getNowPlaying(), this);
+
         } else if (PlayerLib.getSongs().size() != 0) {
             PlayerController.setQueueAndPosition(PlayerLib.getSongs(), 0);
             PlayerController.begin();
             NowPlayingActivity.startIt(PlayerLib.getSongs().get(0), this);
+
         } else {
             SnackbarUtils.showShort(fab, getString(R.string.fab_no_music));
         }

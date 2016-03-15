@@ -19,6 +19,7 @@ import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.model.Song;
 import cc.haoduoyu.umaru.player.PlayerController;
 import cc.haoduoyu.umaru.ui.activities.NowPlayingActivity;
+import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.Utils;
 
 /**
@@ -49,7 +50,6 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final Song s = mSongList.get(position);
-//        holder.mSongImage.setImageResource(R.mipmap.default_artwork);
         GradientDrawable drawable = (GradientDrawable) holder.mSongImage.getBackground();
         drawable.setColor(Utils.getRandomMaterialColor());
         holder.mSongImage.setText(s.getSongTitle().substring(0, 1));

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -20,8 +21,9 @@
         android:gravity="left"
         android:paddingLeft="@dimen/normalPadding"
         android:paddingTop="@dimen/normalPadding"
-        android:text="New Text"
-        android:textSize="@dimen/textSizeX3" />
+        android:textColor="@color/md_grey_600"
+        android:textSize="@dimen/textSizeX3"
+        tools:text="New Text" />
 
     <TextView
         android:id="@+id/song_text"
@@ -30,7 +32,8 @@
         android:gravity="left"
         android:paddingBottom="@dimen/normalPadding"
         android:paddingLeft="@dimen/normalPadding"
-        android:text="New Text"
-        android:textSize="@dimen/textSizeX2" />
+        android:textColor="@color/md_grey_600"
+        android:textSize="@dimen/textSizeX2"
+        tools:text="New Text" />
 
 </LinearLayout>

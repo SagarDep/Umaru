@@ -1,7 +1,6 @@
 package cc.haoduoyu.umaru.ui.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -19,7 +18,6 @@ import com.android.volley.Response;
 import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -232,14 +230,16 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
             public void onResponse(Weather response) {
                 Weather.HeWeather heWeather = response.getHeWeather().get(0);
                 if ("ok".equals(heWeather.getStatus())) {
-
                     wCityTv.setText(heWeather.getBasic().getCity());
                     wNowTxtTv.setText(heWeather.getNow().getCond().getTxt());
                     wNowTmpTv.setText(heWeather.getNow().getTmp());
-                    wSugTv.setText(heWeather.getSuggestion().getComf().getTxt());
-                    PreferencesUtils.saveToPreference(getActivity(), heWeather);
+                    if (heWeather.getSuggestion() != null) {//接口改了
+                        wSugTv.setText(heWeather.getSuggestion().getComf().getTxt());
+                        more = heWeather.getSuggestion().getComf().getTxt();
+                        PreferencesUtils.saveToPreference(getActivity(), heWeather);
+                    }
                     showChart(heWeather);//展示图表
-                    more = heWeather.getSuggestion().getComf().getTxt();
+
                 }
             }
         }));
