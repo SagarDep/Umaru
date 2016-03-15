@@ -42,7 +42,7 @@ import cc.haoduoyu.umaru.utils.ResourceUtils;
 
 
 /**
- * 悬浮窗
+ * 无需权限显示悬浮窗
  * http://www.jianshu.com/p/167fd5f47d5c
  * Author:pengjianbo
  */

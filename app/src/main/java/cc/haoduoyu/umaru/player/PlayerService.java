@@ -18,7 +18,6 @@ import com.apkfuns.logutils.LogUtils;
 import java.util.ArrayList;
 
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.Umaru;
 import cc.haoduoyu.umaru.model.Song;
 import cc.haoduoyu.umaru.ui.activities.NowPlayingActivity;
 
@@ -54,7 +53,6 @@ public class PlayerService extends Service {
     private static PlayerService instance;
     private Player player;
     private NotificationManager notificationManager;
-    private Context context;
 
     @Nullable
     @Override
@@ -66,14 +64,8 @@ public class PlayerService extends Service {
     public void onCreate() {
         super.onCreate();
         LogUtils.i("onCreate()");
-        context = Umaru.getContext();
-        if (instance == null) {
-            instance = this;
-        } else {
-            LogUtils.d("Attempt again create service");
-            stopSelf();
-            return;
-        }
+        instance = this;
+
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (player == null) {
             player = new Player(this);
@@ -81,7 +73,6 @@ public class PlayerService extends Service {
 
         if (PlayerController.getNowPlaying() != null)
             startForeground(NOTIFICATION_ID, getNotification());
-
     }
 
     /**
@@ -95,22 +86,22 @@ public class PlayerService extends Service {
      * 创建Notification
      */
     private Notification getNotification() {
-        NotificationCompat.Builder notification = new NotificationCompat.Builder(context);
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(this);
 
-        Intent intent1 = new Intent(getInstance(), PlayReceiver.class);
+        Intent intent1 = new Intent(this, PlayReceiver.class);
 
-        Intent intent2 = new Intent(context, NowPlayingActivity.class);
+        Intent intent2 = new Intent(this, NowPlayingActivity.class);
         intent2.putExtra(NowPlayingActivity.EXTRA_NOW_PLAYING, PlayerController.getNowPlaying());
 
         NotificationCompat.MediaStyle mediaStyle = new NotificationCompat.MediaStyle();
         mediaStyle
                 .setShowActionsInCompactView(0, 1, 2)
-                .setCancelButtonIntent(PendingIntent.getBroadcast(context, 1, intent1.setAction(ACTION_STOP), 0))
+                .setCancelButtonIntent(PendingIntent.getBroadcast(this, 1, intent1.setAction(ACTION_STOP), 0))
                 .setShowCancelButton(true);
 
         notification
                 .setStyle(mediaStyle)
-                .setColor(context.getResources().getColor(R.color.md_grey_800))
+                .setColor(this.getResources().getColor(R.color.md_grey_800))
                 .setShowWhen(false)//是否允许显示时间
                 .setOngoing(true)//ture，设置他为一个正在进行的通知。他们通常是用来表示一个后台任务,用户积极参与(如播放音乐)或以某种方式正在等待
                 .setOnlyAlertOnce(true)//只提醒一次
@@ -122,7 +113,7 @@ public class PlayerService extends Service {
         // 这种专辑图标
         if (getArt() == null) {
             notification.setLargeIcon(
-                    BitmapFactory.decodeResource(context.getResources(), R.mipmap.default_artwork));
+                    BitmapFactory.decodeResource(this.getResources(), R.mipmap.default_artwork));
         } else {
             notification.setLargeIcon(getArt());
         }
@@ -130,21 +121,21 @@ public class PlayerService extends Service {
         // 添加控制按钮
         //添加Previous按钮
         notification.addAction(R.mipmap.ic_skip_previous_white_48dp, "action_previous",
-                PendingIntent.getBroadcast(context, 1, intent1.setAction(ACTION_PREVIOUS), PendingIntent.FLAG_UPDATE_CURRENT));
+                PendingIntent.getBroadcast(this, 1, intent1.setAction(ACTION_PREVIOUS), PendingIntent.FLAG_UPDATE_CURRENT));
         // 添加Play/Pause切换按钮
         if (player.isPlaying()) {
             notification.addAction(R.mipmap.ic_pause_white_48dp, "action_pause",
-                    PendingIntent.getBroadcast(context, 1, intent1.setAction(ACTION_TOGGLE_PLAY), PendingIntent.FLAG_UPDATE_CURRENT))
+                    PendingIntent.getBroadcast(this, 1, intent1.setAction(ACTION_TOGGLE_PLAY), PendingIntent.FLAG_UPDATE_CURRENT))
                     .setSmallIcon(R.mipmap.ic_play_arrow_white_24dp);
         } else {
             notification
                     .addAction(R.mipmap.ic_play_arrow_white_48dp, "action_play",
-                            PendingIntent.getBroadcast(context, 1, intent1.setAction(ACTION_TOGGLE_PLAY), PendingIntent.FLAG_UPDATE_CURRENT))
+                            PendingIntent.getBroadcast(this, 1, intent1.setAction(ACTION_TOGGLE_PLAY), PendingIntent.FLAG_UPDATE_CURRENT))
                     .setSmallIcon(R.mipmap.ic_pause_white_24dp);
         }
         // 添加Next按钮
         notification.addAction(R.mipmap.ic_skip_next_white_48dp, "action_next",
-                PendingIntent.getBroadcast(context, 1, intent1.setAction(ACTION_NEXT), PendingIntent.FLAG_UPDATE_CURRENT));
+                PendingIntent.getBroadcast(this, 1, intent1.setAction(ACTION_NEXT), PendingIntent.FLAG_UPDATE_CURRENT));
 
         // 更新正在播放的信息
         if (getNowPlaying() != null) {
@@ -214,7 +205,7 @@ public class PlayerService extends Service {
     }
 
     /**
-     * 结束
+     * 停止
      */
     public void stop() {
         LogUtils.i("stop()");
@@ -223,7 +214,6 @@ public class PlayerService extends Service {
         player = null;
         stopForeground(true);
         instance = null;
-        context = null;
         stopSelf();
     }
 

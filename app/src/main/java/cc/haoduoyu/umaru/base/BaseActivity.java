@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.android.volley.Request;
+import com.apkfuns.logutils.LogUtils;
 
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.utils.AppManager;
@@ -20,6 +21,8 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppManager.getAppManager().addActivity(this);
+        LogUtils.d(getClass().getSimpleName() + " onCreate");
+
     }
 
     @Override
@@ -27,6 +30,8 @@ public class BaseActivity extends AppCompatActivity {
         super.onDestroy();
         AppManager.getAppManager().finishActivity(this);
         RequestManager.cancelAll(this);
+        LogUtils.d(getClass().getSimpleName() + " onDestroy");
+
 
 // 在发出请求前调用Request的setTag()方法为每个请求加一个标签，这个方法的参数是Object，
 // 所以我们可以使用任何类型作为标签。这样就可以调用ReqiestQueue的cancelAll()函数取消一群标签了。

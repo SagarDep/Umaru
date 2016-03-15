@@ -8,6 +8,11 @@
             android:summary="主题主色调"
             android:title="主色调" />
 
+        <SwitchPreference
+            android:key="day_night"
+            android:summary="实验性功能，需重启应用,请谨慎操作"
+            android:title="夜间模式" />
+
         <!--<Preference-->
         <!--android:key="color_accent"-->
         <!--android:summary="主题强调色 (实验性功能)"-->

@@ -34,6 +34,7 @@ import cc.haoduoyu.umaru.player.PlayerLib;
 import cc.haoduoyu.umaru.ui.fragments.MainFragment;
 import cc.haoduoyu.umaru.ui.fragments.MusicFragment;
 import cc.haoduoyu.umaru.utils.AppManager;
+import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.SettingUtils;
 import cc.haoduoyu.umaru.utils.ShakeManager;
 import cc.haoduoyu.umaru.utils.SnackbarUtils;
@@ -55,7 +56,6 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     private BaseFragment mCurrentFragment;
     private Map<String, BaseFragment> mBaseFragmentByName = new HashMap<>();
     private FloatViewService mFloatViewService;
-
 
     @Override
     protected int provideContentViewId() {
@@ -115,7 +115,7 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
             public void run() {
                 if (!Utils.isNetworkReachable(Umaru.getContext()))
                     SnackbarUtils.showLong(fab, getString(R.string.snackbar_error));
-                else if (getString(R.string.umaru).equals(mToolbar.getTitle()) &&
+                else if (getString(R.string.umaru).equals(getTitle()) &&
                         !SettingUtils.getInstance(MainActivity.this).isEnableChatGuide())
                     SnackbarUtils.showSnackBackWithAction(fab, getString(R.string.snackbar_chat), getString(R.string.know));
             }
@@ -147,6 +147,16 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         LogUtils.d("isEnableShake: " + SettingUtils.getInstance(this).isEnableShake());
@@ -164,8 +174,14 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
 
     @Override
     protected void onDestroy() {
-        EventBus.getDefault().unregister(this);
+        stop();
         super.onDestroy();
+    }
+
+    private void stop() {
+        stopService(new Intent(this, FloatViewService.class));
+        unbindService(mServiceConnection);
+        EventBus.getDefault().unregister(this);
     }
 
     private void updateFloatView() {
@@ -264,6 +280,9 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
                 mCurrentFragment = getFragment(MusicFragment.class.getName());
                 replaceFragmentWithSelected(mCurrentFragment);
                 break;
+            case R.id.nav_day_night:
+                dayNight();
+                break;
             case R.id.nav_chat:
                 ChatActivity.startIt(this);
                 break;
@@ -281,11 +300,34 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
         return true;
     }
 
+    private void dayNight() {
+        if (!PreferencesUtils.getBoolean(this, getString(R.string.night_yes), false)) {
+//                    getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            PreferencesUtils.setBoolean(this, getString(R.string.night_yes), true);
+            SnackbarUtils.showShort(fab, getString(R.string.night_hint));
+        } else {
+//                    getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            PreferencesUtils.setBoolean(this, getString(R.string.night_yes), false);
+            SnackbarUtils.showShort(fab, getString(R.string.day_hint));
+        }
+//                recreate();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                exit();
+
+//                final Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                startActivity(intent);
+            }
+        }, 1588);
+    }
+
     private void exit() {
-        stopService(new Intent(this, FloatViewService.class));
-        unbindService(mServiceConnection);
+        stop();
         PlayerController.stop();
         AppManager.getAppManager().finishAllActivityAndExit(this);
+        System.exit(0);//完全退出application主题才会生效
     }
 
 

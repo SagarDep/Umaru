@@ -2,12 +2,14 @@ package cc.haoduoyu.umaru;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.v7.app.AppCompatDelegate;
 
 import com.apkfuns.logutils.LogUtils;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
 
 import cc.haoduoyu.umaru.utils.CrashHandler;
+import cc.haoduoyu.umaru.utils.PreferencesUtils;
 
 /**
  * Created by XP on 2016/1/10.
@@ -23,9 +25,23 @@ public class Umaru extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = this;
+        //讯飞
         SpeechUtility.createUtility(this, SpeechConstant.APPID + Constants.XF_APP_ID);
+        //CrashHandler
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(this);
+        //LeakCanary
+//        LeakCanary.install(this);
+        //Log
         LogUtils.configAllowLog = true;
+        if (PreferencesUtils.getBoolean(this, getString(R.string.night_yes), false)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            LogUtils.d("setDefaultNightMode MODE_NIGHT_YES");
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            LogUtils.d("setDefaultNightMode MODE_NIGHT_NO");
+        }
     }
+
+
 }

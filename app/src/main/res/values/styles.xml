@@ -9,7 +9,7 @@
     <attr name="progressDrawableWithBackground" format="reference" />
     <!--<attr format="reference" name="stateSelector" />-->
 
-    <style name="BaseAppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+    <style name="BaseAppTheme" parent="@style/Theme.AppCompat.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>

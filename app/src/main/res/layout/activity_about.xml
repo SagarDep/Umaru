@@ -110,7 +110,7 @@
                         android:layout_toRightOf="@id/avatar_r"
                         android:text="android developer"
                         android:textColor="@color/md_grey_600" />
-                    
+
                 </RelativeLayout>
 
                 <View

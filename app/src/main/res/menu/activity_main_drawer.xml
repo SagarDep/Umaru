@@ -24,6 +24,11 @@
         android:checkableBehavior="none">
         <item
 
+            android:id="@+id/nav_day_night"
+            android:icon="@drawable/ic_action_image_brightness_4"
+            android:title="@string/day_night" />
+        <item
+
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_action_action_settings"
             android:title="@string/settings" />

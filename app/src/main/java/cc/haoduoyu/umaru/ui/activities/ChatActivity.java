@@ -38,6 +38,7 @@ import cc.haoduoyu.umaru.base.ToolbarActivity;
 import cc.haoduoyu.umaru.event.MessageEvent;
 import cc.haoduoyu.umaru.ui.adapter.ChatAdapter;
 import cc.haoduoyu.umaru.utils.JsonParser;
+import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.SettingUtils;
 import cc.haoduoyu.umaru.widgets.GLayoutManager;
 import cc.haoduoyu.umaru.widgets.RevealBackgroundView;
@@ -119,6 +120,9 @@ public class ChatActivity extends ToolbarActivity implements SendButton.OnSendCl
 //        sendLl.setTranslationY(sendLl.getHeight());//写在这里没有动画
         vRevealBackground.setOnStateChangeListener(this);
         sendBtn.setOnSendClickListener(this);
+
+        if (PreferencesUtils.getBoolean(this, getString(R.string.night_yes), false))
+            mRecyclerview.setBackgroundColor(getResources().getColor(R.color.md_grey_800));
     }
 
 

@@ -40,6 +40,7 @@ public class SettingFragment extends PreferenceFragment {
 
     private static final String COLOR_PRIMARY = "color_primary";
     private static final String COLOR_ACCENT = "color_accent";
+    private static final String DAT_NIGHT = "day_night";
     private static final String AVATAR = "avatar";
     private static final String SHAKE = "shake";
     private static final String FLOAT_VIEW = "floatview";
@@ -61,7 +62,7 @@ public class SettingFragment extends PreferenceFragment {
 
     Preference colorPrimary, colorAccent;
     Preference avatar;
-    SwitchPreference shake, floatView, animation, enableCache, enableGuide;
+    SwitchPreference dayNight, shake, floatView, animation, enableCache, enableGuide;
     ListPreference cache, pic;
     Preference clear;
     Preference account;
@@ -82,6 +83,7 @@ public class SettingFragment extends PreferenceFragment {
 
         colorPrimary = findPreference(COLOR_PRIMARY);
         colorAccent = findPreference(COLOR_ACCENT);
+        dayNight = (SwitchPreference) findPreference(DAT_NIGHT);
         avatar = findPreference(AVATAR);
         shake = (SwitchPreference) findPreference(SHAKE);
         floatView = (SwitchPreference) findPreference(FLOAT_VIEW);
@@ -99,11 +101,12 @@ public class SettingFragment extends PreferenceFragment {
         donate = findPreference(DONATE);
         update = findPreference(UPDATE);
 
-        if (!TextUtils.isEmpty(PreferencesUtils.getString(getActivity(), getString(R.string.account)))) {
+        dayNight.setChecked(PreferencesUtils.getBoolean(getActivity(), getString(R.string.night_yes), false));
+        dayNight.setEnabled(false);
+        if (!TextUtils.isEmpty(PreferencesUtils.getString(getActivity(), getString(R.string.account))))
             account.setSummary(getString(R.string.now_bind_account) + PreferencesUtils.getString(getActivity(), getString(R.string.account)));
-        } else {
+        else
             account.setSummary(R.string.account_not_bind);
-        }
         cache.setSummary(showCache(SettingUtils.getInstance(getActivity()).getCache()));
         pic.setSummary(showPicQuality(SettingUtils.getInstance(getActivity()).getPicQuality()));
         about.setIntent(new Intent(getActivity(), AboutActivity.class));

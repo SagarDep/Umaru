@@ -117,6 +117,10 @@
     <string name="thanks">感谢</string>
     <string name="thanks_api">接口</string>
     <string name="apis">图灵机器人\n和风天气\nLast.fm</string>
+    <string name="day_night">切换主题</string>
+    <string name="night_yes">night_yes</string>
+    <string name="night_hint">夜间模式将在重启应用后生效</string>
+    <string name="day_hint">日间模式将在重启应用后生效</string>
 
 
     <string-array name="welcome_texts">

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
@@ -52,6 +53,8 @@ import lecho.lib.hellocharts.view.LineChartView;
  */
 public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFactory {
 
+    @Bind(R.id.root_main)
+    RelativeLayout root;
     @Bind(R.id.weather_background)
     ImageView wBackground;
     @Bind(R.id.weather_city)
@@ -81,6 +84,14 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
     @Override
     protected void initViews() {
         initChatGuide();
+        if (PreferencesUtils.getBoolean(getActivity(), getString(R.string.night_yes), false)) {
+            root.setBackgroundColor(getResources().getColor(R.color.md_grey_800));
+            Glide.with(this).load(Constants.WEATHER_PIC_NIGHT).crossFade().into(wBackground);
+        } else {
+            Glide.with(this).load(Constants.WEATHER_PIC_DAY).crossFade().into(wBackground);
+
+        }
+
     }
 
 
@@ -101,7 +112,7 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
         } else {
             loadWeather(currentCityId);
         }
-        loadWeatherPicAuto();
+//        loadWeatherPicAuto();
         PlayerLib.scanAll(getActivity());
     }
 
@@ -239,14 +250,14 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
                 .items(citiesStr)
                 .itemsCallbackSingleChoice(PreferencesUtils.getInteger(getActivity(), getString(R.string.s_choice), 0),
                         new MaterialDialog.ListCallbackSingleChoice() {
-                    @Override
-                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        currentCityId = cities.get(which).getCityId();
-                        loadWeather(currentCityId);
-                        PreferencesUtils.setInteger(getActivity(), getString(R.string.s_choice), which);
-                        return true;
-                    }
-                })
+                            @Override
+                            public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                currentCityId = cities.get(which).getCityId();
+                                loadWeather(currentCityId);
+                                PreferencesUtils.setInteger(getActivity(), getString(R.string.s_choice), which);
+                                return true;
+                            }
+                        })
                 .positiveText(R.string.agree)
                 .show();
     }
