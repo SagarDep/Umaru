@@ -9,8 +9,6 @@ import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.apkfuns.logutils.LogUtils;
 
 import java.util.ArrayList;
@@ -19,7 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.base.BaseActivity;
+import cc.haoduoyu.umaru.ui.base.BaseActivity;
+import cc.haoduoyu.umaru.utils.ui.DialogUtils;
 import cc.haoduoyu.umaru.utils.Utils;
 
 /**
@@ -115,25 +114,7 @@ public class SplashActivity extends BaseActivity {
                 finish();
             } else {
                 //Denied
-                new MaterialDialog.Builder(this)
-                        .title(R.string.request_permission)
-                        .content(R.string.permission_content)
-                        .positiveText(R.string.go_setting)
-                        .negativeText(R.string.cancel)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(MaterialDialog dialog, DialogAction which) {
-                                Utils.openAppSettings(SplashActivity.this);
-                                finish();
-                            }
-                        })
-                        .onNegative(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(MaterialDialog dialog, DialogAction which) {
-                                finish();
-                            }
-                        })
-                        .show();
+                DialogUtils.showRequestPermission(this);
             }
         }
     }

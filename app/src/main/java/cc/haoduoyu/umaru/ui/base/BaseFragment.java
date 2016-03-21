@@ -1,4 +1,4 @@
-package cc.haoduoyu.umaru.base;
+package cc.haoduoyu.umaru.ui.base;
 
 
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import com.android.volley.Request;
 import com.apkfuns.logutils.LogUtils;
 
 import butterknife.ButterKnife;
+import cc.haoduoyu.umaru.utils.ACache;
 import cc.haoduoyu.umaru.utils.volley.RequestManager;
 import de.greenrobot.event.EventBus;
 
@@ -25,6 +26,7 @@ public abstract class BaseFragment extends Fragment {
     protected abstract int provideLayoutId();
 
     protected View rootView;
+    protected ACache mCache;
 
     @Override
     public void onResume() {
@@ -37,6 +39,7 @@ public abstract class BaseFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
+        mCache = ACache.get(getActivity());
         LogUtils.d(getClass().getSimpleName() + " onCreate");
 
     }

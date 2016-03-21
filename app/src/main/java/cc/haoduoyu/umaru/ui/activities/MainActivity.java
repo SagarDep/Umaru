@@ -26,8 +26,8 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.Umaru;
-import cc.haoduoyu.umaru.base.BaseFragment;
-import cc.haoduoyu.umaru.base.ToolbarActivity;
+import cc.haoduoyu.umaru.ui.base.BaseFragment;
+import cc.haoduoyu.umaru.ui.base.ToolbarActivity;
 import cc.haoduoyu.umaru.event.MessageEvent;
 import cc.haoduoyu.umaru.player.PlayerController;
 import cc.haoduoyu.umaru.player.PlayerLib;
@@ -37,7 +37,7 @@ import cc.haoduoyu.umaru.utils.AppManager;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.SettingUtils;
 import cc.haoduoyu.umaru.utils.ShakeManager;
-import cc.haoduoyu.umaru.utils.SnackbarUtils;
+import cc.haoduoyu.umaru.utils.ui.SnackbarUtils;
 import cc.haoduoyu.umaru.utils.Utils;
 import cc.haoduoyu.umaru.utils.zbar.CaptureActivity;
 import cc.haoduoyu.umaru.widgets.FloatViewService;
@@ -106,9 +106,6 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
         bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
-    /**
-     * 初始化SnackBar
-     */
     private void initSnackBar() {
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -122,9 +119,6 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
         }, 1558);
     }
 
-    /**
-     * 初始化Drawer
-     */
     private void initDrawer() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -132,9 +126,6 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    /**
-     * 启动FAB动画
-     */
     protected void startFabAnimation() {
         fab.setTranslationY(2 * getResources().getDimensionPixelOffset(R.dimen.fab_size));
         fab.animate().translationY(0).setInterpolator(new OvershootInterpolator(1.f)).setStartDelay(400).setDuration(500);
@@ -159,11 +150,8 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     @Override
     protected void onResume() {
         super.onResume();
-        LogUtils.d("isEnableShake: " + SettingUtils.getInstance(this).isEnableShake());
         if (SettingUtils.getInstance(this).isEnableShake())
             ShakeManager.getInstance(this).startShakeListener(this);
-//        else
-//            ShakeManager.getInstance(this).cancel();
     }
 
     @Override
@@ -198,28 +186,22 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
 
     }
 
-    /**
-     * 显示悬浮图标
-     */
+    //显示悬浮图标
     public void showFloatingView() {
         if (mFloatViewService != null) {
             mFloatViewService.showFloat();
         }
     }
 
-    /**
-     * 隐藏悬浮图标
-     */
+    //隐藏悬浮图标
     public void hideFloatingView() {
         if (mFloatViewService != null) {
             mFloatViewService.hideFloat();
         }
     }
 
-    /**
-     * 连接到Service
-     */
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
+
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             mFloatViewService = ((FloatViewService.FloatViewServiceBinder) iBinder).getService();
@@ -300,22 +282,16 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
 
     private void dayNight() {
         if (!PreferencesUtils.getBoolean(this, getString(R.string.night_yes), false)) {
-//                    getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             PreferencesUtils.setBoolean(this, getString(R.string.night_yes), true);
             SnackbarUtils.showShort(fab, getString(R.string.night_hint));
         } else {
-//                    getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             PreferencesUtils.setBoolean(this, getString(R.string.night_yes), false);
             SnackbarUtils.showShort(fab, getString(R.string.day_hint));
         }
-//                recreate();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 exit();
-//                final Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                startActivity(intent);
             }
         }, 1588);
     }
@@ -351,19 +327,15 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     @OnClick(R.id.fab)
     public void onStartIt() {
         if (getString(R.string.umaru).equals(mToolbar.getTitle())) {
-
-            int[] startingLocation = new int[2];
-            fab.getLocationOnScreen(startingLocation);
-            startingLocation[0] += fab.getWidth() / 2;
-            ChatActivity.startIt(startingLocation, this);
-
-            if (SettingUtils.getInstance(this).isEnableAnimations())
-                overridePendingTransition(0, 0);
+            //启动ChatActivity
+            startChatActivity();
 
         } else if (PlayerController.getNowPlaying() != null) {
+            //启动NowPlayingActivity
             NowPlayingActivity.startIt(PlayerController.getNowPlaying(), this);
 
         } else if (PlayerLib.getSongs().size() != 0) {
+            //启动NowPlayingActivity，从第一首开始
             PlayerController.setQueueAndPosition(PlayerLib.getSongs(), 0);
             PlayerController.begin();
             NowPlayingActivity.startIt(PlayerLib.getSongs().get(0), this);
@@ -371,6 +343,16 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
         } else {
             SnackbarUtils.showShort(fab, getString(R.string.fab_no_music));
         }
+    }
+
+    private void startChatActivity() {
+        int[] startingLocation = new int[2];
+        fab.getLocationOnScreen(startingLocation);
+        startingLocation[0] += fab.getWidth() / 2;
+        ChatActivity.startIt(startingLocation, this);
+
+        if (SettingUtils.getInstance(this).isEnableAnimations())
+            overridePendingTransition(0, 0);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package cc.haoduoyu.umaru.base;
+package cc.haoduoyu.umaru.ui.base;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 

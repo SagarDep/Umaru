@@ -9,29 +9,13 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.apkfuns.logutils.LogUtils;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.CookieStore;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.cookie.Cookie;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -46,7 +30,7 @@ import cc.haoduoyu.umaru.ui.activities.MainActivity;
 import cc.haoduoyu.umaru.ui.activities.NowPlayingActivity;
 import cc.haoduoyu.umaru.ui.activities.WebViewActivity;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
-import cc.haoduoyu.umaru.utils.ToastUtils;
+import cc.haoduoyu.umaru.utils.ui.ToastUtils;
 import cc.haoduoyu.umaru.utils.Utils;
 import cc.haoduoyu.umaru.utils.volley.GsonRequest;
 import cc.haoduoyu.umaru.utils.volley.RequestManager;
@@ -56,10 +40,8 @@ import cc.haoduoyu.umaru.utils.zbar.CaptureActivity;
  * Created by XP on 2016/1/20.
  */
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
-    private static final String TAG = "ChatAdapter";
     private Context mContext;
     private ArrayList<Chat> mChat;
-
 
     public ChatAdapter(Context context) {
         mContext = context;
@@ -223,99 +205,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
         } else
             loadWithTuling(text);
-    }
-
-    public CookieManager cookieManager = null;
-    public static String cookies;
-
-    /**
-     * IDButton:Submit
-     * encoded:false
-     * goto:
-     * gx_charset:UTF-8
-     * IDToken0:
-     * IDToken1:1217443023
-     * IDToken9:
-     * IDToken2:ec5bb526f85028e09d4449ac86c3fea5
-     *
-     * @param url
-     * @param username
-     * @param password
-     * @return
-     */
-    public String sendPost(String url, String username, String password, String md5) {
-        CookieSyncManager.createInstance(mContext);
-        // 每次登录操作的时候先清除cookie
-        removeAllCookie();
-        // 根据url获得HttpPost对象
-        HttpPost httpRequest = new HttpPost(url);
-        // 取得默认的HttpClient
-        DefaultHttpClient httpclient = new DefaultHttpClient();
-        String strResult = null;
-        // NameValuePair实现请求参数的封装
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("IDButton", "Submit"));
-        params.add(new BasicNameValuePair("encoded", "false"));
-        params.add(new BasicNameValuePair("goto", ""));
-        params.add(new BasicNameValuePair("gx_charset", "UTF-8"));
-        params.add(new BasicNameValuePair("IDToken0", ""));
-        params.add(new BasicNameValuePair("IDToken1", username));
-        params.add(new BasicNameValuePair("IDToken9", password));
-        params.add(new BasicNameValuePair("IDToken2", md5));
-//        httpRequest.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-        httpRequest.addHeader("Cookie", cookies);
-        httpRequest.addHeader("Content-Type", "application/x-www-form-urlencoded");
-        httpRequest.addHeader("Origin", "http://ids1.suda.edu.cn");
-        httpRequest.addHeader("Referer", "http://ids1.suda.edu.cn/amserver/UI/Login?goto=http://myauth.suda.edu.cn/default.aspx?app=wzjw");
-        try {
-            // 添加请求参数到请求对象
-            httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-            // 获得响应对象
-            HttpResponse httpResponse = httpclient.execute(httpRequest);
-            // 判断是否请求成功
-            if (httpResponse.getStatusLine().getStatusCode() == 200) {
-                // 获得响应返回Json格式数据
-                strResult = EntityUtils.toString(httpResponse.getEntity());
-                // 取得Cookie
-                CookieStore mCookieStore = httpclient.getCookieStore();
-                List<Cookie> cookies = mCookieStore.getCookies();
-                if (cookies.isEmpty()) {
-                    System.out.println("Cookies为空");
-                } else {
-                    for (int i = 0; i < cookies.size(); i++) {
-                        // 保存cookie
-                        Cookie cookie = cookies.get(i);
-                        LogUtils.d("Cookie" + cookies.get(i).getName() + "=" + cookies.get(i).getValue());
-                        cookieManager = CookieManager.getInstance();
-                        String cookieString = cookie.getName() + "=" + cookie.getValue() + "; domain=" + cookie.getDomain();
-                        cookieManager.setCookie(url, cookieString);
-                        PreferencesUtils.setString(mContext, mContext.getString(R.string.cookie), cookieString);
-                    }
-                }
-                return strResult;
-            } else {
-                strResult = "错误响应:" + httpResponse.getStatusLine().toString();
-            }
-        } catch (ClientProtocolException e) {
-            strResult = "错误响应:" + e.getMessage();
-            e.printStackTrace();
-            return strResult;
-        } catch (IOException e) {
-            strResult = "错误响应:" + e.getMessage();
-            e.printStackTrace();
-            return strResult;
-        } catch (Exception e) {
-            strResult = "错误响应:" + e.getMessage();
-            e.printStackTrace();
-            return strResult;
-        }
-        return strResult;
-    }
-
-    private void removeAllCookie() {
-        cookieManager = CookieManager.getInstance();
-        cookieManager.removeAllCookie();
-        CookieSyncManager.getInstance().sync();
     }
 
     /**

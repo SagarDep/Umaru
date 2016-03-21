@@ -2,6 +2,7 @@ package cc.haoduoyu.umaru.utils;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 import com.apkfuns.logutils.LogUtils;
 
 import java.io.IOException;
+import java.util.List;
 
 import cc.haoduoyu.umaru.model.Song;
 
@@ -309,6 +311,21 @@ public class Utils {
         } else {
             return false;
         }
+    }
+
+    public static String getProcessName(Context cxt, int pid) {
+        ActivityManager am = (ActivityManager) cxt
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> runningApps = am.getRunningAppProcesses();
+        if (runningApps == null) {
+            return null;
+        }
+        for (ActivityManager.RunningAppProcessInfo procInfo : runningApps) {
+            if (procInfo.pid == pid) {
+                return procInfo.processName;
+            }
+        }
+        return null;
     }
 
 }

@@ -19,7 +19,7 @@ import android.widget.ProgressBar;
 
 import butterknife.Bind;
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.base.ToolbarActivity;
+import cc.haoduoyu.umaru.ui.base.ToolbarActivity;
 import cc.haoduoyu.umaru.utils.Utils;
 
 /**

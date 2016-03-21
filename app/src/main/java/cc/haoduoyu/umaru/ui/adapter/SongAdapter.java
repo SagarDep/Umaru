@@ -19,7 +19,6 @@ import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.model.Song;
 import cc.haoduoyu.umaru.player.PlayerController;
 import cc.haoduoyu.umaru.ui.activities.NowPlayingActivity;
-import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.Utils;
 
 /**

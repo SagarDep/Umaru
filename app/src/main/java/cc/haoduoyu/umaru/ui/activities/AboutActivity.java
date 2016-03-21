@@ -22,7 +22,7 @@ import butterknife.OnClick;
 import cc.haoduoyu.umaru.BuildConfig;
 import cc.haoduoyu.umaru.Constants;
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.base.BaseActivity;
+import cc.haoduoyu.umaru.ui.base.BaseActivity;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.SettingUtils;
 import cc.haoduoyu.umaru.utils.Utils;
@@ -133,4 +133,5 @@ public class AboutActivity extends BaseActivity implements ObservableScrollViewC
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

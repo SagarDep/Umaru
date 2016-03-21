@@ -14,7 +14,7 @@ import com.afollestad.materialdialogs.internal.ThemeSingleton;
 import com.afollestad.materialdialogs.util.DialogUtils;
 
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.base.ToolbarActivity;
+import cc.haoduoyu.umaru.ui.base.ToolbarActivity;
 import cc.haoduoyu.umaru.ui.fragments.SettingFragment;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 

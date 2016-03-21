@@ -17,8 +17,6 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.Response;
 import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
@@ -34,11 +32,12 @@ import butterknife.OnClick;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.api.MusicFactory;
 import cc.haoduoyu.umaru.api.MusicService;
-import cc.haoduoyu.umaru.base.ToolbarActivity;
+import cc.haoduoyu.umaru.ui.base.ToolbarActivity;
 import cc.haoduoyu.umaru.model.ArtistInfo;
 import cc.haoduoyu.umaru.model.Song;
 import cc.haoduoyu.umaru.player.Player;
 import cc.haoduoyu.umaru.player.PlayerController;
+import cc.haoduoyu.umaru.utils.ui.DialogUtils;
 import cc.haoduoyu.umaru.utils.ShareUtils;
 import cc.haoduoyu.umaru.utils.Utils;
 import cc.haoduoyu.umaru.utils.volley.GsonRequest;
@@ -299,11 +298,7 @@ public class NowPlayingActivity extends ToolbarActivity {
     @OnClick(R.id.panel_song)
     void panelSong() {
         closePanel();
-        new MaterialDialog.Builder(this)
-                .title(R.string.panel_song)
-                .content(Utils.getSongContent(PlayerController.getNowPlaying()))
-                .positiveText(R.string.agree)
-                .show();
+        DialogUtils.showPanelSong(this);
     }
 
     @OnClick(R.id.panel_artist)
@@ -316,19 +311,8 @@ public class NowPlayingActivity extends ToolbarActivity {
             content.append("\n").append(Html.fromHtml(link));
         }
         LogUtils.d("content: " + content);
-        new MaterialDialog.Builder(this)
-                .title(getResources().getString(R.string.artist))
-                .content(!TextUtils.isEmpty(summary) ? content : getString(R.string.net_error))
-                .positiveText(R.string.agree)
-                .negativeText(R.string.similar_singers)
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(MaterialDialog dialog, DialogAction which) {
-                        WebViewActivity.startIt(NowPlayingActivity.this, getString(R.string.singer_similar_url)
-                                + PlayerController.getNowPlaying().getArtistName() + "/+similar", null);
-                    }
-                })
-                .show();
+        CharSequence showContent = !TextUtils.isEmpty(summary) ? content : getString(R.string.net_error);
+        DialogUtils.showSimilarSingers(this, showContent);
     }
 
     @OnClick(R.id.panel_equalizer)

@@ -38,7 +38,7 @@ import android.widget.TextView;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import cc.haoduoyu.umaru.utils.ResourceUtils;
+import cc.haoduoyu.umaru.utils.ui.ResourceUtils;
 
 
 /**

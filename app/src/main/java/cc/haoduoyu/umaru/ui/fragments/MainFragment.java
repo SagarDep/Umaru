@@ -5,47 +5,37 @@ import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.Response;
 import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 import cc.haoduoyu.umaru.Constants;
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.base.BaseFragment;
 import cc.haoduoyu.umaru.db.CityDao;
 import cc.haoduoyu.umaru.db.InsertHelper;
 import cc.haoduoyu.umaru.event.MessageEvent;
 import cc.haoduoyu.umaru.model.City;
 import cc.haoduoyu.umaru.model.Weather;
 import cc.haoduoyu.umaru.player.PlayerLib;
-import cc.haoduoyu.umaru.ui.activities.ChatActivity;
+import cc.haoduoyu.umaru.ui.base.BaseFragment;
 import cc.haoduoyu.umaru.utils.Once;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.SettingUtils;
-import cc.haoduoyu.umaru.utils.SnackbarUtils;
 import cc.haoduoyu.umaru.utils.Utils;
+import cc.haoduoyu.umaru.utils.ui.ChartUtils;
+import cc.haoduoyu.umaru.utils.ui.DialogUtils;
+import cc.haoduoyu.umaru.utils.ui.SnackbarUtils;
 import cc.haoduoyu.umaru.utils.volley.GsonRequest;
-import lecho.lib.hellocharts.model.Axis;
-import lecho.lib.hellocharts.model.AxisValue;
-import lecho.lib.hellocharts.model.Line;
-import lecho.lib.hellocharts.model.LineChartData;
-import lecho.lib.hellocharts.model.PointValue;
-import lecho.lib.hellocharts.model.Viewport;
-import lecho.lib.hellocharts.util.ChartUtils;
 import lecho.lib.hellocharts.view.LineChartView;
 
 /**
@@ -59,8 +49,6 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
     ImageView wBackground;
     @Bind(R.id.weather_city)
     TextView wCityTv;//天气城市
-    @Bind(R.id.weather_update_time)
-    TextView wUpdateTimeTv;//天气时间
     @Bind(R.id.weather_now_txt)
     TextView wNowTxtTv;//天气描述
     @Bind(R.id.weather_now_tmp)
@@ -83,7 +71,7 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
 
     @Override
     protected void initViews() {
-        initChatGuide();
+        DialogUtils.showChatGuide(getActivity());
         if (PreferencesUtils.getBoolean(getActivity(), getString(R.string.night_yes), false)) {
             root.setBackgroundColor(getResources().getColor(R.color.md_grey_800));
             Glide.with(this).load(Constants.WEATHER_PIC_NIGHT).crossFade().into(wBackground);
@@ -93,23 +81,6 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
         }
 
     }
-
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//
-//        try {
-//            Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
-//            childFragmentManager.setAccessible(true);
-//            childFragmentManager.set(this, null);
-//
-//        } catch (NoSuchFieldException e) {
-//            throw new RuntimeException(e);
-//        } catch (IllegalAccessException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-
 
     @Override
     protected int provideLayoutId() {
@@ -124,46 +95,13 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
 
         if (SettingUtils.getInstance(getActivity()).isEnableCache()
                 && !Utils.isNetworkReachable(getActivity())) {
-            loadFromPreference();
+            loadFromCache();
         } else {
             loadWeather(currentCityId);
         }
-//        loadWeatherPicAuto();
         PlayerLib.scanAll(getActivity());
     }
 
-    private void initChatGuide() {
-        if (SettingUtils.getInstance(getActivity()).isEnableChatGuide()) {
-            MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
-                    .iconRes(R.mipmap.dialog_help)
-                    .limitIconToDefaultSize() //48dp
-                    .title(R.string.ask_me)
-                    .customView(R.layout.dialog_chat_guide, true)
-                    .positiveText(R.string.go_chat)
-                    .negativeText(R.string.close)
-                    .autoDismiss(false)
-                    .cancelable(false)
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(MaterialDialog dialog, DialogAction which) {
-                            ChatActivity.startIt(getActivity());
-                        }
-                    }).onNegative(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(MaterialDialog dialog, DialogAction which) {
-                            dialog.dismiss();
-                        }
-                    }).build();
-            CheckBox checkbox = (CheckBox) dialog.getCustomView().findViewById(R.id.showGuide);
-            checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    SettingUtils.getInstance(getActivity()).setEnableChatGuide(!isChecked);
-                }
-            });
-            dialog.show();
-        }
-    }
 
     private void initDb() {
         cityDao = new CityDao(getContext());
@@ -190,29 +128,7 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
 
 
     public void onEvent(MessageEvent event) {
-        if (event.message.equals(MessageEvent.WEATHER_PIC)) {
-//            loadWeatherPic();
-        }
-
     }
-
-    private void loadWeatherPic() {
-        Constants.isDay = PreferencesUtils.getBoolean(getActivity(), "w_pic", false);
-        if (Constants.isDay) {
-            Glide.with(this).load(Constants.WEATHER_PIC_NIGHT).crossFade().into(wBackground);
-        } else {
-            Glide.with(this).load(Constants.WEATHER_PIC_DAY).crossFade().into(wBackground);
-        }
-    }
-
-    private void loadWeatherPicAuto() {
-        if (Utils.isDay()) {
-            Glide.with(this).load(Constants.WEATHER_PIC_DAY).crossFade().into(wBackground);
-        } else {
-            Glide.with(this).load(Constants.WEATHER_PIC_NIGHT).crossFade().into(wBackground);
-        }
-    }
-
 
     @Override
     public View makeView() {
@@ -230,19 +146,30 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
             public void onResponse(Weather response) {
                 Weather.HeWeather heWeather = response.getHeWeather().get(0);
                 if ("ok".equals(heWeather.getStatus())) {
-                    wCityTv.setText(heWeather.getBasic().getCity());
-                    wNowTxtTv.setText(heWeather.getNow().getCond().getTxt());
-                    wNowTmpTv.setText(heWeather.getNow().getTmp());
-                    if (heWeather.getSuggestion() != null) {//接口改了
-                        wSugTv.setText(heWeather.getSuggestion().getComf().getTxt());
-                        more = heWeather.getSuggestion().getComf().getTxt();
-                        PreferencesUtils.saveToPreference(getActivity(), heWeather);
-                    }
-                    showChart(heWeather);//展示图表
 
+                    showWeather(heWeather);
+                    mCache.put(getString(R.string.heweather), heWeather);
+                    ChartUtils.showChart(getActivity(), wChart, heWeather);//展示图表
                 }
             }
         }));
+    }
+
+    private void showWeather(Weather.HeWeather heWeather) {
+        wCityTv.setText(heWeather.getBasic().getCity());
+        wNowTxtTv.setText(heWeather.getNow().getCond().getTxt());
+        wNowTmpTv.setText(heWeather.getNow().getTmp());
+        if (heWeather.getSuggestion() != null) {//接口改了
+            wSugTv.setText(heWeather.getSuggestion().getComf().getTxt());
+            more = heWeather.getSuggestion().getComf().getTxt();
+        }
+    }
+
+
+    private void loadFromCache() {
+        Weather.HeWeather heWeather = (Weather.HeWeather) mCache.getAsObject(getString(R.string.heweather));
+        if (heWeather != null)
+            showWeather(heWeather);
     }
 
     @OnClick(R.id.weather_more)
@@ -253,7 +180,7 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
         SnackbarUtils.show(wBackground, more, 2888);
     }
 
-    @OnClick(R.id.weather_background)
+    @OnClick(R.id.weather_city)
     void chooseCity() {
         cities = cityDao.queryAll();
         citiesStr = new String[2];
@@ -262,87 +189,22 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
         }
         LogUtils.d(cities);
         LogUtils.d(citiesStr);
-
+        int selectedIndex = PreferencesUtils.getInteger(getActivity(), getString(R.string.s_choice), 0);
         new MaterialDialog.Builder(getActivity())
                 .title(R.string.choose_city)
                 .items(citiesStr)
-                .itemsCallbackSingleChoice(PreferencesUtils.getInteger(getActivity(), getString(R.string.s_choice), 0),
-                        new MaterialDialog.ListCallbackSingleChoice() {
-                            @Override
-                            public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                                currentCityId = cities.get(which).getCityId();
-                                loadWeather(currentCityId);
-                                PreferencesUtils.setInteger(getActivity(), getString(R.string.s_choice), which);
-                                return true;
-                            }
-                        })
+                .itemsCallbackSingleChoice(selectedIndex, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        currentCityId = cities.get(which).getCityId();
+                        loadWeather(currentCityId);
+                        PreferencesUtils.setInteger(getActivity(), getString(R.string.s_choice), which);
+                        return true;
+                    }
+                })
                 .positiveText(R.string.agree)
+                .negativeText(R.string.cancel)
                 .show();
-    }
-
-    private void showChart(Weather.HeWeather heWeather) {
-        List<AxisValue> axisValues = new ArrayList<>();//轴线
-        List<PointValue> maxValues = new ArrayList<>();//最大值
-        List<PointValue> minValues = new ArrayList<>();//最小值
-
-        for (int i = 0; i < 7; ++i) {
-            maxValues.add(new PointValue(i, Float.parseFloat(heWeather.getDailyForecast().get(i).getTmp().getMax())));
-            minValues.add(new PointValue(i, Float.parseFloat(heWeather.getDailyForecast().get(i).getTmp().getMin())));
-        }
-
-        axisValues.add(new AxisValue(0).setLabel(getString(R.string.today)));
-        axisValues.add(new AxisValue(1).setLabel(getString(R.string.tomorrow)));
-        axisValues.add(new AxisValue(2).setLabel(getString(R.string.after_tomorrow)));
-        for (int i = 3; i < 6; ++i) {
-            axisValues.add(new AxisValue(i).setLabel(heWeather.getDailyForecast().get(i).getDate().substring(5)));
-        }
-
-        Line maxLine = new Line(maxValues);
-        maxLine.setColor(ChartUtils.COLOR_RED).setCubic(true).setHasPoints(true);
-        maxLine.setHasLabelsOnlyForSelected(true);
-
-        Line minLine = new Line(minValues);
-        minLine.setColor(ChartUtils.COLOR_BLUE).setCubic(true).setHasPoints(true);
-        minLine.setHasLabelsOnlyForSelected(true);
-
-
-        List<Line> lines = new ArrayList<>();
-        lines.add(maxLine);
-        lines.add(minLine);
-
-        LineChartData lineData;
-        lineData = new LineChartData(lines);
-        lineData.setAxisXBottom(new Axis(axisValues));//设置x轴
-        lineData.setAxisYLeft(new Axis().setAutoGenerated(true));
-//                .setFormatter(new SimpleAxisValueFormatter().setAppendedText(getString(R.string.tmp_formatter).toCharArray())));//设置y轴
-
-        wChart.setLineChartData(lineData);
-        wChart.setValueSelectionEnabled(true);//点击显示数值并且不消失
-        wChart.setZoomEnabled(false);//双击放大
-
-        //防止线条溢出
-        final Viewport v = new Viewport(wChart.getMaximumViewport());
-        LogUtils.d(v);
-        v.top += 1;
-        v.bottom -= 1;
-        wChart.setMaximumViewport(v);
-        wChart.setCurrentViewport(v);
-        wChart.setViewportCalculationEnabled(false);
-
-
-        for (Line line : lineData.getLines()) {
-            for (PointValue value : line.getValues()) {
-                value.setTarget(value.getX(), value.getY());
-            }
-        }
-        wChart.startDataAnimation(300);
-    }
-
-    private void loadFromPreference() {
-        wCityTv.setText(PreferencesUtils.getString(getActivity(), getActivity().getString(R.string.city)));
-        wNowTxtTv.setText(PreferencesUtils.getString(getActivity(), getActivity().getString(R.string.nowtxt)));
-        wNowTmpTv.setText(PreferencesUtils.getString(getActivity(), getActivity().getString(R.string.nowtmp)));
-        wSugTv.setText(PreferencesUtils.getString(getActivity(), getActivity().getString(R.string.sug)));
     }
 
 }

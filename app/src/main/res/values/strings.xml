@@ -121,6 +121,7 @@
     <string name="night_yes">night_yes</string>
     <string name="night_hint">夜间模式将在重启应用后生效</string>
     <string name="day_hint">日间模式将在重启应用后生效</string>
+    <string name="heweather">heWeather</string>
 
 
     <string-array name="welcome_texts">

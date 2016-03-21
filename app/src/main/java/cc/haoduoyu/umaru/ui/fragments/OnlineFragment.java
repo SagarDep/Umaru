@@ -8,7 +8,7 @@ import android.view.View;
 
 import butterknife.Bind;
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.base.SwipeRefreshFragment;
+import cc.haoduoyu.umaru.ui.base.SwipeRefreshFragment;
 import cc.haoduoyu.umaru.event.MessageEvent;
 import cc.haoduoyu.umaru.ui.adapter.OnlineMusicAdapter;
 

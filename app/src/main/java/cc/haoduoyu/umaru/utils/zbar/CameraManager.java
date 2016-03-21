@@ -15,12 +15,12 @@
  */
 package cc.haoduoyu.umaru.utils.zbar;
 
-import java.io.IOException;
-
 import android.content.Context;
 import android.graphics.Point;
 import android.hardware.Camera;
 import android.util.Log;
+
+import java.io.IOException;
 
 /**
  *

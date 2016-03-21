@@ -9,13 +9,12 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.base.BaseFragment;
+import cc.haoduoyu.umaru.ui.base.BaseFragment;
 import cc.haoduoyu.umaru.event.MessageEvent;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 

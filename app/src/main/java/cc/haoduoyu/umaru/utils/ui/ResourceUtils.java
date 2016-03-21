@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package cc.haoduoyu.umaru.utils;
+package cc.haoduoyu.umaru.utils.ui;
 
 import android.content.Context;
 

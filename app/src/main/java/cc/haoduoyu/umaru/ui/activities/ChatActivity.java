@@ -35,7 +35,7 @@ import java.util.LinkedHashMap;
 import butterknife.Bind;
 import butterknife.OnClick;
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.base.ToolbarActivity;
+import cc.haoduoyu.umaru.ui.base.ToolbarActivity;
 import cc.haoduoyu.umaru.event.MessageEvent;
 import cc.haoduoyu.umaru.ui.adapter.ChatAdapter;
 import cc.haoduoyu.umaru.utils.JsonParser;
@@ -97,7 +97,7 @@ public class ChatActivity extends ToolbarActivity implements SendButton.OnSendCl
         initXf();
 
         //仅仅为了解决键盘bug
-//        http://stackoverflow.com/questions/19897422/keyboard-hiding-edittext-when-androidwindowtranslucentstatus-true
+        //http://stackoverflow.com/questions/19897422/keyboard-hiding-edittext-when-androidwindowtranslucentstatus-true
         SystemBarTintManager tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);
         int color = PreferencesUtils.getInteger(this, getString(R.string.color_primary), R.color.colorPrimary);

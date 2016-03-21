@@ -1,4 +1,4 @@
-package cc.haoduoyu.umaru.base;
+package cc.haoduoyu.umaru.ui.base;
 
 import android.graphics.Color;
 import android.os.Bundle;
