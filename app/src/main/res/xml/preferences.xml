@@ -10,7 +10,7 @@
 
         <SwitchPreference
             android:key="day_night"
-            android:summary="实验性功能，需重启应用,请谨慎操作"
+            android:summary="实验性功能"
             android:title="夜间模式" />
 
         <!--<Preference-->

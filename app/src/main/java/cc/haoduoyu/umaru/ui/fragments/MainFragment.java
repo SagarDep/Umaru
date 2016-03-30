@@ -63,6 +63,7 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
     String more;
     List<City> cities;
     String[] citiesStr;
+    boolean isSetChart;
 
     public static MainFragment newInstance() {
         MainFragment fragment = new MainFragment();
@@ -149,7 +150,10 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
 
                     showWeather(heWeather);
                     mCache.put(getString(R.string.heweather), heWeather);
-                    ChartUtils.showChart(getActivity(), wChart, heWeather);//展示图表
+                    if (!isSetChart) {
+                        ChartUtils.showChart(getActivity(), wChart, heWeather, isSetChart);//展示图表
+                        isSetChart = true;
+                    }
                 }
             }
         }));
@@ -189,7 +193,7 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
         }
         LogUtils.d(cities);
         LogUtils.d(citiesStr);
-        int selectedIndex = PreferencesUtils.getInteger(getActivity(), getString(R.string.s_choice), 0);
+        final int selectedIndex = PreferencesUtils.getInteger(getActivity(), getString(R.string.s_choice), 0);
         new MaterialDialog.Builder(getActivity())
                 .title(R.string.choose_city)
                 .items(citiesStr)
@@ -197,7 +201,10 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                         currentCityId = cities.get(which).getCityId();
-                        loadWeather(currentCityId);
+                        if (selectedIndex != which){
+                            isSetChart=false;
+                            loadWeather(currentCityId);
+                        }
                         PreferencesUtils.setInteger(getActivity(), getString(R.string.s_choice), which);
                         return true;
                     }

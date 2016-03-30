@@ -30,8 +30,8 @@ import cc.haoduoyu.umaru.ui.activities.MainActivity;
 import cc.haoduoyu.umaru.ui.activities.NowPlayingActivity;
 import cc.haoduoyu.umaru.ui.activities.WebViewActivity;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
-import cc.haoduoyu.umaru.utils.ui.ToastUtils;
 import cc.haoduoyu.umaru.utils.Utils;
+import cc.haoduoyu.umaru.utils.ui.ToastUtils;
 import cc.haoduoyu.umaru.utils.volley.GsonRequest;
 import cc.haoduoyu.umaru.utils.volley.RequestManager;
 import cc.haoduoyu.umaru.utils.zbar.CaptureActivity;
@@ -203,8 +203,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                 }
             }, 1255);
 
-        } else
+        } else {
             loadWithTuling(text);
+        }
+
     }
 
     /**
@@ -229,7 +231,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                 notifyDataSetChanged();
                 if (mContext instanceof ChatActivity) {
                     RecyclerView recyclerView = ((ChatActivity) mContext).getRecyclerView();
-//                    recyclerView.smoothScrollToPosition(getItemCount() - 1);
+                    recyclerView.smoothScrollToPosition(getItemCount());
                 }
                 LogUtils.d(response);
             }

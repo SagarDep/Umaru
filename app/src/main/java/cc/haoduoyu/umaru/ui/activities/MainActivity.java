@@ -13,12 +13,16 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
 import android.view.animation.OvershootInterpolator;
 
 import com.apkfuns.logutils.LogUtils;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,19 +30,21 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.Umaru;
-import cc.haoduoyu.umaru.ui.base.BaseFragment;
-import cc.haoduoyu.umaru.ui.base.ToolbarActivity;
 import cc.haoduoyu.umaru.event.MessageEvent;
 import cc.haoduoyu.umaru.player.PlayerController;
 import cc.haoduoyu.umaru.player.PlayerLib;
+import cc.haoduoyu.umaru.ui.base.BaseFragment;
+import cc.haoduoyu.umaru.ui.base.ToolbarActivity;
+import cc.haoduoyu.umaru.ui.fragments.LocalMusicFragment;
 import cc.haoduoyu.umaru.ui.fragments.MainFragment;
 import cc.haoduoyu.umaru.ui.fragments.MusicFragment;
+import cc.haoduoyu.umaru.ui.fragments.OnlineFragment;
 import cc.haoduoyu.umaru.utils.AppManager;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.SettingUtils;
 import cc.haoduoyu.umaru.utils.ShakeManager;
-import cc.haoduoyu.umaru.utils.ui.SnackbarUtils;
 import cc.haoduoyu.umaru.utils.Utils;
+import cc.haoduoyu.umaru.utils.ui.SnackbarUtils;
 import cc.haoduoyu.umaru.utils.zbar.CaptureActivity;
 import cc.haoduoyu.umaru.widgets.FloatViewService;
 import de.greenrobot.event.EventBus;
@@ -167,7 +173,6 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     }
 
     private void destroy() {
-        unbindService(mServiceConnection);
         EventBus.getDefault().unregister(this);
     }
 
@@ -260,11 +265,15 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
                 mCurrentFragment = getFragment(MusicFragment.class.getName());
                 replaceFragmentWithSelected(mCurrentFragment);
                 break;
-            case R.id.nav_day_night:
-                dayNight();
-                break;
+//            case R.id.nav_day_night:
+//                dayNight();
+////                mCurrentFragment = getFragment(OnlineFragment.class.getName());
+////                replaceFragmentWithSelected(mCurrentFragment);
+//                break;
             case R.id.nav_chat:
                 ChatActivity.startIt(this);
+//                mCurrentFragment = getFragment(LocalMusicFragment.class.getName());
+//                replaceFragmentWithSelected(mCurrentFragment);
                 break;
             case R.id.nav_settings:
                 SettingActivity.startIt(this);
@@ -298,6 +307,7 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
 
     private void exit() {
         destroy();
+        unbindService(mServiceConnection);
         stopService(new Intent(this, FloatViewService.class));
         PlayerController.stop();
         AppManager.getAppManager().finishAllActivityAndExit(this);
@@ -361,5 +371,31 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
             LogUtils.d("force: " + force);
             CaptureActivity.startIt(this);
         }
+    }
+
+    /**
+     * http://stackoverflow.com/questions/30076392/how-does-this-strange-condition-happens-when-show-menu-item-icon-in-toolbar-over/30337653#30337653
+     * @param view
+     * @param menu
+     * @return
+     */
+    @Override
+    protected boolean onPrepareOptionsPanel(View view, Menu menu) {
+        if (menu != null) {
+            if (menu.getClass().getSimpleName().equals("MenuBuilder")) {
+                try {
+                    Method m = menu.getClass().getDeclaredMethod(
+                            "setOptionalIconsVisible", Boolean.TYPE);
+                    //在反射调用之前将此对象的 accessible 标志设置为 true，以此来提升反射速度。
+                    // 值为 true 则指示反射的对象在使用时应该取消 Java 语言访问检查。
+                    // 值为 false 则指示反射的对象应该实施 Java 语言访问检查
+                    m.setAccessible(true);
+                    m.invoke(menu, true);
+                } catch (Exception e) {
+                    Log.e(getClass().getSimpleName(), "onPrepareOptionsPanel...unable to set icons for overflow menu", e);
+                }
+            }
+        }
+        return super.onPrepareOptionsPanel(view, menu);
     }
 }

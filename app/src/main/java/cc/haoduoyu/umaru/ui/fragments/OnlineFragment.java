@@ -8,9 +8,9 @@ import android.view.View;
 
 import butterknife.Bind;
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.ui.base.SwipeRefreshFragment;
 import cc.haoduoyu.umaru.event.MessageEvent;
 import cc.haoduoyu.umaru.ui.adapter.OnlineMusicAdapter;
+import cc.haoduoyu.umaru.ui.base.SwipeRefreshFragment;
 
 /**
  * Created by XP on 2016/1/25.
@@ -43,7 +43,8 @@ public class OnlineFragment extends SwipeRefreshFragment {
     @Override
     protected void initViews() {
         super.initViews();
-        type = getArguments().getInt("type");
+        if (getArguments() != null)
+            type = getArguments().getInt("type",0);
         mAdapter = new OnlineMusicAdapter(getActivity(), type);
         final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mOnlineList.setLayoutManager(layoutManager);

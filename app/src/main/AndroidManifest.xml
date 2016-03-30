@@ -54,10 +54,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activities.ChatActivity"
-            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.TransparentActivity"
-          />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.activities.AboutActivity"
             android:label="@string/about"

@@ -22,11 +22,11 @@
     <group
         android:id="@+id/group2"
         android:checkableBehavior="none">
-        <item
+        <!--<item-->
 
-            android:id="@+id/nav_day_night"
-            android:icon="@drawable/ic_action_image_brightness_4"
-            android:title="@string/day_night" />
+            <!--android:id="@+id/nav_day_night"-->
+            <!--android:icon="@drawable/ic_action_image_brightness_4"-->
+            <!--android:title="@string/day_night" />-->
         <item
 
             android:id="@+id/nav_settings"

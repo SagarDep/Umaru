@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -32,14 +33,14 @@ import butterknife.OnClick;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.api.MusicFactory;
 import cc.haoduoyu.umaru.api.MusicService;
-import cc.haoduoyu.umaru.ui.base.ToolbarActivity;
 import cc.haoduoyu.umaru.model.ArtistInfo;
 import cc.haoduoyu.umaru.model.Song;
 import cc.haoduoyu.umaru.player.Player;
 import cc.haoduoyu.umaru.player.PlayerController;
-import cc.haoduoyu.umaru.utils.ui.DialogUtils;
+import cc.haoduoyu.umaru.ui.base.ToolbarActivity;
 import cc.haoduoyu.umaru.utils.ShareUtils;
 import cc.haoduoyu.umaru.utils.Utils;
+import cc.haoduoyu.umaru.utils.ui.DialogUtils;
 import cc.haoduoyu.umaru.utils.volley.GsonRequest;
 import cc.haoduoyu.umaru.widgets.PlayPauseDrawable;
 import retrofit2.Callback;
@@ -71,12 +72,11 @@ public class NowPlayingActivity extends ToolbarActivity {
     @Bind(R.id.song_elapsed_time)
     TextView songElapsedTime;
 
-    PlayPauseDrawable playPauseDrawable = new PlayPauseDrawable();
     public static final String EXTRA_NOW_PLAYING = "extra_now_playing";
+    private PlayPauseDrawable playPauseDrawable = new PlayPauseDrawable();
     private Song song;
     private SeekObserver observer = null;
     private String summary;
-
     private UpdateNowPlayingReceiver updateNowPlayingReceiver;
 
     @Override
@@ -113,7 +113,23 @@ public class NowPlayingActivity extends ToolbarActivity {
         updateShuffle();
         setAppBarTransparent();
         loadArtistInfoWithVolley(song);
+        initPanel();
+        initDrawable();
 
+        updateNowPlayingReceiver = new UpdateNowPlayingReceiver();
+
+        observer = new SeekObserver();
+        seekBar.setOnSeekBarChangeListener(new SeekBarChangeListener());
+
+        if (song != null) {//第一次初始化Song
+            songTitle.setText(song.getSongTitle());
+            songArtistAlbum.setText(song.getArtistName() + " | " + song.getAlbumName());
+            songDuration.setText(Utils.durationToString(song.getDuration()));
+            seekBar.setMax((int) song.getDuration());
+        }
+    }
+
+    private void initDrawable() {
         fab.setImageDrawable(playPauseDrawable);
         if (PlayerController.isPlaying()) {
             playPauseDrawable.transformToPause(false);
@@ -126,22 +142,20 @@ public class NowPlayingActivity extends ToolbarActivity {
                 .setIcon(MaterialDrawableBuilder.IconValue.MENU)
                 .setSizeDp(30);
         menu.setImageDrawable(mBuilder.build());
+    }
 
-        updateNowPlayingReceiver = new UpdateNowPlayingReceiver();
-
-        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+    private void initPanel() {
+        hidePanel();
+        //向下滑动时彻底隐藏panel
         slidingUpPanelLayout.setPanelHeight(0);
+        slidingUpPanelLayout.setFadeOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LogUtils.d("FadeOnClick");
+                hidePanel();
+            }
+        });
 //        slidingUpPanelLayout.setOverlayed(true);//设置panel为透明
-
-        observer = new SeekObserver();
-        seekBar.setOnSeekBarChangeListener(new SeekBarChangeListener());
-
-        if (song != null) {//第一次初始化Song
-            songTitle.setText(song.getSongTitle());
-            songArtistAlbum.setText(song.getArtistName() + " | " + song.getAlbumName());
-            songDuration.setText(Utils.durationToString(song.getDuration()));
-            seekBar.setMax((int) song.getDuration());
-        }
     }
 
     @Override
@@ -257,7 +271,7 @@ public class NowPlayingActivity extends ToolbarActivity {
         LogUtils.d(PlayerController.getPlayState());
     }
 
-    private void closePanel() {
+    private void hidePanel() {
         slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
     }
 
@@ -292,18 +306,18 @@ public class NowPlayingActivity extends ToolbarActivity {
 
     @OnClick(R.id.panel_close)
     void closePanelLayout() {
-        closePanel();
+        hidePanel();
     }
 
     @OnClick(R.id.panel_song)
     void panelSong() {
-        closePanel();
+        hidePanel();
         DialogUtils.showPanelSong(this);
     }
 
     @OnClick(R.id.panel_artist)
     void panelArtist() {
-        closePanel();
+        hidePanel();
         SpannableStringBuilder content = null;
         if (!TextUtils.isEmpty(summary)) {
             content = new SpannableStringBuilder(" " + summary.split(getString(R.string.href))[0]);
@@ -317,13 +331,13 @@ public class NowPlayingActivity extends ToolbarActivity {
 
     @OnClick(R.id.panel_equalizer)
     void equalizer() {
-        closePanel();
+        hidePanel();
         Utils.startEqualizer(this);
     }
 
     @OnClick(R.id.panel_share)
     void panelShare() {
-        closePanel();
+        hidePanel();
         ShareUtils.share(this, song.getDisplayName());
     }
 
@@ -405,6 +419,8 @@ public class NowPlayingActivity extends ToolbarActivity {
 
 
     private void loadArtistInfoWithVolley(final Song song) {
+        albumArt.setImageBitmap(Utils.getSongPic(song));
+        LogUtils.d(song.getSongTitle() + " load pic from local");
         String artistName = null;
         try {
             if (!TextUtils.isEmpty(song.getArtistName()))
@@ -421,9 +437,6 @@ public class NowPlayingActivity extends ToolbarActivity {
                                 .load(response.getArtist().getImage().get(3).getUrl())
                                 .placeholder(R.mipmap.default_artwork).crossFade().into(albumArt);
                         LogUtils.d(song.getSongTitle() + " load pic from last_fm");
-                    } else {
-                        albumArt.setImageBitmap(Utils.getSongPic(song));
-                        LogUtils.d(song.getSongTitle() + " load pic from local");
                     }
                 }
             }));

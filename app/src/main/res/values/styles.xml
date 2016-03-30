@@ -22,7 +22,14 @@
     </style>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="BaseAppTheme"></style>
+    <style name="AppTheme" parent="BaseAppTheme">
+        <item name="android:actionBarStyle">@style/CustomActionBarStyle</item>
+    </style>
+
+    <style name="CustomActionBarStyle" parent="AppTheme">
+        <item name="android:padding">0dip</item>
+        <item name="android:layout_margin">0dip</item>
+    </style>
 
 
     <style name="AppTheme.TransparentActivity">
@@ -30,8 +37,7 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
-    <style name="CollapsingToolbarTitleStyle"
-        parent="@android:style/TextAppearance">
+    <style name="CollapsingToolbarTitleStyle" parent="@android:style/TextAppearance">
         <item name="android:textColor">@android:color/transparent</item>
     </style>
 

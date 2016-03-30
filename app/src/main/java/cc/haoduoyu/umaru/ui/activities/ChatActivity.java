@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -84,6 +85,12 @@ public class ChatActivity extends ToolbarActivity implements SendButton.OnSendCl
         context.startActivity(intent);
     }
 
+    /**
+     * android.util.AndroidRuntimeException:
+     * Calling startActivity() from outside of an Activity  context requires the FLAG_ACTIVITY_NEW_TASK flag.
+     * Is this really what you want?
+     * @param context
+     */
     public static void startIt(Context context) {
         Intent intent = new Intent(context, ChatActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -114,7 +121,7 @@ public class ChatActivity extends ToolbarActivity implements SendButton.OnSendCl
         mAppBar.setBackgroundColor(Color.TRANSPARENT);
         mAdapter = new ChatAdapter(this);
         mAdapter.loadRandomWelcomeTexts();
-        mRecyclerview.setLayoutManager(new GLayoutManager(this));
+        mRecyclerview.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerview.setAdapter(mAdapter);
 
         //当一个视图树将要绘制时调用这个回调函数
@@ -166,7 +173,7 @@ public class ChatActivity extends ToolbarActivity implements SendButton.OnSendCl
     private void loadChat() {
 //        hideKeyboard();
         mAdapter.loadChat(sendEt.getText().toString().replace("\n", "").replace(" ", ""));
-        mRecyclerview.smoothScrollToPosition(mAdapter.getItemCount() - 1);
+//        mRecyclerview.smoothScrollToPosition(mAdapter.getItemCount() - 1);
         sendBtn.setCurrentState(SendButton.STATE_DONE);
     }
 
