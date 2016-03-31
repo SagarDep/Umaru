@@ -12,7 +12,7 @@ import java.util.Map;
 import cc.haoduoyu.umaru.model.City;
 
 /**
- * ChatDao
+ * @deprecated Use {@link DBManager} instead.
  * Created by XP on 2016/1/19.
  */
 public class CityDao {

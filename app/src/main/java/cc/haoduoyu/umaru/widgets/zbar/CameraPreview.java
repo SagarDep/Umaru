@@ -3,7 +3,7 @@
  * 
  * Created by lisah0 on 2012-02-24
  */
-package cc.haoduoyu.umaru.utils.zbar;
+package cc.haoduoyu.umaru.widgets.zbar;
 
 import android.content.Context;
 import android.hardware.Camera;

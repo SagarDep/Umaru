@@ -19,6 +19,7 @@ import java.util.Map;
 import cc.haoduoyu.umaru.model.City;
 
 /**
+ * @deprecated Use {@link DBManager} instead.
  * 数据库帮助类
  * Created by XP on 2016/1/19.
  */

@@ -17,7 +17,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.animation.OvershootInterpolator;
 
 import com.apkfuns.logutils.LogUtils;
@@ -35,18 +34,17 @@ import cc.haoduoyu.umaru.player.PlayerController;
 import cc.haoduoyu.umaru.player.PlayerLib;
 import cc.haoduoyu.umaru.ui.base.BaseFragment;
 import cc.haoduoyu.umaru.ui.base.ToolbarActivity;
-import cc.haoduoyu.umaru.ui.fragments.LocalMusicFragment;
 import cc.haoduoyu.umaru.ui.fragments.MainFragment;
 import cc.haoduoyu.umaru.ui.fragments.MusicFragment;
-import cc.haoduoyu.umaru.ui.fragments.OnlineFragment;
 import cc.haoduoyu.umaru.utils.AppManager;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.SettingUtils;
 import cc.haoduoyu.umaru.utils.ShakeManager;
 import cc.haoduoyu.umaru.utils.Utils;
 import cc.haoduoyu.umaru.utils.ui.SnackbarUtils;
-import cc.haoduoyu.umaru.utils.zbar.CaptureActivity;
 import cc.haoduoyu.umaru.widgets.FloatViewService;
+import cc.haoduoyu.umaru.widgets.citypicker.CityPickerActivity;
+import cc.haoduoyu.umaru.widgets.zbar.CaptureActivity;
 import de.greenrobot.event.EventBus;
 
 public class MainActivity extends ToolbarActivity implements NavigationView.OnNavigationItemSelectedListener, ShakeManager.ISensor {
@@ -62,6 +60,7 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     private BaseFragment mCurrentFragment;
     private Map<String, BaseFragment> mBaseFragmentByName = new HashMap<>();
     private FloatViewService mFloatViewService;
+    private boolean isMain = true;
 
     @Override
     protected int provideContentViewId() {
@@ -233,6 +232,17 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item1 = menu.findItem(R.id.action_choose_city);
+        if (isMain) {
+            item1.setVisible(true);
+        } else {
+            item1.setVisible(false);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
@@ -242,6 +252,9 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
                 break;
             case R.id.action_scan:
                 CaptureActivity.startIt(this);
+                break;
+            case R.id.action_choose_city:
+                startActivity(new Intent(this, CityPickerActivity.class));
                 break;
         }
 
@@ -258,12 +271,14 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
                 fab.setImageResource(android.R.drawable.stat_notify_chat);
                 mCurrentFragment = getFragment(MainFragment.class.getName());
                 replaceFragmentWithSelected(mCurrentFragment);
+                isMain = true;
                 break;
             case R.id.nav_music:
                 setTitle(getResources().getString(R.string.music));
                 fab.setImageResource(android.R.drawable.ic_media_play);
                 mCurrentFragment = getFragment(MusicFragment.class.getName());
                 replaceFragmentWithSelected(mCurrentFragment);
+                isMain = false;
                 break;
 //            case R.id.nav_day_night:
 //                dayNight();
@@ -375,6 +390,7 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
 
     /**
      * http://stackoverflow.com/questions/30076392/how-does-this-strange-condition-happens-when-show-menu-item-icon-in-toolbar-over/30337653#30337653
+     *
      * @param view
      * @param menu
      * @return

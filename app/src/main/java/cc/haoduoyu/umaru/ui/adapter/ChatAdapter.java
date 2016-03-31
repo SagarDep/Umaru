@@ -34,7 +34,7 @@ import cc.haoduoyu.umaru.utils.Utils;
 import cc.haoduoyu.umaru.utils.ui.ToastUtils;
 import cc.haoduoyu.umaru.utils.volley.GsonRequest;
 import cc.haoduoyu.umaru.utils.volley.RequestManager;
-import cc.haoduoyu.umaru.utils.zbar.CaptureActivity;
+import cc.haoduoyu.umaru.widgets.zbar.CaptureActivity;
 
 /**
  * Created by XP on 2016/1/20.

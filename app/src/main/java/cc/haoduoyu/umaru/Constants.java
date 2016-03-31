@@ -13,6 +13,7 @@ public class Constants {
     public static final String WZ_URL = "http://ids1.suda.edu.cn/amserver/UI/Login?goto=http://myauth.suda.edu.cn/default.aspx?app=wzjw";
     public static final String HAO_DUO_YU = "http://haoduoyu.cc/";
     public static final String XF_APP_ID = "=56de4d80";
+    public static final String CITY_URL = "https://api.heweather.com/x3/citylist?search=allchina&key=a61695419b59459186a1f8a8eeec75fb";
 
 
 }

@@ -23,15 +23,20 @@ import lecho.lib.hellocharts.view.LineChartView;
 public class ChartUtils {
 
 
-    public static void showChart(Context context, LineChartView chartView, Weather.HeWeather heWeather,boolean isSet) {
+    public static void showChart(Context context, LineChartView chartView, Weather.HeWeather heWeather, boolean refresh) {
         List<AxisValue> axisXValues = new ArrayList<>();//X轴线
         List<AxisValue> axisYValues = new ArrayList<>();//Y轴线
-        List<PointValue> maxValues = new ArrayList<>();//最大值
-        List<PointValue> minValues = new ArrayList<>();//最小值
+        List<PointValue> maxValues = new ArrayList<>();//最高温度
+        List<PointValue> minValues = new ArrayList<>();//最低温度
+        float maxMax = Float.parseFloat(heWeather.getDailyForecast().get(0).getTmp().getMax());//最大值中的最大值
+        float minMin = Float.parseFloat(heWeather.getDailyForecast().get(0).getTmp().getMin());//最小值中的最小值
+        ;
 
         for (int i = 0; i < 7; ++i) {
             maxValues.add(new PointValue(i, Float.parseFloat(heWeather.getDailyForecast().get(i).getTmp().getMax())));
             minValues.add(new PointValue(i, Float.parseFloat(heWeather.getDailyForecast().get(i).getTmp().getMin())));
+            maxMax = Math.max(Float.parseFloat(heWeather.getDailyForecast().get(i).getTmp().getMax()), maxMax);
+            minMin = Math.min(Float.parseFloat(heWeather.getDailyForecast().get(i).getTmp().getMin()), minMin);
         }
 
         axisXValues.add(new AxisValue(0).setLabel(context.getString(R.string.today)));
@@ -67,12 +72,12 @@ public class ChartUtils {
         chartView.setValueSelectionEnabled(true);//点击显示数值并且不消失
         chartView.setZoomEnabled(false);//双击放大
 
-        if (!isSet) {
+        if (refresh) {
             //防止线条溢出
             final Viewport v = new Viewport(chartView.getMaximumViewport());
             LogUtils.d(v);
-            v.top += 1;
-            v.bottom -= 1;
+            v.top = maxMax + 1;
+            v.bottom = minMin - 1;
             chartView.setMaximumViewport(v);
             chartView.setCurrentViewport(v);
             chartView.setViewportCalculationEnabled(false);

@@ -70,8 +70,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".utils.zbar.CaptureActivity"
+            android:name=".widgets.zbar.CaptureActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".widgets.citypicker.CityPickerActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- Player Service
         android:exported这个属性用于指示该服务是否能够被其他应用程序组件调用或跟它交互。

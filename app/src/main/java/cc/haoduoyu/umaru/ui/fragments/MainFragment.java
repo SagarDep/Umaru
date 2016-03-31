@@ -1,30 +1,22 @@
 package cc.haoduoyu.umaru.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.ViewSwitcher;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.Response;
 import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
-
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 import cc.haoduoyu.umaru.Constants;
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.db.CityDao;
-import cc.haoduoyu.umaru.db.InsertHelper;
-import cc.haoduoyu.umaru.event.MessageEvent;
-import cc.haoduoyu.umaru.model.City;
+import cc.haoduoyu.umaru.event.ContentEvent;
 import cc.haoduoyu.umaru.model.Weather;
 import cc.haoduoyu.umaru.player.PlayerLib;
 import cc.haoduoyu.umaru.ui.base.BaseFragment;
@@ -36,12 +28,13 @@ import cc.haoduoyu.umaru.utils.ui.ChartUtils;
 import cc.haoduoyu.umaru.utils.ui.DialogUtils;
 import cc.haoduoyu.umaru.utils.ui.SnackbarUtils;
 import cc.haoduoyu.umaru.utils.volley.GsonRequest;
+import cc.haoduoyu.umaru.widgets.citypicker.CityPickerActivity;
 import lecho.lib.hellocharts.view.LineChartView;
 
 /**
  * Created by XP on 2016/1/9.
  */
-public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFactory {
+public class MainFragment extends BaseFragment {
 
     @Bind(R.id.root_main)
     RelativeLayout root;
@@ -58,12 +51,8 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
     @Bind(R.id.weather_chart)
     LineChartView wChart;
 
-    CityDao cityDao;
     String currentCityId;
     String more;
-    List<City> cities;
-    String[] citiesStr;
-    boolean isSetChart;
 
     public static MainFragment newInstance() {
         MainFragment fragment = new MainFragment();
@@ -78,8 +67,14 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
             Glide.with(this).load(Constants.WEATHER_PIC_NIGHT).crossFade().into(wBackground);
         } else {
             Glide.with(this).load(Constants.WEATHER_PIC_DAY).crossFade().into(wBackground);
-
         }
+
+        new Once(getActivity()).execute(getString(R.string.once), new Once.OnceCallback() {
+            @Override
+            public void onOnce() {
+                startActivity(new Intent(getActivity(), CityPickerActivity.class));
+            }
+        });
 
     }
 
@@ -91,55 +86,26 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        initDb();
-
+        currentCityId = PreferencesUtils.getString(getActivity(), getString(R.string.city_id));
         if (SettingUtils.getInstance(getActivity()).isEnableCache()
                 && !Utils.isNetworkReachable(getActivity())) {
             loadFromCache();
+            LogUtils.d("loadFromCache");
         } else {
-            loadWeather(currentCityId);
+            loadWeather(!TextUtils.isEmpty(currentCityId) ? currentCityId : "CN101010100", true);
         }
         PlayerLib.scanAll(getActivity());
     }
 
-
-    private void initDb() {
-        cityDao = new CityDao(getContext());
-
-        new Once(getActivity()).execute(getString(R.string.insert_city), new Once.OnceCallback() {
-            @Override
-            public void onOnce() {
-                insertToDB();
-            }
-        });
-        List<City> cityList = cityDao.queryForEq(City.Q, "suzhou");
-        LogUtils.d(cityList);
-        if (cityList.size() == 0) {
-            insertToDB();
-        } else {
-            currentCityId = cityList.get(0).getCityId();
+    public void onEvent(ContentEvent event) {
+        if (event.type.equals(ContentEvent.WEATHER_CITY)) {
+            loadWeather(event.message, true);
+            currentCityId = event.message;
+            PreferencesUtils.setString(getActivity(), getString(R.string.city_id), event.message);
         }
     }
 
-    private void insertToDB() {
-        InsertHelper.insertCity(cityDao);
-        currentCityId = cityDao.queryForEq(City.Q, "suzhou").get(0).getCityId();
-    }
-
-
-    public void onEvent(MessageEvent event) {
-    }
-
-    @Override
-    public View makeView() {
-        TextView t = new TextView(getActivity());
-        t.setGravity(Gravity.CENTER);
-        t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-        return t;
-    }
-
-    private void loadWeather(String id) {
+    private void loadWeather(String id, final boolean refreshChart) {
         LogUtils.d(Weather.URL + id);
         executeRequest(new GsonRequest<>(Weather.URL + id,
                 Weather.class, new Response.Listener<Weather>() {
@@ -150,9 +116,8 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
 
                     showWeather(heWeather);
                     mCache.put(getString(R.string.heweather), heWeather);
-                    if (!isSetChart) {
-                        ChartUtils.showChart(getActivity(), wChart, heWeather, isSetChart);//展示图表
-                        isSetChart = true;
+                    if (refreshChart) {
+                        ChartUtils.showChart(getActivity(), wChart, heWeather, refreshChart);//展示图表
                     }
                 }
             }
@@ -186,32 +151,6 @@ public class MainFragment extends BaseFragment implements ViewSwitcher.ViewFacto
 
     @OnClick(R.id.weather_city)
     void chooseCity() {
-        cities = cityDao.queryAll();
-        citiesStr = new String[2];
-        for (int i = 0; i < cities.size(); i++) {
-            citiesStr[i] = cities.get(i).getCityZh();
-        }
-        LogUtils.d(cities);
-        LogUtils.d(citiesStr);
-        final int selectedIndex = PreferencesUtils.getInteger(getActivity(), getString(R.string.s_choice), 0);
-        new MaterialDialog.Builder(getActivity())
-                .title(R.string.choose_city)
-                .items(citiesStr)
-                .itemsCallbackSingleChoice(selectedIndex, new MaterialDialog.ListCallbackSingleChoice() {
-                    @Override
-                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        currentCityId = cities.get(which).getCityId();
-                        if (selectedIndex != which){
-                            isSetChart=false;
-                            loadWeather(currentCityId);
-                        }
-                        PreferencesUtils.setInteger(getActivity(), getString(R.string.s_choice), which);
-                        return true;
-                    }
-                })
-                .positiveText(R.string.agree)
-                .negativeText(R.string.cancel)
-                .show();
+        startActivity(new Intent(getActivity(), CityPickerActivity.class));
     }
-
 }

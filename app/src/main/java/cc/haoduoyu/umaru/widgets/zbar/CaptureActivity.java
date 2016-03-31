@@ -1,4 +1,4 @@
-package cc.haoduoyu.umaru.utils.zbar;
+package cc.haoduoyu.umaru.widgets.zbar;
 
 import android.app.Activity;
 import android.content.Context;
