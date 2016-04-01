@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
@@ -19,13 +18,13 @@ import com.nineoldandroids.view.ViewHelper;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cc.haoduoyu.umaru.BuildConfig;
 import cc.haoduoyu.umaru.Constants;
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.ui.base.BaseActivity;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.SettingUtils;
 import cc.haoduoyu.umaru.utils.Utils;
+import cc.haoduoyu.umaru.utils.ui.DialogUtils;
 
 /**
  * https://github.com/ksoichiro/Android-ObservableScrollView
@@ -65,11 +64,8 @@ public class AboutActivity extends BaseActivity implements ObservableScrollViewC
     }
 
     @OnClick(R.id.icon)
-    void version() {
-        Toast.makeText(this, getString(R.string.version)
-                + BuildConfig.VERSION_NAME
-                + "\n\n" + PreferencesUtils.getAll(this)
-                + "\n\n" + SettingUtils.getAll(), Toast.LENGTH_LONG).show();
+    void showSp() {
+        DialogUtils.showSP(this);
         LogUtils.d(PreferencesUtils.getAll(this));
         LogUtils.d(SettingUtils.getAll());
     }
@@ -86,7 +82,7 @@ public class AboutActivity extends BaseActivity implements ObservableScrollViewC
 
     @OnClick(R.id.crash)
     void crash() {
-        throw new RuntimeException("crash crash crash crash crash");
+        throw new RuntimeException(getString(R.string.crash_test));
     }
 
 

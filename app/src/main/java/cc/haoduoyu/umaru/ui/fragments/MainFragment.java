@@ -19,6 +19,7 @@ import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.event.ContentEvent;
 import cc.haoduoyu.umaru.model.Weather;
 import cc.haoduoyu.umaru.player.PlayerLib;
+import cc.haoduoyu.umaru.ui.activities.CityPickerActivity;
 import cc.haoduoyu.umaru.ui.base.BaseFragment;
 import cc.haoduoyu.umaru.utils.Once;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
@@ -28,10 +29,10 @@ import cc.haoduoyu.umaru.utils.ui.ChartUtils;
 import cc.haoduoyu.umaru.utils.ui.DialogUtils;
 import cc.haoduoyu.umaru.utils.ui.SnackbarUtils;
 import cc.haoduoyu.umaru.utils.volley.GsonRequest;
-import cc.haoduoyu.umaru.widgets.citypicker.CityPickerActivity;
 import lecho.lib.hellocharts.view.LineChartView;
 
 /**
+ * 主Fragment，天气信息
  * Created by XP on 2016/1/9.
  */
 public class MainFragment extends BaseFragment {
@@ -72,7 +73,7 @@ public class MainFragment extends BaseFragment {
         new Once(getActivity()).execute(getString(R.string.once), new Once.OnceCallback() {
             @Override
             public void onOnce() {
-                startActivity(new Intent(getActivity(), CityPickerActivity.class));
+                CityPickerActivity.startIt(getActivity());
             }
         });
 
@@ -150,7 +151,12 @@ public class MainFragment extends BaseFragment {
     }
 
     @OnClick(R.id.weather_city)
-    void chooseCity() {
-        startActivity(new Intent(getActivity(), CityPickerActivity.class));
+    void chooseCity1() {
+        CityPickerActivity.startIt(getActivity());
+    }
+
+    @OnClick(R.id.weather_now_tmp)
+    void chooseCity2() {
+        CityPickerActivity.startIt(getActivity());
     }
 }

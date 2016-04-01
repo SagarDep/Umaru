@@ -9,16 +9,19 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.apkfuns.logutils.LogUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.ui.base.BaseFragment;
 import cc.haoduoyu.umaru.event.MessageEvent;
+import cc.haoduoyu.umaru.ui.base.BaseFragment;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 
 /**
+ * 音乐Fragment
  * Created by XP on 2016/1/9.
  */
 public class MusicFragment extends BaseFragment {
@@ -40,9 +43,10 @@ public class MusicFragment extends BaseFragment {
 
     @Override
     protected void initViews() {
-        int color = PreferencesUtils.getInteger(getActivity(), getString(R.string.color_primary), R.color.colorPrimary);
+        int color = PreferencesUtils.getInteger(getActivity(), getString(R.string.color_primary), getResources().getColor(R.color.colorPrimary));
         iv.setBackgroundColor(color);
         tabLayout.setBackgroundColor(color);
+        LogUtils.d("color: " + color);
         viewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
         if (viewPager != null) {
             setupViewPager(viewPager);

@@ -9,14 +9,16 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.apkfuns.logutils.LogUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import cc.haoduoyu.umaru.R;
+import cc.haoduoyu.umaru.utils.PinyinUtils;
 import cc.haoduoyu.umaru.widgets.citypicker.model.City;
 import cc.haoduoyu.umaru.widgets.citypicker.model.LocateState;
-import cc.haoduoyu.umaru.utils.PinyinUtils;
 import cc.haoduoyu.umaru.widgets.citypicker.view.WrapHeightGridView;
 
 /**
@@ -41,19 +43,28 @@ public class CityListAdapter extends BaseAdapter {
         if (mCities == null) {
             mCities = new ArrayList<>();
         }
-        mCities.add(0, new City("定位", "0", "0"));
-        mCities.add(1, new City("热门", "1", "1"));
+
+        mCities.add(0, new City("定位", "0", ""));
+        mCities.add(1, new City("热门", "1", ""));
+
+    }
+
+    /**
+     * 更新首字母与position
+     */
+    public void update() {
         int size = mCities.size();
+        LogUtils.d("size: " + size);
         letterIndexes = new HashMap<>();
-        sections = new String[size];
+//        sections = new String[size];
         for (int index = 0; index < size; index++) {
-            //当前城市拼音首字母
+            //当前城市拼音首字母,pinyin0返回定位，pinyin1返回热门，默认返回定位
             String currentLetter = PinyinUtils.getFirstLetter(mCities.get(index).getPinyin());
             //上个首字母，如果不存在设为""
             String previousLetter = index >= 1 ? PinyinUtils.getFirstLetter(mCities.get(index - 1).getPinyin()) : "";
             if (!TextUtils.equals(currentLetter, previousLetter)) {
                 letterIndexes.put(currentLetter, index);
-                sections[index] = currentLetter;
+//                sections[index] = currentLetter;
             }
         }
     }
@@ -70,13 +81,14 @@ public class CityListAdapter extends BaseAdapter {
     }
 
     /**
-     * 获取字母索引的位置
+     * 根据首字母获取字母索引的位置
      *
      * @param letter
      * @return
      */
     public int getLetterPosition(String letter) {
         Integer integer = letterIndexes.get(letter);
+        LogUtils.d(letterIndexes);
         return integer == null ? -1 : integer;
     }
 

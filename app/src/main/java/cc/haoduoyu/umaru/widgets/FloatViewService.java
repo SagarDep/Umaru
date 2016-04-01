@@ -27,6 +27,7 @@ import com.apkfuns.logutils.LogUtils;
 import cc.haoduoyu.umaru.ui.activities.ChatActivity;
 
 /**
+ * This code was modified by XP.
  * Desction:Float view service
  * Author:pengjianbo
  * Date:15/10/26 下午5:15

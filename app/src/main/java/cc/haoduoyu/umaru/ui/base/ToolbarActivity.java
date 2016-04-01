@@ -49,6 +49,8 @@ public abstract class ToolbarActivity extends BaseActivity {
                 onToolbarClick();
             }
         });
+        mAppBar.setBackgroundColor(PreferencesUtils.getInteger(this, getString(R.string.color_primary),
+                getResources().getColor(R.color.colorPrimary)));
 
         setSupportActionBar(mToolbar);
         if (canBack()) {
@@ -70,7 +72,7 @@ public abstract class ToolbarActivity extends BaseActivity {
     }
 
     protected void setColorPrimary() {
-        int color = PreferencesUtils.getInteger(this, getString(R.string.color_primary), R.color.colorPrimary);
+        int color = PreferencesUtils.getInteger(this, getString(R.string.color_primary), getResources().getColor(R.color.colorPrimary));
         if (getSupportActionBar() != null)
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(color));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

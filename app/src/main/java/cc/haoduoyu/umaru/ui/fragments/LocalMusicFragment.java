@@ -5,10 +5,11 @@ import android.support.v7.widget.RecyclerView;
 
 import butterknife.Bind;
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.ui.base.BaseFragment;
 import cc.haoduoyu.umaru.event.MessageEvent;
 import cc.haoduoyu.umaru.player.PlayerLib;
 import cc.haoduoyu.umaru.ui.adapter.SongAdapter;
+import cc.haoduoyu.umaru.ui.base.BaseFragment;
+
 
 /**
  * Created by XP on 2016/1/25.

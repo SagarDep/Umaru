@@ -1,6 +1,7 @@
 package cc.haoduoyu.umaru.ui.activities;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -18,8 +19,8 @@ import java.util.Map;
 
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.ui.base.BaseActivity;
-import cc.haoduoyu.umaru.utils.ui.DialogUtils;
 import cc.haoduoyu.umaru.utils.Utils;
+import cc.haoduoyu.umaru.utils.ui.DialogUtils;
 
 /**
  * Created by XP on 2016/1/25.
@@ -27,6 +28,11 @@ import cc.haoduoyu.umaru.utils.Utils;
 public class SplashActivity extends BaseActivity {
 
     private static final int REQUEST_CODE = 1;
+
+    public static void startIt(Context context) {
+        Intent intent = new Intent(context, SplashActivity.class);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

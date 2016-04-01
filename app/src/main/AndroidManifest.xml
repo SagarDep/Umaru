@@ -73,8 +73,15 @@
             android:name=".widgets.zbar.CaptureActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".widgets.citypicker.CityPickerActivity"
+            android:name=".ui.activities.CityPickerActivity"
+            android:label="@string/choose_city"
             android:windowSoftInputMode="stateHidden|adjustPan" />
+
+        <activity android:name=".ui.activities.CustomErrorActivity">
+            <intent-filter>
+                <action android:name="cat.ereza.customactivityoncrash.ERROR" />
+            </intent-filter>
+        </activity>
 
         <!-- Player Service
         android:exported这个属性用于指示该服务是否能够被其他应用程序组件调用或跟它交互。

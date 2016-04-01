@@ -132,6 +132,11 @@
     <string name="located_failed">定位失败</string>
     <string name="city_id">city_id</string>
     <string name="once">once</string>
+    <string name="develop_by">Developed By Bigggge</string>
+    <string name="blog">访问我的博客</string>
+    <string name="restart">重启Umaru</string>
+    <string name="test">测试工具</string>
+    <string name="crash_test">意外终止测试</string>
 
 
     <string-array name="welcome_texts">
@@ -168,6 +173,21 @@
     <string-array name="cities">
         <item>苏州</item>
         <item>丹阳</item>
+    </string-array>
+
+    <string-array name="testItems">
+        <item>聊天</item>
+        <item>选择城市</item>
+        <item>音乐</item>
+        <item>正在播放音乐</item>
+        <item>WebView</item>
+        <item>欢迎页</item>
+        <item>意外终止</item>
+        <item>二维码</item>
+        <item>电话</item>
+        <item>短信</item>
+        <item>设置</item>
+        <item>关于</item>
     </string-array>
 
 </resources>

@@ -12,7 +12,7 @@
     <style name="BaseAppTheme" parent="@style/Theme.AppCompat.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/umaru</item>
 
         <!--for music-->
         <item name="progressDrawableWithBackground">@drawable/progress_drawable_withbackground

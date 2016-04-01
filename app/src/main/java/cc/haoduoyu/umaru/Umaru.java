@@ -8,6 +8,7 @@ import com.apkfuns.logutils.LogUtils;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
 
+import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
 import cc.haoduoyu.umaru.utils.CrashHandler;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.Utils;
@@ -33,6 +34,8 @@ public class Umaru extends Application {
         //CrashHandler
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(this);
+
+        CustomActivityOnCrash.install(this);
 
 //        LeakCanary.install(this);
 

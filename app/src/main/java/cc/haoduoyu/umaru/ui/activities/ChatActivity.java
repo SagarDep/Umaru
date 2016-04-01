@@ -36,13 +36,12 @@ import java.util.LinkedHashMap;
 import butterknife.Bind;
 import butterknife.OnClick;
 import cc.haoduoyu.umaru.R;
-import cc.haoduoyu.umaru.ui.base.ToolbarActivity;
 import cc.haoduoyu.umaru.event.MessageEvent;
 import cc.haoduoyu.umaru.ui.adapter.ChatAdapter;
+import cc.haoduoyu.umaru.ui.base.ToolbarActivity;
 import cc.haoduoyu.umaru.utils.JsonParser;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.SettingUtils;
-import cc.haoduoyu.umaru.widgets.GLayoutManager;
 import cc.haoduoyu.umaru.widgets.RevealBackgroundView;
 import cc.haoduoyu.umaru.widgets.SendButton;
 
@@ -89,6 +88,7 @@ public class ChatActivity extends ToolbarActivity implements SendButton.OnSendCl
      * android.util.AndroidRuntimeException:
      * Calling startActivity() from outside of an Activity  context requires the FLAG_ACTIVITY_NEW_TASK flag.
      * Is this really what you want?
+     *
      * @param context
      */
     public static void startIt(Context context) {
@@ -107,7 +107,7 @@ public class ChatActivity extends ToolbarActivity implements SendButton.OnSendCl
         //http://stackoverflow.com/questions/19897422/keyboard-hiding-edittext-when-androidwindowtranslucentstatus-true
         SystemBarTintManager tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);
-        int color = PreferencesUtils.getInteger(this, getString(R.string.color_primary), R.color.colorPrimary);
+        int color = PreferencesUtils.getInteger(this, getString(R.string.color_primary), getResources().getColor(R.color.colorPrimary));
         tintManager.setTintColor(color);
 
         //动画开关
@@ -118,7 +118,7 @@ public class ChatActivity extends ToolbarActivity implements SendButton.OnSendCl
     }
 
     private void initViews() {
-        mAppBar.setBackgroundColor(Color.TRANSPARENT);
+//        mAppBar.setBackgroundColor(Color.TRANSPARENT);
         mAdapter = new ChatAdapter(this);
         mAdapter.loadRandomWelcomeTexts();
         mRecyclerview.setLayoutManager(new LinearLayoutManager(this));

@@ -36,7 +36,7 @@ public class SettingActivity extends ToolbarActivity implements ColorChooserDial
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAppBar.setBackgroundColor(PreferencesUtils.getInteger(this, getString(R.string.color_primary), R.color.colorPrimary));
+//        mAppBar.setBackgroundColor(PreferencesUtils.getInteger(this, getString(R.string.color_primary), getResources().getColor(R.color.colorPrimary)));
         PreferenceFragment fragment = new SettingFragment();
         android.app.FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()

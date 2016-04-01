@@ -70,7 +70,7 @@ public class WebViewActivity extends ToolbarActivity {
         mUrl = getIntent().getStringExtra(EXTRA_URL);
         mTitle = getIntent().getStringExtra(EXTRA_TITLE);
 
-        mAppBar.setBackgroundColor(Color.TRANSPARENT);
+//        mAppBar.setBackgroundColor(Color.TRANSPARENT);
 
         WebSettings settings = mWebView.getSettings();
         //设置是否支持Javascript

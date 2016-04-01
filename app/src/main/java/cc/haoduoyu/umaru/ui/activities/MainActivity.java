@@ -41,9 +41,9 @@ import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.SettingUtils;
 import cc.haoduoyu.umaru.utils.ShakeManager;
 import cc.haoduoyu.umaru.utils.Utils;
+import cc.haoduoyu.umaru.utils.ui.DialogUtils;
 import cc.haoduoyu.umaru.utils.ui.SnackbarUtils;
 import cc.haoduoyu.umaru.widgets.FloatViewService;
-import cc.haoduoyu.umaru.widgets.citypicker.CityPickerActivity;
 import cc.haoduoyu.umaru.widgets.zbar.CaptureActivity;
 import de.greenrobot.event.EventBus;
 
@@ -116,10 +116,10 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
             @Override
             public void run() {
                 if (!Utils.isNetworkReachable(Umaru.getContext()))
-                    SnackbarUtils.showLong(fab, getString(R.string.snackbar_error));
+                    SnackbarUtils.showShort(fab, getString(R.string.snackbar_error));
                 else if (getString(R.string.umaru).equals(getTitle()) &&
                         !SettingUtils.getInstance(MainActivity.this).isEnableChatGuide())
-                    SnackbarUtils.showSnackBackWithAction(fab, getString(R.string.snackbar_chat), getString(R.string.know));
+                    SnackbarUtils.showShort(fab, getString(R.string.snackbar_chat));
             }
         }, 1558);
     }
@@ -254,7 +254,10 @@ public class MainActivity extends ToolbarActivity implements NavigationView.OnNa
                 CaptureActivity.startIt(this);
                 break;
             case R.id.action_choose_city:
-                startActivity(new Intent(this, CityPickerActivity.class));
+                CityPickerActivity.startIt(this);
+                break;
+            case R.id.action_test:
+                DialogUtils.showTestList(this);
                 break;
         }
 

@@ -1,4 +1,4 @@
-package cc.haoduoyu.umaru.widgets;/*
+/*
  * Copyright 2014 - 2015 Henning Dodenhof
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +13,7 @@ package cc.haoduoyu.umaru.widgets;/*
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package cc.haoduoyu.umaru.widgets;
 
 import android.content.Context;
 import android.content.res.TypedArray;

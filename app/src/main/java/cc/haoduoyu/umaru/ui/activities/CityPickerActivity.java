@@ -1,9 +1,8 @@
-package cc.haoduoyu.umaru.widgets.citypicker;
+package cc.haoduoyu.umaru.ui.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -16,13 +15,15 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.apkfuns.logutils.LogUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import cc.haoduoyu.umaru.R;
 import cc.haoduoyu.umaru.db.DBManager;
 import cc.haoduoyu.umaru.event.ContentEvent;
-import cc.haoduoyu.umaru.utils.ui.ToastUtils;
+import cc.haoduoyu.umaru.ui.base.ToolbarActivity;
 import cc.haoduoyu.umaru.widgets.citypicker.adapter.CityListAdapter;
 import cc.haoduoyu.umaru.widgets.citypicker.adapter.ResultListAdapter;
 import cc.haoduoyu.umaru.widgets.citypicker.model.City;
@@ -32,22 +33,21 @@ import de.greenrobot.event.EventBus;
 
 
 /**
+ * This code was modified by XP.
  * author zaaach on 2016/1/26.
  */
-public class CityPickerActivity extends AppCompatActivity implements View.OnClickListener {
+public class CityPickerActivity extends ToolbarActivity implements View.OnClickListener {
 
     private ListView mListView;
     private ListView mResultListView;
     private SideLetterBar mLetterBar;
     private EditText searchBox;
     private ImageView clearBtn;
-    private ImageView backBtn;
     private ViewGroup emptyView;
 
     private CityListAdapter mCityAdapter;
     private ResultListAdapter mResultAdapter;
     private List<City> mAllCities = new ArrayList<>();
-    private List<City> tempAllCities;
     private DBManager dbManager;
 
     private static final int COMPLETED = 0;
@@ -55,14 +55,35 @@ public class CityPickerActivity extends AppCompatActivity implements View.OnClic
 //    private AMapLocationClient mLocationClient;
 
     @Override
+    public boolean canBack() {
+        return true;
+    }
+
+    @Override
+    protected int provideContentViewId() {
+        return R.layout.activity_city_list;
+    }
+
+    public static void startIt(Context context) {
+        Intent intent = new Intent(context, CityPickerActivity.class);
+        context.startActivity(intent);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_city_list);
 
         initData();
         initView();
-        getAllCities();
 //        initLocation();
+//        mCityAdapter.updateLocateState(LocateState.FAILED, null);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mCityAdapter.update();
+            }
+        }).start();
+
     }
 
 //    private void initLocation() {
@@ -92,62 +113,44 @@ public class CityPickerActivity extends AppCompatActivity implements View.OnClic
 //        mLocationClient.startLocation();
 //    }
 
-    Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case COMPLETED:
-                    mAllCities.addAll(tempAllCities);
-                    mCityAdapter.notifyDataSetChanged();
-                    break;
-
-            }
-        }
-    };
-
     private void initData() {
-        dbManager = new DBManager(this);
+
+        dbManager = new DBManager(CityPickerActivity.this);
         dbManager.copyDBFile();
+        mAllCities = dbManager.getAllCities();
+
         mCityAdapter = new CityListAdapter(CityPickerActivity.this, mAllCities);
         mCityAdapter.setOnCityClickListener(new CityListAdapter.OnCityClickListener() {
             @Override
             public void onCityClick(String name) {
-                back(name);
+                sendIdToMainFragment(name);
             }
 
+            //如果是定位失败状态
             @Override
             public void onLocateClick() {
                 Log.e("onLocateClick", "重新定位...");
-                mCityAdapter.updateLocateState(LocateState.SUCCESS, "苏州");
+                mCityAdapter.updateLocateState(LocateState.LOCATING, "苏州");
 //                mLocationClient.startLocation();
             }
         });
 
         mResultAdapter = new ResultListAdapter(this, null);
-    }
 
-    private void getAllCities() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                tempAllCities = dbManager.getAllCities();
-                mHandler.sendEmptyMessage(COMPLETED);
-            }
-        }).start();
     }
 
     private void initView() {
         mListView = (ListView) findViewById(R.id.listview_all_city);
         mListView.setAdapter(mCityAdapter);
-
         TextView overlay = (TextView) findViewById(R.id.tv_letter_overlay);
         mLetterBar = (SideLetterBar) findViewById(R.id.side_letter_bar);
+        //设置悬浮的TextView
         mLetterBar.setOverlay(overlay);
         mLetterBar.setOnLetterChangedListener(new SideLetterBar.OnLetterChangedListener() {
             @Override
             public void onLetterChanged(String letter) {
                 int position = mCityAdapter.getLetterPosition(letter);
+                LogUtils.d(letter + position);
                 mListView.setSelection(position);
             }
         });
@@ -189,25 +192,17 @@ public class CityPickerActivity extends AppCompatActivity implements View.OnClic
         mResultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                back(mResultAdapter.getItem(position).getId());
+                sendIdToMainFragment(mResultAdapter.getItem(position).getId());
             }
         });
 
         clearBtn = (ImageView) findViewById(R.id.iv_search_clear);
-        backBtn = (ImageView) findViewById(R.id.back);
-
         clearBtn.setOnClickListener(this);
-        backBtn.setOnClickListener(this);
     }
 
-    private void back(String id) {
+    private void sendIdToMainFragment(String id) {
         finish();
         EventBus.getDefault().post(new ContentEvent(ContentEvent.WEATHER_CITY, id));
-//        ToastUtils.showToast(this, "城市id：" + id);
-//        Intent data = new Intent();
-//        data.putExtra(KEY_PICKED_CITY, city);
-//        setResult(RESULT_OK, data);
-//        finish();
     }
 
     @Override
@@ -218,9 +213,6 @@ public class CityPickerActivity extends AppCompatActivity implements View.OnClic
                 clearBtn.setVisibility(View.GONE);
                 emptyView.setVisibility(View.GONE);
                 mResultListView.setVisibility(View.GONE);
-                break;
-            case R.id.back:
-                finish();
                 break;
         }
     }

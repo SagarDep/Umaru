@@ -29,8 +29,8 @@ import cc.haoduoyu.umaru.utils.CrashHandler;
 import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.SettingUtils;
 import cc.haoduoyu.umaru.utils.ShareUtils;
-import cc.haoduoyu.umaru.utils.ui.ToastUtils;
 import cc.haoduoyu.umaru.utils.Utils;
+import cc.haoduoyu.umaru.utils.ui.ToastUtils;
 import de.greenrobot.event.EventBus;
 
 /**

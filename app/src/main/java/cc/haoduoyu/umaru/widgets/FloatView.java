@@ -42,6 +42,7 @@ import cc.haoduoyu.umaru.utils.ui.ResourceUtils;
 
 
 /**
+ * This code was modified by XP.
  * 无需权限显示悬浮窗
  * http://www.jianshu.com/p/167fd5f47d5c
  * Author:pengjianbo
