@@ -2,6 +2,7 @@ package cc.haoduoyu.umaru.utils.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -26,6 +27,7 @@ import cc.haoduoyu.umaru.utils.PreferencesUtils;
 import cc.haoduoyu.umaru.utils.SettingUtils;
 import cc.haoduoyu.umaru.utils.Utils;
 import cc.haoduoyu.umaru.widgets.zbar.CaptureActivity;
+import kale.debug.log.ui.LogActivity;
 
 /**
  * Created by XP on 2016/3/21.
@@ -143,11 +145,10 @@ public class DialogUtils {
      * <p/>
      * <item>意外终止测试</item>
      * <item>二维码测试</item>
-     * <item>电话测试</item>
-     * <p/>
-     * <item>短信测试</item>
      * <item>设置测试</item>
+     * <p/>
      * <item>关于测试</item>
+     * <item>Log测试</item>
      *
      * @param context
      */
@@ -193,16 +194,13 @@ public class DialogUtils {
                                 CaptureActivity.startIt(context);
                                 break;
                             case 8:
-                                Utils.dial(context, null);
-                                break;
-                            case 9:
-                                Utils.sms(context, null);
-                                break;
-                            case 10:
                                 SettingActivity.startIt(context);
                                 break;
-                            case 11:
+                            case 9:
                                 AboutActivity.startIt(context);
+                                break;
+                            case 10:
+                                context.startActivity(new Intent(context, LogActivity.class));
                                 break;
 
                         }

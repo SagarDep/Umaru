@@ -184,10 +184,9 @@
         <item>欢迎页</item>
         <item>意外终止</item>
         <item>二维码</item>
-        <item>电话</item>
-        <item>短信</item>
         <item>设置</item>
         <item>关于</item>
+        <item>Log</item>
     </string-array>
 
 </resources>
