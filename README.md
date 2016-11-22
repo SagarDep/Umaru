@@ -3,11 +3,13 @@
 本科毕业设计项目
 
 ### Thanks
+
+天气背景图创意来自[dribbble](https://dribbble.com/shots/2249390-Material-Weather-App-Concept-Dark/attachments/420404)  
+由[面条](https://www.zhihu.com/people/lsxiao)制作
+
 感谢以下开源项目的帮助
 
 [JakeWharton/butterknife](https://github.com/JakeWharton/butterknife)
-[Templarian/materialiconlib](https://materialdesignicons.com)
-[google/volley](https://android.googlesource.com/platform/frameworks/volley/)
 [google/gson](https://github.com/google/gson)
 [bumptech/glide](https://github.com/bumptech/glide)
 [greenrobot/EventBus](https://github.com/greenrobot/EventBus)
@@ -15,21 +17,11 @@
 [square/OkHttp](http://square.github.io/okhttp/)
 [square/Retrofit](http://square.github.io/retrofit/)
 [j256/ormlite-android](http://ormlite.com/)
-[frogermcs/InstaMaterial](https://github.com/frogermcs/InstaMaterial)
-[naman14/Timber](https://github.com/naman14/Timber)
-[ZhaoKaiQiang/JianDan](https://github.com/ZhaoKaiQiang/JianDan)
-[GeeKaven/WavePlayer](https://github.com/GeeKaven/WavePlayer)
-[drakeet/Meizhi](https://github.com/drakeet/Meizhi)
 [umano/AndroidSlidingUpPanel](https://github.com/umano/AndroidSlidingUpPanel)
 [afollestad/material-dialogs](https://github.com/afollestad/material-dialogs)
 [lecho/hellocharts-android](https://github.com/lecho/hellocharts-android)
 [ksoichiro/Android-ObservableScrollView](https://github.com/ksoichiro/Android-ObservableScrollView)
 [讯飞/语音识别](http://www.xfyun.cn/services/voicedictation)
-[SkillCollege/ZBarScanProj](https://github.com/SkillCollege/ZBarScanProj)
-[zaaach/CityPicker](https://github.com/zaaach/CityPicker)
-
-
-天气背景图由[面条](https://www.zhihu.com/people/lsxiao)制作，创意来自[dribbble](https://dribbble.com/shots/2249390-Material-Weather-App-Concept-Dark/attachments/420404)
 
 ### Screenshots
 
